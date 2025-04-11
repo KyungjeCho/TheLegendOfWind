@@ -15,7 +15,7 @@ namespace KJ
     {
         #region Variables
         public Transform player;
-        public Vector3 pivotOffset = new Vector3(0.0f, 1.0f, 0.0f);    // 바라볼 오브젝트의 피봇(기준) 벡터
+        public Vector3 pivotOffset = new Vector3(0.0f, 2.0f, 0.0f);    // 바라볼 오브젝트의 피봇(기준) 벡터
         public Vector3 camOffset = new Vector3(0.0f, 0.5f, -2.0f);   // 위치 오프셋
 
         public float smooth = 10f;            // 카메라 반응 속도

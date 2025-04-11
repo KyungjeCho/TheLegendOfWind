@@ -27,7 +27,7 @@ namespace KJ
 
         private float h; // h Axis
         private float v; // v Axis
-        [SerializeField]
+        
         private float turnSmoothing = 0.06f; // 카메라가 보는 방향으로 움직일때 속도
         private bool changedFOV;
         [SerializeField]
@@ -42,6 +42,8 @@ namespace KJ
 
         public float GetH { get => h; }
         public float GetV { get => v; }
+
+        public float GetTurnSmoothing { get => turnSmoothing; }
         public ThirdPersonOrbitCamera GetCamScipt {  get => camScript; }
         public Rigidbody GetRigidbody { get => myRigidbody; }  
         public Animator GetAnimator { get => myAnimator; }
@@ -62,6 +64,8 @@ namespace KJ
             myRigidbody = GetComponent<Rigidbody>();
 
             colExtents = GetComponent<Collider>().bounds.extents;
+            
+
         }
 
         private void Update()
@@ -85,6 +89,7 @@ namespace KJ
             }
 
             myAnimator.SetBool(groundedBool, IsGrounded());
+            Debug.Log(colExtents);
         }
 
         private void FixedUpdate()
@@ -255,7 +260,7 @@ namespace KJ
             return overrideBehaviours.Contains(behaviour);
         }
 
-        public bool IsCurruentBehaviour(int behaviourCode)
+        public bool IsCurrentBehaviour(int behaviourCode)
         {
             return this.currentBehaviour == behaviourCode;
         }
@@ -288,11 +293,17 @@ namespace KJ
         {
             this.lastDirection = direction;
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            
+        }
     }
 
     public abstract class BaseBehaviour : MonoBehaviour
     {
-        protected int speedFloat; // 해시
+        protected int speedFloat; // anim 해시
         protected BehaviourController behaviourController; 
         protected int behaviourCode; // 해시
         protected bool canSprint;

@@ -7,6 +7,7 @@ namespace KJ
     public class ButtonName
     {
         public const string Sprint          = "Sprint";
+        public const string Jump            = "Jump";
     }
 
 }
