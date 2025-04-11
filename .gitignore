@@ -1,4 +1,6 @@
-/9. Resources
 /2. Scenes
+/9. Resources
+/Settings
+
 *.meta
-*
+*.asset
