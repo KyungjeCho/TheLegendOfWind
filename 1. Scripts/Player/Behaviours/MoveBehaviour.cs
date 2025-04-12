@@ -18,11 +18,13 @@ namespace KJ
         public float speedDampTime = 0.1f;
 
         private bool jump;
+        private bool crouched;
         public float jumpHeight = 1.5f;
         public float jumpInertiaForce = 10f;
         public float speed;
         private int jumpBool;
         private int groundedBool;
+        private int crouchedBool;
 
         private bool isColliding;
         private CapsuleCollider capsuleCollider;
@@ -34,6 +36,7 @@ namespace KJ
             capsuleCollider = GetComponent<CapsuleCollider>();
             jumpBool = Animator.StringToHash(AnimatorKey.Jump);
             groundedBool = Animator.StringToHash(AnimatorKey.Grounded);
+            crouchedBool = Animator.StringToHash(AnimatorKey.Crouched);
             behaviourController.GetAnimator.SetBool(groundedBool, true);
 
             behaviourController.SubscribeBehaviour(this);
@@ -47,12 +50,17 @@ namespace KJ
             {
                 jump = true;
             }
+            if (Input.GetButtonDown(ButtonName.Crouch) && behaviourController.IsCurrentBehaviour(behaviourCode) && !behaviourController.IsOverriding())
+            {
+                crouched = !crouched;
+            }
         }
 
         public override void LocalFixedUpdate()
         {
             MovementManagement(behaviourController.GetH, behaviourController.GetV);
             JumpManagement();
+            CrouchManagement();
         }
 
         Vector3 Rotating(float horizontal, float vertical)
@@ -102,7 +110,11 @@ namespace KJ
             Vector2 dir = new Vector2(horizontal, vertical);
             speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
 
-            if (behaviourController.IsSprinting())
+            if (crouched)
+            {
+                speed = Mathf.Clamp(speed, 0f, walkSpeed);
+            }
+            else if (behaviourController.IsSprinting())
             {
                 speed = sprintSpeed;
             }
@@ -135,6 +147,8 @@ namespace KJ
                 behaviourController.LockTempBehaviour(behaviourCode);
                 behaviourController.GetAnimator.SetBool(jumpBool, true);
 
+                crouched = false;
+                behaviourController.GetAnimator.SetBool(crouchedBool, false);
                 // ¸¶ÂûÀ» ¾ø¾Ø´Ù
                 capsuleCollider.material.dynamicFriction = 0f;
                 capsuleCollider.material.staticFriction = 0f;
@@ -158,6 +172,23 @@ namespace KJ
                     behaviourController.GetAnimator.SetBool(jumpBool, false);
                     behaviourController.UnLockTempBehaviour(this.behaviourCode);
                 }
+            }
+        }
+
+        void CrouchManagement()
+        {
+            if (crouched && !behaviourController.GetAnimator.GetBool(AnimatorKey.Crouched) && behaviourController.IsGrounded())
+            {
+                behaviourController.GetAnimator.SetBool(crouchedBool, true);
+            }
+            else if (!crouched && behaviourController.GetAnimator.GetBool(AnimatorKey.Crouched))
+            {
+                behaviourController.GetAnimator.SetBool(crouchedBool, false);
+            }
+            else if (behaviourController.IsSprinting())
+            {
+                crouched = false;
+                behaviourController.GetAnimator.SetBool(crouchedBool, false);
             }
         }
     }

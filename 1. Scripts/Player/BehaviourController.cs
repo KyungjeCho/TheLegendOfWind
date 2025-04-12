@@ -33,7 +33,8 @@ namespace KJ
         [SerializeField]
         private float sprintFOV = 100f;
         private Vector3 lastDirection;
-        private bool sprint; 
+        private bool sprint;
+        private bool crouch;
         private int hFloat; // anim hash
         private int vFloat; // anim hash
         private int groundedBool; // anim hash
@@ -325,6 +326,7 @@ namespace KJ
         {
             get => canSprint;
         }
+
 
         public virtual void LocalLateUpdate()
         {

@@ -8,9 +8,10 @@ namespace KJ
     {
         public const string Speed       = "Speed";
         public const string Jump        = "Jump";
-        public const string Grounded      = "Grounded";
+        public const string Grounded    = "Grounded";
         public const string Horizontal  = "Horizontal";
         public const string Vertical    = "Vertical";
+        public const string Crouched    = "Crouched";
     }
 
 
