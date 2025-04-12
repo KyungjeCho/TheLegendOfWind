@@ -89,7 +89,6 @@ namespace KJ
             }
 
             myAnimator.SetBool(groundedBool, IsGrounded());
-            Debug.Log(colExtents);
         }
 
         private void FixedUpdate()
@@ -297,7 +296,7 @@ namespace KJ
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            
+            Gizmos.DrawLine(transform.position + Vector3.up * 2 * colExtents.x, transform.position + Vector3.down * (colExtents.x + 0.2f));
         }
     }
 

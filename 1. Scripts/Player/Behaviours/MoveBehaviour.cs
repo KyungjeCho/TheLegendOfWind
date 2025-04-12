@@ -101,13 +101,15 @@ namespace KJ
 
             Vector2 dir = new Vector2(horizontal, vertical);
             speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
-            
+
             if (behaviourController.IsSprinting())
             {
                 speed = sprintSpeed;
             }
             behaviourController.GetAnimator.SetFloat(speedFloat, speed, speedDampTime, Time.deltaTime);
-            //behaviourController.GetRigidbody.AddForce(myTransform.forward * speed * 10f, ForceMode.Force);
+
+            behaviourController.GetRigidbody.velocity = myTransform.forward * speed * 10f + Vector3.up * behaviourController.GetRigidbody.velocity.y;
+           
         }
 
         private void OnCollisionStay(Collision collision)
@@ -132,20 +134,18 @@ namespace KJ
             {
                 behaviourController.LockTempBehaviour(behaviourCode);
                 behaviourController.GetAnimator.SetBool(jumpBool, true);
-                if (behaviourController.GetAnimator.GetFloat(speedFloat) > 0.1f)
-                {
-                    // ¸¶ÂûÀ» ¾ø¾Ø´Ù
-                    capsuleCollider.material.dynamicFriction = 0f;
-                    capsuleCollider.material.staticFriction = 0f;
-                    RemoveVerticalVelocity();
-                    float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
-                    velocity = Mathf.Sqrt(velocity);
-                    behaviourController.GetRigidbody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
-                }
+
+                // ¸¶ÂûÀ» ¾ø¾Ø´Ù
+                capsuleCollider.material.dynamicFriction = 0f;
+                capsuleCollider.material.staticFriction = 0f;
+                RemoveVerticalVelocity();
+                float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
+                velocity = Mathf.Sqrt(velocity);
+                behaviourController.GetRigidbody.AddForce(Vector3.up * velocity, ForceMode.Impulse);
             }
             else if (behaviourController.GetAnimator.GetBool(jumpBool))
             {
-                if (!behaviourController.IsGrounded() && !isColliding && behaviourController.GetTempLockStatus())
+                if (!isColliding && behaviourController.GetTempLockStatus())
                 {
                     behaviourController.GetRigidbody.AddForce(myTransform.forward * jumpInertiaForce * Physics.gravity.magnitude * sprintSpeed, ForceMode.Acceleration);
                 }
