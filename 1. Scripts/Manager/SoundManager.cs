@@ -76,12 +76,14 @@ namespace KJ
             }
 
             InitVolume();
+
         }
 
         public void SetMasterVolume(float ratio)
         {
             ratio = Mathf.Clamp01(ratio);
             float volume = Mathf.Lerp(minVolume, maxVolume, ratio);
+            Debug.Log(volume);
             mixer.SetFloat("Master", volume);
             PlayerPrefs.SetFloat("Master", volume);
         }

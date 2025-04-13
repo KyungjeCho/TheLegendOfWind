@@ -308,6 +308,7 @@ namespace KJ
         protected int behaviourCode; // ÇØ½Ã
         protected bool canSprint;
 
+        public BehaviourController GetBehaviourController() => behaviourController;
         private void Awake()
         {
             behaviourController = GetComponent<BehaviourController>();

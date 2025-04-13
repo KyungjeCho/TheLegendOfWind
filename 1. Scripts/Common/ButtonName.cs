@@ -11,6 +11,7 @@ namespace KJ
         public const string Crouch          = "Crouch";
         public const string Aim             = "Aim";
         public const string Shoulder        = "Shoulder";
+        public const string Attack          = "Attack";
     }
 
 }
