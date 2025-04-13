@@ -9,6 +9,8 @@ namespace KJ
         public const string Sprint          = "Sprint";
         public const string Jump            = "Jump";
         public const string Crouch          = "Crouch";
+        public const string Aim             = "Aim";
+        public const string Shoulder        = "Shoulder";
     }
 
 }

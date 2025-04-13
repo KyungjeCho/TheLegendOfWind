@@ -12,6 +12,7 @@ namespace KJ
         public const string Horizontal  = "Horizontal";
         public const string Vertical    = "Vertical";
         public const string Crouched    = "Crouched";
+        public const string Aim         = "Aim";
     }
 
 

@@ -50,7 +50,7 @@ namespace KJ
             {
                 jump = true;
             }
-            if (Input.GetButtonDown(ButtonName.Crouch) && behaviourController.IsCurrentBehaviour(behaviourCode) && !behaviourController.IsOverriding())
+            if (Input.GetButtonDown(ButtonName.Crouch) && behaviourController.IsCurrentBehaviour(behaviourCode) && !behaviourController.IsOverriding() && !jump && !behaviourController.IsSprinting())
             {
                 crouched = !crouched;
             }
@@ -120,7 +120,7 @@ namespace KJ
             }
             behaviourController.GetAnimator.SetFloat(speedFloat, speed, speedDampTime, Time.deltaTime);
 
-            behaviourController.GetRigidbody.velocity = myTransform.forward * speed * 10f + Vector3.up * behaviourController.GetRigidbody.velocity.y;
+            behaviourController.GetRigidbody.velocity = myTransform.forward * speed * 6f + Vector3.up * behaviourController.GetRigidbody.velocity.y;
            
         }
 
