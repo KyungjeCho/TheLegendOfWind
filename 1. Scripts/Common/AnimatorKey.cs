@@ -15,8 +15,10 @@ namespace KJ
         public const string Aim                 = "Aim";
         public const string MeleeAttackCombo     = "MeleeAttackCombo";
         public const string MeleeAttack         = "MeleeAttack";
+        public const string Weapon              = "Weapon";
+        public const string RangeAttack         = "RangeAttack";
+        public const string ChangeWeapon        = "ChangeWeapon";
+
     }
-
-
 }
 

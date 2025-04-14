@@ -9,9 +9,11 @@ public class MeleeAttackCombo : StateMachineBehaviour
     private bool nextCombo;
 
     public int comboStep = 1;
+    public SoundList attackSound;
 
     private int meleeAttackComboInt;
     private int meleeAttackTrigger;
+    private SoundClip attackSoundClip;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -22,6 +24,8 @@ public class MeleeAttackCombo : StateMachineBehaviour
 
         meleeAttackComboInt = Animator.StringToHash(AnimatorKey.MeleeAttackCombo);
         meleeAttackTrigger = Animator.StringToHash(AnimatorKey.MeleeAttack);
+        attackSoundClip = DataManager.SoundData.GetCopy((int)attackSound);
+        SoundManager.Instance.PlayEffectSound(attackSoundClip, animator.transform.position, 1.0f);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

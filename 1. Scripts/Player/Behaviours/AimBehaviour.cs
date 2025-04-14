@@ -20,6 +20,7 @@ namespace KJ
 
         private Vector3 initialRootRotation; // IK ¿ë
         private Vector3 initialHipRotation;
+
         private Vector3 initialSpineRotation;
 
         private void Start()
