@@ -10,7 +10,7 @@ namespace KJ
     /// 캐릭터의 행동을 제어하는 클래스
     /// </summary>
     [RequireComponent(typeof(Animator)), RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(Collider))]
-    public class BehaviourController : MonoBehaviour, IAttackable
+    public class BehaviourController : MonoBehaviour, IAttackable, IDamagable
     {
         private List<BaseBehaviour> behaviours; 
         private List<BaseBehaviour> overrideBehaviours; //우선시 되는 행동
@@ -49,6 +49,8 @@ namespace KJ
         public Rigidbody GetRigidbody { get => myRigidbody; }  
         public Animator GetAnimator { get => myAnimator; }
         public int GetDefaultBehaviour { get => defaultBehaviour; }
+
+        public bool IsAlive => throw new System.NotImplementedException();
 
         private void Awake()
         {
@@ -313,6 +315,11 @@ namespace KJ
                 }
             }
 
+        }
+
+        public void OnDamage(IAttackable enemy)
+        {
+            
         }
     }
 

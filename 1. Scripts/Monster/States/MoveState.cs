@@ -26,10 +26,17 @@ namespace KJ
         public override void OnStateEnter()
         {
             target = context.Target;
-            agent.SetDestination(target.position);
-            context.GetAnimator.SetFloat(speedFloat, 1.0f);
+            if (target == null)
+            {
+                context.ChangeState<IdleState>();
+            }
+            else
+            {
+                agent.SetDestination(target.position);
+                context.GetAnimator.SetFloat(speedFloat, 1.0f);
 
-            agent.stoppingDistance = context.AttackRange;
+                agent.stoppingDistance = context.AttackRange;
+            }
         }
         public override void Update(float deltaTime)
         {

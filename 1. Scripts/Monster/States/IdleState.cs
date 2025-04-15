@@ -8,7 +8,7 @@ namespace KJ
     {
         private int speedFloat;
 
-
+        private float elapsedTime;
         public override void OnInitialize()
         {
             speedFloat = Animator.StringToHash(AnimatorKey.Speed);
@@ -19,6 +19,7 @@ namespace KJ
             base.OnStateEnter();
 
             context.GetAnimator.SetFloat(speedFloat, 0f);
+            elapsedTime = 0f;
         }
 
         public override void Update(float deltaTime)
@@ -30,6 +31,12 @@ namespace KJ
             {
                 context.ChangeState<MoveState>();
             }
+            if (elapsedTime > 5f)
+            {
+                context.ChangeState<MoveState>();
+            }
+            
+            elapsedTime += deltaTime;
         }
     }
 

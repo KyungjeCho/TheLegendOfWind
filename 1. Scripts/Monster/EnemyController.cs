@@ -12,6 +12,14 @@ namespace KJ
         protected MonsterStat monsterStat;
         protected float currentHP;
         public float CurrentHP => currentHP;
+
+        public SoundList hitSound;
+        public SoundList dieSound;
+        private SoundClip hitSoundClip;
+        private SoundClip dieSoundClip;
+
+        public SoundClip HitSoundClip => hitSoundClip;
+        public SoundClip DieSoundClip => dieSoundClip;
         public virtual float AttackRange
         {
             get
@@ -55,6 +63,11 @@ namespace KJ
             myAgent.speed = monsterStat.speed;
 
             stateMachine.CurrentState.OnStateEnter();
+
+            hitSoundClip = DataManager.SoundData.GetCopy((int)hitSound);
+            hitSoundClip.PreLoad();
+            dieSoundClip = DataManager.SoundData.GetCopy((int)dieSound);
+            dieSoundClip.PreLoad();
         }
 
         protected virtual void Update()

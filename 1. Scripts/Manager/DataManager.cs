@@ -8,6 +8,7 @@ public class DataManager : MonoBehaviour
 {
     private static SoundData soundData = null;
     private static MonsterData monsterData = null;
+    private static EffectData effectData = null;
 
     private void Start()
     {
@@ -20,6 +21,11 @@ public class DataManager : MonoBehaviour
         {
             monsterData = ScriptableObject.CreateInstance<MonsterData>();
             monsterData.LoadData();
+        }
+        if (effectData == null)
+        {
+            effectData = ScriptableObject.CreateInstance<EffectData>();
+            effectData.LoadData();
         }
     }
 
@@ -45,6 +51,18 @@ public class DataManager : MonoBehaviour
                 monsterData.LoadData();
             }
             return monsterData;
+        }
+    }
+    public static EffectData EffectData
+    {
+        get
+        {
+            if (effectData == null)
+            {
+                effectData = ScriptableObject.CreateInstance<EffectData>();
+                effectData.LoadData();
+            }
+            return effectData;
         }
     }
 }
