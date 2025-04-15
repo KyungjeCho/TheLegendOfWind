@@ -18,7 +18,7 @@ namespace KJ
         public const string Weapon              = "Weapon";
         public const string RangeAttack         = "RangeAttack";
         public const string ChangeWeapon        = "ChangeWeapon";
-
+        public const string Attack              = "Attack";
     }
 }
 

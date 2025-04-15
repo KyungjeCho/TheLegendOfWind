@@ -7,6 +7,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     private static SoundData soundData = null;
+    private static MonsterData monsterData = null;
 
     private void Start()
     {
@@ -14,6 +15,11 @@ public class DataManager : MonoBehaviour
         {
             soundData = ScriptableObject.CreateInstance<SoundData>();
             soundData.LoadData();
+        }
+        if (monsterData == null)
+        {
+            monsterData = ScriptableObject.CreateInstance<MonsterData>();
+            monsterData.LoadData();
         }
     }
 
@@ -29,5 +35,16 @@ public class DataManager : MonoBehaviour
             return soundData;
         }
     }
-
+    public static MonsterData MonsterData
+    {
+        get
+        {
+            if (monsterData == null)
+            {
+                monsterData = ScriptableObject.CreateInstance<MonsterData>();
+                monsterData.LoadData();
+            }
+            return monsterData;
+        }
+    }
 }

@@ -51,6 +51,20 @@ namespace  KJ
                 File.Delete(filePath);
             File.WriteAllText(filePath, template);
         }
+
+        public static void CreateEnumStructure(string enumName, BaseData data)
+        {
+            if (data == null)
+            {
+                return;
+            }
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < data.names.Length; i++)
+            {
+                builder.AppendLine("    " + data.names[i] + " = " + i.ToString() + ",");
+            }
+            DataManagementHelper.CreateEnumList(enumName, builder);
+        }
     }
 }
 

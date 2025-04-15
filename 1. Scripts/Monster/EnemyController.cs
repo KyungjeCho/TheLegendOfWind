@@ -29,7 +29,7 @@ namespace KJ
             myAnimator = GetComponent<Animator>(); 
             fieldOfView = GetComponent<FieldOfView>();
 
-            myAgent.updatePosition = false;
+            myAgent.updatePosition = true;
             myAgent.updateRotation = true;
 
             stateMachine.CurrentState.OnStateEnter();
