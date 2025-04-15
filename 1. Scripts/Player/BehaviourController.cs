@@ -10,7 +10,7 @@ namespace KJ
     /// 캐릭터의 행동을 제어하는 클래스
     /// </summary>
     [RequireComponent(typeof(Animator)), RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(Collider))]
-    public class BehaviourController : MonoBehaviour
+    public class BehaviourController : MonoBehaviour, IAttackable
     {
         private List<BaseBehaviour> behaviours; 
         private List<BaseBehaviour> overrideBehaviours; //우선시 되는 행동
@@ -40,7 +40,7 @@ namespace KJ
         private int groundedBool; // anim hash
         private Vector3 colExtents; // 땅과 충돌체크를 위한 충돌체 영역
 
-
+        public LayerMask targetMask;
         public float GetH { get => h; }
         public float GetV { get => v; }
 
@@ -298,6 +298,21 @@ namespace KJ
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position + Vector3.up * 2 * colExtents.x, transform.position + Vector3.down * (colExtents.x + 0.2f));
+        }
+
+        public void OnAttack()
+        {
+            ManualCollision manualCollision = GetComponent<ManualCollision>();
+
+            Collider[] targetColliders = manualCollision.CheckOverlapBox(targetMask);
+            foreach (Collider collider in targetColliders)
+            {
+                if (collider.GetComponent<IDamagable>() != null)
+                {
+                    collider.GetComponent<IDamagable>().OnDamage(this);
+                }
+            }
+
         }
     }
 

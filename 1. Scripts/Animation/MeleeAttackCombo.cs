@@ -26,6 +26,11 @@ public class MeleeAttackCombo : StateMachineBehaviour
         meleeAttackTrigger = Animator.StringToHash(AnimatorKey.MeleeAttack);
         attackSoundClip = DataManager.SoundData.GetCopy((int)attackSound);
         SoundManager.Instance.PlayEffectSound(attackSoundClip, animator.transform.position, 1.0f);
+
+        if (animator.GetComponent<IAttackable>() != null)
+        {
+            animator.GetComponent<IAttackable>().OnAttack();
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

@@ -67,6 +67,15 @@ namespace KJ
                 }
             }
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, viewRadius);
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, transform.forward + transform.right);
+            Gizmos.DrawLine(transform.position, transform.forward - transform.right);
+        }
     }
 
 }

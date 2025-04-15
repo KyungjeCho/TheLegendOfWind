@@ -6,7 +6,8 @@ namespace KJ
 {
     public interface IDamagable 
     {
-        public abstract void OnDamage();
+        public bool IsAlive { get; }
+        public abstract void OnDamage(IAttackable enemy);
     }
 }
 

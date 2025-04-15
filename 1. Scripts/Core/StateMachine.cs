@@ -11,11 +11,13 @@ namespace KJ
         protected StateMachine<T> stateMachine;
         protected T context;
 
-        public State() { OnInitialize(); }
+        public State() {}
         internal void SetStateMachineAndContext(StateMachine<T> stateMachine, T context)
         {
             this.stateMachine = stateMachine;
             this.context = context;
+
+            OnInitialize();
         }
 
         public virtual void OnInitialize() { }

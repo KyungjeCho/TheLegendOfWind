@@ -8,9 +8,24 @@ namespace KJ
     [RequireComponent(typeof(Animator)), RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(FieldOfView))]
     public abstract class EnemyController : MonoBehaviour
     {
-        protected StateMachine<EnemyController> stateMachine;
-        public virtual float AttackRange => 3.0f;
+        public MonsterList monsterList;
+        protected MonsterStat monsterStat;
+        protected float currentHP;
+        public float CurrentHP => currentHP;
+        public virtual float AttackRange
+        {
+            get
+            {
+                if (monsterStat == null)
+                {
+                    return 1.0f;
+                }
+                return monsterStat.attackRange;
+            }
+        }
 
+        protected StateMachine<EnemyController> stateMachine;
+        
         protected NavMeshAgent myAgent;
         protected Animator myAnimator;
 
@@ -21,8 +36,14 @@ namespace KJ
         public NavMeshAgent GetAgent => myAgent;
         public Animator GetAnimator => myAnimator;
         public FieldOfView GetFOV => fieldOfView;
+
         protected virtual void Start()
         {
+            // Data
+            monsterStat = DataManager.MonsterData.GetCopy((int)monsterList);
+            currentHP = monsterStat.maxHP;
+
+            // StateMachine
             stateMachine = new StateMachine<EnemyController>(this, new IdleState());
             
             myAgent = GetComponent<NavMeshAgent>();
@@ -31,6 +52,7 @@ namespace KJ
 
             myAgent.updatePosition = true;
             myAgent.updateRotation = true;
+            myAgent.speed = monsterStat.speed;
 
             stateMachine.CurrentState.OnStateEnter();
         }
