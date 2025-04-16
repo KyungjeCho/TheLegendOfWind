@@ -6,18 +6,18 @@ namespace KJ
 {
     public class EffectManager : SingletonMonoBehaviour<EffectManager>
     {
-        public void PlayEffect(EffectClip clip, Vector3 position)
+        public GameObject PlayEffect(EffectClip clip, Vector3 position)
         {
             clip.PreLoad();
 
-            Instantiate(clip.effectPrefab, position, Quaternion.identity);
+            return Instantiate(clip.effectPrefab, position, Quaternion.identity) as GameObject;
 
 
         }
 
-        public void PlayEffect(EffectList effect, Vector3 position)
+        public GameObject PlayEffect(EffectList effect, Vector3 position)
         {
-            PlayEffect(DataManager.EffectData.GetCopy((int)effect), position);
+            return PlayEffect(DataManager.EffectData.GetCopy((int)effect), position) as GameObject;
         }
     }
 

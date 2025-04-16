@@ -11,6 +11,9 @@ namespace KJ
         private int getHitTrigger;
         private int isAliveBool;
 
+        public GameObject projectilePrefab;
+        public Transform projectileCreatePosition;
+
         protected override void Start()
         {
             base.Start();
@@ -46,7 +49,21 @@ namespace KJ
 
         public void OnAttack()
         {
-            
+            if (projectilePrefab == null)
+            {
+                Debug.Log("Projectile 이 설정되어 있지 않습니다.");
+                return;
+            }
+
+            GameObject projectileGO = Instantiate(projectilePrefab);
+            ProjectileController projectileController = projectileGO.GetComponent<ProjectileController>();
+            if (projectileController != null)
+            {
+                projectileController.transform.position = projectileCreatePosition.position;
+                projectileController.target = Target;
+                projectileController.owner = transform;
+
+            }
         }
 
         public void OnDamage(IAttackable enemy)
@@ -81,6 +98,8 @@ namespace KJ
 
             }
         }
+
+
     }
 
 }
