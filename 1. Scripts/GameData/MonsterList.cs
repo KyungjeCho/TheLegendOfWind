@@ -6,5 +6,6 @@ public enum MonsterList
 {
 	None = -1,
 	    Slime = 0,
+    Lich = 1,
 
 }

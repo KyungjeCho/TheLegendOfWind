@@ -35,7 +35,7 @@ namespace KJ
         {
 
         }
-        public void ExitAttackState()
+        private void ExitAttackState()
         {
 
         }

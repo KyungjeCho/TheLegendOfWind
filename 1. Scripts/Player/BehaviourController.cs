@@ -34,7 +34,6 @@ namespace KJ
         private float sprintFOV = 100f;
         private Vector3 lastDirection;
         private bool sprint;
-        private bool crouch;
         private int hFloat; // anim hash
         private int vFloat; // anim hash
         private int groundedBool; // anim hash
@@ -51,6 +50,11 @@ namespace KJ
         public int GetDefaultBehaviour { get => defaultBehaviour; }
 
         public bool IsAlive => throw new System.NotImplementedException();
+
+        public SoundList hitSound;
+
+        public EffectList hitEffect;
+
 
         private void Awake()
         {
@@ -319,6 +323,16 @@ namespace KJ
 
         public void OnDamage(IAttackable enemy)
         {
+            // OnDamage
+
+            // DamageCalc
+            Debug.Log("Player Damaged!! todo: PlayerStat + Calc");
+
+            // hit SFX Play
+            SoundManager.Instance.PlayOneShotEffect(hitSound, transform.position, 1f);
+
+            // hit VFX Play
+            EffectManager.Instance.PlayEffect(hitEffect, transform.position + Vector3.up * 1.7f);
             
         }
     }

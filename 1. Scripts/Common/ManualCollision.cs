@@ -11,7 +11,7 @@ namespace KJ
 
         public Collider[] CheckOverlapBox(LayerMask layerMask)
         {
-            return Physics.OverlapBox(transform.position + position, boxSize * 0.5f, transform.rotation, layerMask);
+            return Physics.OverlapBox(transform.position + transform.forward, boxSize * 0.5f, Quaternion.identity, layerMask);
         }
 
         void OnDrawGizmos()

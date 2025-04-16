@@ -8,15 +8,22 @@ namespace KJ
     {
         private int attackBool;
         private AttackStateController attackStateController;
+        private IAttackable attackable;
 
         public override void OnInitialize()
         {
             attackStateController = context.GetComponent<AttackStateController>();
             attackBool = Animator.StringToHash(AnimatorKey.Attack);
+            attackable = context.GetComponent<IAttackable>();
         }
         public override void OnStateEnter()
         {
             base.OnStateEnter();
+            if (attackable == null)
+            {
+                stateMachine.ChangeState<IdleState>();
+                return;
+            }
 
             attackStateController.enterAttackHandler += OnEnterAttackState;
             attackStateController.exitAttackHandler += OnExitAttackState;
@@ -37,7 +44,15 @@ namespace KJ
             
         }
 
-        public void OnEnterAttackState() { }
+        public void OnEnterAttackState() 
+        { 
+            if (attackable == null)
+            { 
+                return; 
+            }
+
+            attackable.OnAttack();
+        }
 
         public void OnExitAttackState() 
         {

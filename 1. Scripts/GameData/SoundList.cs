@@ -13,5 +13,8 @@ public enum SoundList
     HeroAttacking2 = 5,
     HeroAttacking3 = 6,
     GoblinDie = 7,
+    Footstep1 = 8,
+    Footstep2 = 9,
+    HeroGetHit1 = 10,
 
 }

@@ -1,19 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace KJ
 {
-    public class SlimeController : EnemyController, IAttackable, IDamagable
+    public class LichController : EnemyController, IAttackable, IDamagable
     {
         private Vector3 originalPos;
-        
+
         private int getHitTrigger;
         private int isAliveBool;
 
-        private ManualCollision manualCollision;
-        public LayerMask targetMask;
         protected override void Start()
         {
             base.Start();
@@ -23,13 +20,11 @@ namespace KJ
             stateMachine.AddState(new AttackState());
             stateMachine.AddState(new DeadState());
 
-            getHitTrigger   = Animator.StringToHash(AnimatorKey.GetHit);
-            isAliveBool     = Animator.StringToHash(AnimatorKey.IsAlive);
+            getHitTrigger = Animator.StringToHash(AnimatorKey.GetHit);
+            isAliveBool = Animator.StringToHash(AnimatorKey.IsAlive);
 
             GetAnimator.SetBool(isAliveBool, true);
 
-            manualCollision = GetComponent<ManualCollision>();
-       
         }
 
         protected override void Update()
@@ -47,6 +42,11 @@ namespace KJ
                 }
                 return false;
             }
+        }
+
+        public void OnAttack()
+        {
+            
         }
 
         public void OnDamage(IAttackable enemy)
@@ -78,21 +78,9 @@ namespace KJ
                     // hit animation
                     GetAnimator.SetTrigger(getHitTrigger);
                 }
-                
-            }
-        }
 
-        public void OnAttack()
-        {
-            Collider[] targetsInManualCollision = manualCollision.CheckOverlapBox(targetMask);
-
-            foreach(Collider collider in targetsInManualCollision)
-            {
-                if (collider.GetComponent<IDamagable>() != null)
-                {
-                    collider.GetComponent<IDamagable>().OnDamage(this);
-                }
             }
         }
     }
+
 }

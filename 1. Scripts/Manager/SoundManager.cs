@@ -205,6 +205,14 @@ namespace KJ
                 }
             }
         }
+
+        public void PlayOneShotEffect(SoundList soundList, Vector3 position, float volume)
+        {
+            SoundClip clip = DataManager.SoundData.GetCopy((int)soundList);
+            clip.PreLoad();
+
+            PlayEffectSound(clip, position, volume);
+        }
     }
 }
 
