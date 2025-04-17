@@ -65,6 +65,20 @@ namespace  KJ
             }
             DataManagementHelper.CreateEnumList(enumName, builder);
         }
+
+        public static void CreateEnumStructure(string enumName, string[] names)
+        {
+            if (names == null)
+            {
+                return;
+            }
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < names.Length; i++)
+            {
+                builder.AppendLine("    " + names[i] + " = " + i.ToString() + ",");
+            }
+            DataManagementHelper.CreateEnumList(enumName, builder);
+        }
     }
 }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace KJ
 {
     [Serializable]
-    public class PlayerLvStat 
+    public class PlayerLVStat 
     {
         public int level;
         public float maxHp;
