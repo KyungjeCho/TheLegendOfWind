@@ -25,7 +25,7 @@ namespace KJ
     {
         public const string dataDirectory = "Assets/9. Resources/Resources/Data";
 
-        public PlayerStat stat;
+        private PlayerStat stat;
 
         [HideInInspector]
         public string jsonFilePath = "";
@@ -56,11 +56,33 @@ namespace KJ
                 Debug.Log("Error reading the file: " + e1.Message);
             }
         }
-
-        public static void OnInspectorGUI()
+        
+        public PlayerStat GetCopy()
         {
-            EditorGUILayout.LabelField("Hello World");
+            PlayerStat copy = new PlayerStat();
+            copy.level = stat.level;
+            copy.hp = stat.hp;
+            copy.mana = stat.mana;
+            copy.stemina = stat.stemina;
+            copy.exp = stat.exp;
+            copy.gold = stat.gold;
+            copy.remainSkillPoint = stat.remainSkillPoint;
+            return copy;
         }
+
+        public void SetStat(PlayerStat stat)
+        {
+            this.stat.level = stat.level;
+            this.stat.hp = stat.hp;
+            this.stat.mana = stat.mana;
+            this.stat.stemina = stat.stemina;
+            this.stat.exp = stat.exp;
+            this.stat.gold = stat.gold;
+            this.stat.remainSkillPoint = stat.remainSkillPoint;
+        }
+
+        public void SetHP(float hp) => stat.hp = hp;
+    
     }
 
 }

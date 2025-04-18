@@ -49,7 +49,7 @@ namespace KJ
             }
         }
 
-        public void OnDamage(IAttackable enemy)
+        public void OnDamage(float damage)
         {
             // Can Get hit ?
             if (!IsAlive)
@@ -90,7 +90,8 @@ namespace KJ
             {
                 if (collider.GetComponent<IDamagable>() != null)
                 {
-                    collider.GetComponent<IDamagable>().OnDamage(this);
+            
+                    collider.GetComponent<IDamagable>().OnDamage(monsterStat.attack);
                 }
             }
         }

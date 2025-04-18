@@ -116,7 +116,8 @@ namespace KJ
             IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
             if (damagable != null)
             {
-                damagable.OnDamage(owner.transform.GetComponent<IAttackable>());
+                Debug.Log("todo : 투사체 공격 데미지 설정 owner에서 stat 받기");
+                damagable.OnDamage(1f);
             }
             StartCoroutine(DestroyParticle(0.0f));
         }

@@ -66,7 +66,7 @@ namespace KJ
             }
         }
 
-        public void OnDamage(IAttackable enemy)
+        public void OnDamage(float damage)
         {
             // Can Get hit ?
             if (!IsAlive)
@@ -83,7 +83,7 @@ namespace KJ
 
                 // Damage Calc
 
-                currentHP -= 1.0f;
+                currentHP -= damage;
 
                 if (currentHP <= 0f)
                 {

@@ -7,7 +7,7 @@ namespace KJ
     public interface IDamagable 
     {
         public bool IsAlive { get; }
-        public abstract void OnDamage(IAttackable enemy);
+        public abstract void OnDamage(float damage);
     }
 }
 

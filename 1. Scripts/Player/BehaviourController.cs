@@ -10,7 +10,7 @@ namespace KJ
     /// 캐릭터의 행동을 제어하는 클래스
     /// </summary>
     [RequireComponent(typeof(Animator)), RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(Collider))]
-    public class BehaviourController : MonoBehaviour, IAttackable, IDamagable
+    public class BehaviourController : MonoBehaviour, IAttackable
     {
         private List<BaseBehaviour> behaviours; 
         private List<BaseBehaviour> overrideBehaviours; //우선시 되는 행동
@@ -48,13 +48,6 @@ namespace KJ
         public Rigidbody GetRigidbody { get => myRigidbody; }  
         public Animator GetAnimator { get => myAnimator; }
         public int GetDefaultBehaviour { get => defaultBehaviour; }
-
-        public bool IsAlive => throw new System.NotImplementedException();
-
-        public SoundList hitSound;
-
-        public EffectList hitEffect;
-
 
         private void Awake()
         {
@@ -315,25 +308,11 @@ namespace KJ
             {
                 if (collider.GetComponent<IDamagable>() != null)
                 {
-                    collider.GetComponent<IDamagable>().OnDamage(this);
+                    Debug.Log("todo : 플레이어 데미지 설정");
+                    collider.GetComponent<IDamagable>().OnDamage(1f);
                 }
             }
 
-        }
-
-        public void OnDamage(IAttackable enemy)
-        {
-            // OnDamage
-
-            // DamageCalc
-            Debug.Log("Player Damaged!! todo: PlayerStat + Calc");
-
-            // hit SFX Play
-            SoundManager.Instance.PlayOneShotEffect(hitSound, transform.position, 1f);
-
-            // hit VFX Play
-            EffectManager.Instance.PlayEffect(hitEffect, transform.position + Vector3.up * 1.7f);
-            
         }
     }
 
