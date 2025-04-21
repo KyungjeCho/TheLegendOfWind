@@ -49,8 +49,25 @@ namespace KJ
             {
                 return;
             }
-            //if (itemB.CanPlaceInSlot(itemA.item))
+            if (itemB.CanPlaceInSlot(itemA.ItemSO) && itemA.CanPlaceInSlot(itemB.ItemSO))
+            {
+                InventorySlot temp = new InventorySlot(itemB.item, itemB.amount);
+                itemB.UpdateSlot(itemA.item, itemA.amount);
+                itemA.UpdateSlot(temp.item, temp.amount);
+            }
+        }
 
+        public void UseItem(InventorySlot slotToUse)
+        {
+            if (slotToUse.ItemSO == null || slotToUse.item.id < 0 || slotToUse.amount <= 0)
+            {
+                return;
+            }
+
+            ItemSO itemSO = slotToUse.ItemSO;
+            slotToUse.UpdateSlot(slotToUse.item, slotToUse.amount - 1);
+
+            OnUseItem.Invoke(itemSO);
         }
     }
 

@@ -26,13 +26,13 @@ namespace KJ
         public Item item;
         public int amount;
 
-        //public ItemSO ItemSO
-        //{
-        //    get
-        //    {
-        //        return item.id >= 0 ? 
-        //    }
-        //}
+        public ItemSO ItemSO
+        {
+            get
+            {
+                return item.id >= 0 ? DataManager.Instance.ItemDBSO.itemSOs[item.id] : null;
+            }
+        }
         public InventorySlot() => UpdateSlot(new Item(), 0);
         public InventorySlot(Item item, int amount) => UpdateSlot(item, amount);
         public void RemoveItem() => UpdateSlot(new Item(), 0);

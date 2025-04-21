@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DataManager : MonoBehaviour
+public class DataManager : SingletonMonoBehaviour<DataManager>
 {
     private static SoundData soundData = null;
     private static MonsterData monsterData = null;
     private static EffectData effectData = null;
     private static PlayerLVData playerLVData = null;
-    public static ItemDBSO itemDBSO = null;
+    public ItemDBSO itemDBSO = null;
 
     private void Start()
     {
@@ -85,5 +85,5 @@ public class DataManager : MonoBehaviour
             return playerLVData;
         }
     }
-    public static ItemDBSO ItemDBSO => itemDBSO;
+    public ItemDBSO ItemDBSO => itemDBSO;
 }
