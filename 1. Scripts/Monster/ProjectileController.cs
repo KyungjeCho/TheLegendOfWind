@@ -15,6 +15,7 @@ namespace KJ
 
         private Rigidbody myRigidbody;
         private Collider myCollider;
+        private Transform myTransform;
 
         public Transform owner;
         public Transform target;
@@ -24,6 +25,7 @@ namespace KJ
         // Start is called before the first frame update
         void Start()
         {
+            myTransform = transform;
             myRigidbody = GetComponent<Rigidbody>();
             myCollider = GetComponent<Collider>();
 
@@ -38,8 +40,8 @@ namespace KJ
 
             if (muzzleEffect != EffectList.None)
             {
-                GameObject muzzleVFX = EffectManager.Instance.PlayEffect(muzzleEffect, transform.position);
-                muzzleVFX.transform.forward = transform.forward;
+                GameObject muzzleVFX = EffectManager.Instance.PlayEffect(muzzleEffect, myTransform.position);
+                muzzleVFX.transform.forward = myTransform.forward;
                 ParticleSystem particleSystem = muzzleVFX.GetComponent<ParticleSystem>();
                 if (particleSystem != null)
                 {
@@ -51,9 +53,9 @@ namespace KJ
                 }
             }
 
-            if (shotSound != SoundList.None)
+            if (shotSound != SoundList.None && SoundManager.Instance != null)
             {
-                SoundManager.Instance.PlayOneShotEffect(shotSound, transform.position, 1f);
+                SoundManager.Instance.PlayOneShotEffect(shotSound, myTransform.position, 1f);
             }
 
             if (target != null)
