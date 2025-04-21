@@ -1,4 +1,5 @@
 using KJ;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,6 +11,7 @@ public class DataManager : MonoBehaviour
     private static MonsterData monsterData = null;
     private static EffectData effectData = null;
     private static PlayerLVData playerLVData = null;
+    public static ItemDBSO itemDBSO = null;
 
     private void Start()
     {
@@ -83,4 +85,5 @@ public class DataManager : MonoBehaviour
             return playerLVData;
         }
     }
+    public static ItemDBSO ItemDBSO => itemDBSO;
 }

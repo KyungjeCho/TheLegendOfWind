@@ -1,21 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace KJ
 {
-    public class Item : MonoBehaviour
+    [Serializable]
+    public class Item 
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        public int id = -1;
+        public string name = string.Empty;
 
+        public ItemBuff[] buffs;
+
+        public Item()
+        {
+            id = -1;
+            name = string.Empty;
         }
 
-        // Update is called once per frame
-        void Update()
+        public Item(ItemSO itemSO)
         {
-
+            name = itemSO.name;
+            id = itemSO.data.id;
         }
     }
 
