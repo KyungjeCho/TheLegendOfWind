@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,11 @@ namespace KJ
         public MonsterList monsterList;
         protected MonsterStat monsterStat;
         protected float currentHP;
+        protected float maxHP;
+
+        public event Action<float> OnHealthChanged;
         public float CurrentHP => currentHP;
+        public float MaxHP => maxHP;
 
         public SoundList hitSound;
         public SoundList dieSound;
@@ -50,6 +55,7 @@ namespace KJ
             // Data
             monsterStat = DataManager.MonsterData.GetCopy((int)monsterList);
             currentHP = monsterStat.maxHP;
+            maxHP = monsterStat.maxHP;
 
             // StateMachine
             stateMachine = new StateMachine<EnemyController>(this, new IdleState());
@@ -79,6 +85,8 @@ namespace KJ
         {
             return stateMachine.ChangeState<R>();
         }
+
+        public void HealthChanged(float health) => OnHealthChanged?.Invoke(health);
     }
 
 }
