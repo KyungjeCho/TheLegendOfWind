@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -10,6 +11,7 @@ namespace KJ
         public PlayerData playerData;
         public float hp;
         public float defense;
+        private float maxHp;
         private Animator myAnimator;
 
         public SoundList hitSound;
@@ -20,6 +22,8 @@ namespace KJ
 
         public bool IsAlive => hp > 0f;
 
+        public event Action<float> OnHealthChanged;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -29,6 +33,7 @@ namespace KJ
             }
             playerData.LoadData();
 
+            maxHp = playerData.GetCopy().hp;
             hp = playerData.GetCopy().hp;
             defense = DataManager.PlayerLVData.GetCopyFromLevel(playerData.GetCopy().level).defense;
 
@@ -56,6 +61,8 @@ namespace KJ
             // DamageCalc
             float totalDamage = (defense - damage) > 0f ? defense - damage : 1f;
             hp -= totalDamage;
+
+            OnHealthChanged?.Invoke(hp / maxHp);
 
             if (hp < Mathf.Epsilon)
             {
