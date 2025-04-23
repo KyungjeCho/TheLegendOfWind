@@ -84,6 +84,7 @@ namespace KJ
                 // Damage Calc
 
                 currentHP -= damage;
+                HealthChanged(currentHP / maxHP);
 
                 if (currentHP <= 0f)
                 {
