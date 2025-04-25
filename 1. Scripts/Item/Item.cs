@@ -23,6 +23,13 @@ namespace KJ
         {
             name = itemSO.name;
             id = itemSO.data.id;
+
+            buffs = new ItemBuff[itemSO.data.buffs.Length];
+
+            for (int i = 0; i < buffs.Length; i++)
+            {
+                buffs[i] = new ItemBuff(itemSO.data.buffs[i].Value) { stat = itemSO.data.buffs[i].stat };
+            }
         }
     }
 

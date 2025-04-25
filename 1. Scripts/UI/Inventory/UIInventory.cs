@@ -39,8 +39,8 @@ namespace KJ
 
         public void OnPostUpdate(InventorySlot slot)
         {
-            slot.slotUI.transform.GetChild(0).GetComponent<Image>().sprite = slot.item.id < 0 ? null : slot.ItemSO.icon;
-            slot.slotUI.transform.GetChild(0).GetComponent<Image>().color = slot.item.id < 0 ? new Color(1, 1, 1, 0) : new Color(1, 1, 1, 1);
+            slot.slotUI.transform.GetChild(1).GetComponent<Image>().sprite = slot.item.id < 0 ? null : slot.ItemSO.icon;
+            slot.slotUI.transform.GetChild(1).GetComponent<Image>().color = slot.item.id < 0 ? new Color(1, 1, 1, 0) : new Color(1, 1, 1, 1);
             slot.slotUI.GetComponentInChildren<TextMeshProUGUI>().text = slot.item.id < 0 ? string.Empty : (slot.amount == 1 ? string.Empty : slot.amount.ToString("n0"));
         }
 
