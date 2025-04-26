@@ -27,7 +27,7 @@ namespace KJ
         // Start is called before the first frame update
         void Start()
         {
-            if (playerData != null)
+            if (playerData == null)
             {
                 playerData = ScriptableObject.CreateInstance<PlayerData>();
             }
