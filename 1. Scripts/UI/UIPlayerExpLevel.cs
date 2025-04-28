@@ -24,7 +24,7 @@ namespace KJ
 
         private float maxExpValue;
 
-        private void Start()
+        private void Awake()
         {
             playerExp.OnCurrentExpChanged += UpdateCurrentExp;
             playerExp.OnMaxExpChanged += UpdateMaxExp;

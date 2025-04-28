@@ -1,6 +1,7 @@
 using KJ;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace KJ
@@ -11,6 +12,9 @@ namespace KJ
         private int weaponInt;
         private int changeWeaponTrigger;
 
+        [SerializeField]
+        private InventorySO equipmentSO;
+
         private void Start()
         {
             weaponInt               = Animator.StringToHash(AnimatorKey.Weapon);
@@ -19,12 +23,12 @@ namespace KJ
 
         private void Update()
         {
-            if (Input.GetButtonDown(ButtonName.Weapon1))
+            if (Input.GetButtonDown(ButtonName.Weapon1) && equipmentSO.Slots[(int)EquipmentList.MeleeWeapon].item.id > -1)
             {
                 behaviourController.GetAnimator.SetInteger(weaponInt, 1);
                 behaviourController.GetAnimator.SetTrigger(changeWeaponTrigger);
             }
-            if (Input.GetButtonDown(ButtonName.Weapon2))
+            if (Input.GetButtonDown(ButtonName.Weapon2) && equipmentSO.Slots[(int)EquipmentList.RangeWeapon].item.id > -1)
             {
                 behaviourController.GetAnimator.SetInteger(weaponInt, 2);
                 behaviourController.GetAnimator.SetTrigger(changeWeaponTrigger);

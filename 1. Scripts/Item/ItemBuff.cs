@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace KJ
         DEFENSE = 4,
         SPEED = 5,
     }
+    [Serializable]
     public class ItemBuff : IModifier
     {
         public PlayerAttribute stat;
