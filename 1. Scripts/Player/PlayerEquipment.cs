@@ -15,10 +15,23 @@ namespace KJ
 
         public ItemSO[] defaultItemSOs = new ItemSO[6];
 
+        [SerializeField]
+        private Transform leftWeaponSlot;
+        [SerializeField]
+        private Transform rightWeaponSlot;
+        [SerializeField]
+        private Transform defaultMeleeWeaponSlot;
+        [SerializeField]
+        private Transform defaultRangeWeaponSlot;
+
+        private WeaponChangeBehaviour weaponChangeBehaviour;
+
+        private bool canTakeMeleeWeapon;
+        private bool canTakeRangeWeapon;
         private void Awake()
         {
             combiner = new EquipmentCombiner(gameObject);
-
+            
             for (int i = 0; i < equipmentSO.Slots.Length; i++)
             {
                 equipmentSO.Slots[i].OnPreUpdate += OnRemoveItem;
@@ -32,6 +45,12 @@ namespace KJ
             {
                 OnEquipItem(slot);
             }
+
+            weaponChangeBehaviour = GetComponent<WeaponChangeBehaviour>();
+            weaponChangeBehaviour.OnWeaponChanged += ChangeWeapon;
+
+            canTakeMeleeWeapon = true;
+            canTakeRangeWeapon = true;
         }
 
         private void OnEquipItem(InventorySlot slot)
@@ -54,6 +73,8 @@ namespace KJ
                     itemInstances[index] = EquipSkinnedItem(itemSO);
                     break;
                 case ItemType.MeleeWeapon:
+                    itemInstances[index] = EquipMeleeWeapon(itemSO);
+                    break;
                 case ItemType.RangeWeapon:
                     itemInstances[index] = EquipMeshItem(itemSO);
                     break;
@@ -102,6 +123,53 @@ namespace KJ
             }
 
             return null;
+        }
+        private ItemInstances EquipMeleeWeapon(ItemSO itemSO)
+        {
+            if (itemSO == null)
+            {
+                return null;
+            }
+            Transform weaponTransform = Instantiate(itemSO.modelPrefab, defaultMeleeWeaponSlot).transform;
+            ItemInstances instances = new GameObject().AddComponent<ItemInstances>();
+            instances.items.Add(weaponTransform);
+            instances.transform.parent = transform;
+
+            return instances;
+        }
+        public void TakeMeleeWeapon(bool takeWeapon)
+        {
+            if (takeWeapon && canTakeMeleeWeapon && itemInstances[0].items[0] != null)
+            {
+                Transform weaponTransform = itemInstances[0].items[0];
+                weaponTransform.parent = rightWeaponSlot;
+                weaponTransform.localPosition = Vector3.zero;
+                weaponTransform.localRotation = Quaternion.identity;
+                itemInstances[0].items[0] = weaponTransform;
+                canTakeMeleeWeapon = false;
+            }
+            if (!takeWeapon && !canTakeMeleeWeapon && itemInstances[0].items[0] != null)
+            {
+                Transform weaponTransform = itemInstances[0].items[0];
+                weaponTransform.parent = defaultMeleeWeaponSlot;
+                weaponTransform.localPosition = Vector3.zero;
+                weaponTransform.localRotation = Quaternion.identity;
+                itemInstances[0].items[0] = weaponTransform;
+                canTakeMeleeWeapon = true;
+            }
+        }
+        public void ChangeWeapon(int weapon) // 1 : Melee, 2 : Range
+        {
+            switch (weapon)
+            {
+                case 1:
+                    TakeMeleeWeapon(true);
+                    break;
+                case 2:
+                    TakeMeleeWeapon(false);
+                    break;
+            }
+
         }
         private void EquipDefaultItemBy(ItemType type)
         {

@@ -67,7 +67,10 @@ namespace KJ
         {
             foreach(Transform child in root)
             {
-                rootBoneDictionary.Add(child.name.GetHashCode(), child);
+                if (!rootBoneDictionary.ContainsKey(child.name.GetHashCode()))
+                {
+                    rootBoneDictionary.Add(child.name.GetHashCode(), child);
+                }
                 TraverseHierarchy(child);
             }
         }

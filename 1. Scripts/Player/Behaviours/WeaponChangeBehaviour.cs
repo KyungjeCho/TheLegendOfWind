@@ -1,7 +1,4 @@
-using KJ;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 namespace KJ
@@ -15,6 +12,8 @@ namespace KJ
         [SerializeField]
         private InventorySO equipmentSO;
 
+        public event Action<int> OnWeaponChanged;
+
         private void Start()
         {
             weaponInt               = Animator.StringToHash(AnimatorKey.Weapon);
@@ -27,11 +26,13 @@ namespace KJ
             {
                 behaviourController.GetAnimator.SetInteger(weaponInt, 1);
                 behaviourController.GetAnimator.SetTrigger(changeWeaponTrigger);
+                OnWeaponChanged?.Invoke(1);
             }
             if (Input.GetButtonDown(ButtonName.Weapon2) && equipmentSO.Slots[(int)EquipmentList.RangeWeapon].item.id > -1)
             {
                 behaviourController.GetAnimator.SetInteger(weaponInt, 2);
                 behaviourController.GetAnimator.SetTrigger(changeWeaponTrigger);
+                OnWeaponChanged?.Invoke(2);
             }
         }
     }

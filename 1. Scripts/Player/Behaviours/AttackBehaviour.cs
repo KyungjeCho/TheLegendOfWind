@@ -11,6 +11,7 @@ namespace KJ
 
         private int meleeAttackComboInt;
         private int meleeAttackTrigger;
+        private int weaponInt;
 
         public void SetIsAttacking(bool isAttacking)
         {
@@ -21,13 +22,14 @@ namespace KJ
         {
             meleeAttackComboInt = Animator.StringToHash(AnimatorKey.MeleeAttackCombo);
             meleeAttackTrigger = Animator.StringToHash(AnimatorKey.MeleeAttack);
+            weaponInt = Animator.StringToHash(AnimatorKey.Weapon);
 
             behaviourController.SubscribeBehaviour(this);
         }
 
         private void Update()
         {
-            if (!isAttacking && Input.GetButtonDown(ButtonName.Attack) && behaviourController.IsGrounded())
+            if (!isAttacking && Input.GetButtonDown(ButtonName.Attack) && behaviourController.IsGrounded() && behaviourController.GetAnimator.GetInteger(weaponInt) == 1)
             {
                 behaviourController.GetAnimator.SetInteger(meleeAttackComboInt, 1);
                 behaviourController.GetAnimator.SetTrigger(meleeAttackTrigger);
