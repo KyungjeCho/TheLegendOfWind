@@ -60,6 +60,10 @@ namespace KJ
 
             // DamageCalc
             float totalDamage = (defense - damage) > 0f ? defense - damage : 1f;
+            foreach (IDamageHandler handler in damageHandlers)
+            {
+                totalDamage = handler.ProcessDamage(totalDamage);
+            }
             hp -= totalDamage;
 
             OnHealthChanged?.Invoke(hp / maxHp);
@@ -77,6 +81,15 @@ namespace KJ
                 EffectManager.Instance.PlayEffect(hitEffect, transform.position + Vector3.up * 1.7f);
             }
         }
+
+        #region IDamageHandler Method
+        private List<IDamageHandler> damageHandlers = new List<IDamageHandler>();
+
+        public void AddDamageHandlers(IDamageHandler handler)
+        {
+            damageHandlers.Add(handler);
+        }
+        #endregion
     }
 
 }

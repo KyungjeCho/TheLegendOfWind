@@ -6,7 +6,16 @@ namespace KJ
 {
     public class SkillBehaviour : BaseBehaviour
     {
-        public string buttonName = ButtonName.Skill1;
+        [SerializeField] private BaseSkill shieldSkill;
+
+        private void Start()
+        {
+            if (shieldSkill == null)
+            {
+                shieldSkill = ScriptableObject.CreateInstance<BaseSkill>();
+            }
+            shieldSkill.SetPlayerTransform(transform);
+        }
 
         private void Update()
         {
@@ -16,7 +25,8 @@ namespace KJ
             }
             if (Input.GetButtonDown(ButtonName.Skill2))
             {
-
+                Debug.Log("Button Skill2 Click");
+                shieldSkill.UseSkill();
             }
             if (Input.GetButtonDown(ButtonName.Skill3))
             {
