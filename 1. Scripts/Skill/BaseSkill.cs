@@ -8,7 +8,7 @@ namespace KJ
     {
         [SerializeField] private string skillName;
         [SerializeField] private string skillDescription;
-        [SerializeField] private Transform playerTranform;
+        [SerializeField] protected Transform playerTranform;
 
         public virtual void SetPlayerTransform(Transform transform)
         {

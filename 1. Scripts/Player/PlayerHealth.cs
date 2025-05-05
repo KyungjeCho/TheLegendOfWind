@@ -60,7 +60,7 @@ namespace KJ
 
             // DamageCalc
             float totalDamage = (defense - damage) > 0f ? defense - damage : 1f;
-            foreach (IDamageHandler handler in damageHandlers)
+            foreach (IDamageHandler handler in damageHandlers.Values)
             {
                 totalDamage = handler.ProcessDamage(totalDamage);
             }
@@ -83,11 +83,21 @@ namespace KJ
         }
 
         #region IDamageHandler Method
-        private List<IDamageHandler> damageHandlers = new List<IDamageHandler>();
+        private Dictionary<int, IDamageHandler> damageHandlers = new Dictionary<int, IDamageHandler>();
 
-        public void AddDamageHandlers(IDamageHandler handler)
+        public void AddDamageHandler(IDamageHandler handler)
         {
-            damageHandlers.Add(handler);
+            if (!damageHandlers.ContainsKey(handler.GetHashCode()))
+            {
+                damageHandlers[handler.GetHashCode()] = handler;
+            }
+        }
+        public void RemoveDamageHandler(IDamageHandler handler)
+        {
+            if (damageHandlers.ContainsKey(handler.GetHashCode()))
+            {
+                damageHandlers.Remove(handler.GetHashCode());
+            }
         }
         #endregion
     }

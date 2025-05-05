@@ -11,8 +11,6 @@ namespace KJ
             clip.PreLoad();
 
             return Instantiate(clip.effectPrefab, position, Quaternion.identity) as GameObject;
-
-
         }
 
         public GameObject PlayEffect(EffectList effect, Vector3 position)
