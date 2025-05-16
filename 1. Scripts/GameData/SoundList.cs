@@ -17,5 +17,6 @@ public enum SoundList
     Footstep2 = 9,
     HeroGetHit1 = 10,
     HeroDeath = 11,
+    CrateBreak = 12,
 
 }

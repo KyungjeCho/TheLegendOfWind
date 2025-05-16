@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,13 +26,14 @@ namespace KJ
             }
             if (Input.GetButtonDown(ButtonName.Skill2))
             {
-                Debug.Log("Button Skill2 Click");
                 shieldSkill.UseSkill();
             }
             if (Input.GetButtonDown(ButtonName.Skill3))
             {
 
             }
+
+            shieldSkill.UpdateSkill(Time.deltaTime);
         }
     }
 }

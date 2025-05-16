@@ -12,10 +12,20 @@ namespace KJ
 
             return Instantiate(clip.effectPrefab, position, Quaternion.identity) as GameObject;
         }
+        public GameObject PlayEffect(EffectClip clip, Vector3 position, Transform parent)
+        {
+            clip.PreLoad();
+
+            return Instantiate(clip.effectPrefab, position, Quaternion.identity, parent) as GameObject;
+        }
 
         public GameObject PlayEffect(EffectList effect, Vector3 position)
         {
             return PlayEffect(DataManager.EffectData.GetCopy((int)effect), position) as GameObject;
+        }
+        public GameObject PlayEffect(EffectList effect, Vector3 position, Transform parent)
+        {
+            return PlayEffect(DataManager.EffectData.GetCopy((int)effect), position, parent) as GameObject;
         }
     }
 

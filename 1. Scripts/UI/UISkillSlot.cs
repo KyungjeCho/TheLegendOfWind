@@ -10,6 +10,7 @@ namespace KJ
     {
         [SerializeField] private TextMeshProUGUI cooldownText;
         [SerializeField] private Image cooldownImage;
+        [SerializeField] private BaseSkill skillSO;
 
         private float timer = 60;
         private float cooldownTime = 60;
@@ -18,6 +19,11 @@ namespace KJ
         private void Start()
         {
             UpdateCooldownTime(0f);
+
+            cooldownTime = skillSO.CooldownTime;
+            timer = cooldownTime;
+                
+            skillSO.OnSkillExecuted += UpdateTimer;
         }
         private void Update()
         {

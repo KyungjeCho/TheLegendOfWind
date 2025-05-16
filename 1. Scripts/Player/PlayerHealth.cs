@@ -64,21 +64,22 @@ namespace KJ
             {
                 totalDamage = handler.ProcessDamage(totalDamage);
             }
-            hp -= totalDamage;
-
-            OnHealthChanged?.Invoke(hp / maxHp);
-
-            if (hp < Mathf.Epsilon)
+            if (totalDamage > Mathf.Epsilon)
             {
-                Kill();
-            }
-            else
-            {
-                myAnimator.SetTrigger(getHitTrigger);
-                // hit SFX Play
-                SoundManager.Instance.PlayOneShotEffect(hitSound, transform.position, 1f);
-                // hit VFX Play
-                EffectManager.Instance.PlayEffect(hitEffect, transform.position + Vector3.up * 1.7f);
+                hp -= totalDamage;
+
+                OnHealthChanged?.Invoke(hp / maxHp);
+                if (hp < Mathf.Epsilon)
+                {
+                    Kill();
+                }
+                else
+                {
+                    myAnimator.SetTrigger(getHitTrigger);
+
+                    SoundManager.Instance.PlayOneShotEffect(hitSound, transform.position, 1f);
+                    EffectManager.Instance.PlayEffect(hitEffect, transform.position + Vector3.up * 1.7f);
+                }
             }
         }
 
