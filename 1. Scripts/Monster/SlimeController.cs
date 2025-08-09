@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace KJ
 {
-    public class SlimeController : EnemyController, IAttackable, IDamagable
+    public class SlimeController : EnemyController, IAttackable, IDamagable, IStopable
     {
         private Vector3 originalPos;
         
@@ -14,6 +14,7 @@ namespace KJ
 
         private ManualCollision manualCollision;
         public LayerMask targetMask;
+
         protected override void Start()
         {
             base.Start();
@@ -22,6 +23,7 @@ namespace KJ
             stateMachine.AddState(new MoveState());
             stateMachine.AddState(new AttackState());
             stateMachine.AddState(new DeadState());
+            stateMachine.AddState(new StopState());
 
             getHitTrigger   = Animator.StringToHash(AnimatorKey.GetHit);
             isAliveBool     = Animator.StringToHash(AnimatorKey.IsAlive);
@@ -29,7 +31,6 @@ namespace KJ
             GetAnimator.SetBool(isAliveBool, true);
 
             manualCollision = GetComponent<ManualCollision>();
-       
         }
 
         protected override void Update()
@@ -95,6 +96,11 @@ namespace KJ
                     collider.GetComponent<IDamagable>().OnDamage(monsterStat.attack);
                 }
             }
+        }
+
+        public void StopObject()
+        {
+            stateMachine.ChangeState<StopState>();
         }
     }
 }
