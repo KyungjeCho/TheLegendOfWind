@@ -19,9 +19,10 @@ namespace KJ
 
         public Transform TargetTransform => targetTransform;
 
+        public event Action<bool> OnSelect;
         public event Action<Transform> OnTargetObjectSelected;
 
-        public void SetIsSelecting(bool isSelecting) { this.isSelecting = isSelecting; }
+        public void SetIsSelecting(bool isSelecting) { this.isSelecting = isSelecting; OnSelect?.Invoke(isSelecting); }
         public bool GetIsSelecting() => this.isSelecting;
         
         private void Start()
@@ -39,9 +40,9 @@ namespace KJ
             {
                 //Event Publish
                 OnTargetObjectSelected?.Invoke(targetTransform);
-                isSelecting = false;
+                SetIsSelecting(false);
             }
-            SelectManament();
+            //SelectManament();
         }
         private void CheckCollision()
         {

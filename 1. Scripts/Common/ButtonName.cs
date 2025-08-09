@@ -17,6 +17,8 @@ namespace KJ
         public const string Skill1          = "Skill1";
         public const string Skill2          = "Skill2";
         public const string Skill3          = "Skill3";
+        public const string Inventory       = "Inventory";
+        public const string Quest           = "Quest";
     }
 
 }
