@@ -1,3 +1,4 @@
+using KJ;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,8 @@ using UnityEngine;
 namespace KJ
 {
     [CreateAssetMenu(fileName = "Time Stop Skill", menuName = "ScriptableObjects/Time Stop Skill")]
-    public class TimeStopSkill : BaseSkill
+    public class RewindSkill : BaseSkill
     {
-        private Transform targetTransform = null;
-
         private SelectObjectBehaviour selectObjectBehaviour;
 
         public override void SetPlayerTransform(Transform transform)
@@ -16,8 +15,8 @@ namespace KJ
             base.SetPlayerTransform(transform);
 
             selectObjectBehaviour = transform.GetComponent<SelectObjectBehaviour>();
-
         }
+
         public override void UseSkill()
         {
             if (Timer > 0)
@@ -37,15 +36,6 @@ namespace KJ
         {
             if (targetTransform == null)
                 return;
-
-            Debug.Log(targetTransform);
-            IStopable stopable = targetTransform.GetComponent<IStopable>();
-
-            if (stopable != null)
-            {
-                stopable.StopObject();
-            }
-            selectObjectBehaviour.OnTargetObjectSelected -= SelectTargetObject;
         }
     }
 }
