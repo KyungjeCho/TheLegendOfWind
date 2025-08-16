@@ -20,6 +20,7 @@ namespace KJ
         public const string Inventory       = "Inventory";
         public const string Quest           = "Quest";
         public const string Interact        = "Interact";
+        public const string Deny            = "Deny";
     }
 
 }
