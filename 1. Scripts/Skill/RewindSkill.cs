@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace KJ
 {
-    [CreateAssetMenu(fileName = "Time Stop Skill", menuName = "ScriptableObjects/Time Stop Skill")]
+    [CreateAssetMenu(fileName = "Rewind Skill", menuName = "ScriptableObjects/Rewind Skill")]
     public class RewindSkill : BaseSkill
     {
         private SelectObjectBehaviour selectObjectBehaviour;
@@ -36,6 +36,13 @@ namespace KJ
         {
             if (targetTransform == null)
                 return;
+
+            Rewinder rewinder = targetTransform.GetComponent<Rewinder>();
+
+            if (rewinder != null)
+            {
+                rewinder.StartRewind();
+            }
         }
     }
 }

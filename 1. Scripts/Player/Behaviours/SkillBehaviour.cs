@@ -9,6 +9,7 @@ namespace KJ
     {
         [SerializeField] private BaseSkill shieldSkill;
         [SerializeField] private BaseSkill timeStopSkill;
+        [SerializeField] private BaseSkill rewindSkill;
 
         private void Start()
         {
@@ -23,6 +24,12 @@ namespace KJ
                 timeStopSkill = ScriptableObject.CreateInstance<BaseSkill>();
             }
             timeStopSkill.SetPlayerTransform(transform);
+
+            if (rewindSkill == null)
+            {
+                rewindSkill = ScriptableObject.CreateInstance<BaseSkill>();
+            }
+            rewindSkill.SetPlayerTransform(transform);
         }
 
         private void Update()
@@ -37,11 +44,12 @@ namespace KJ
             }
             if (Input.GetButtonDown(ButtonName.Skill3))
             {
-
+                rewindSkill.UseSkill();
             }
 
             shieldSkill.UpdateSkill(Time.deltaTime);
             timeStopSkill.UpdateSkill(Time.deltaTime);
+            rewindSkill.UpdateSkill(Time.deltaTime);
         }
     }
 }
