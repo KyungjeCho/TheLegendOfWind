@@ -25,13 +25,13 @@ namespace KJ
                     {
                         foreach (var dialog in db.Container)
                         {
-                            EditorGUILayout.LabelField("ID", dialog.Value.id);
-                            EditorGUILayout.LabelField("Speaker", dialog.Value.speaker);
-                            EditorGUILayout.LabelField("Dialog", dialog.Value.dialog);
-                            EditorGUILayout.LabelField("NextID", dialog.Value.nextId);
-                            EditorGUILayout.LabelField("Choices", dialog.Value.choices);
-                            EditorGUILayout.LabelField("ChoicesNextIds", dialog.Value.choicesNextId);
-                            EditorGUILayout.LabelField("Trigger", dialog.Value.trigger);
+                            EditorGUILayout.LabelField("ID", dialog.id);
+                            EditorGUILayout.LabelField("Speaker", dialog.speaker);
+                            EditorGUILayout.LabelField("Dialog", dialog.dialog);
+                            EditorGUILayout.LabelField("NextID", dialog.nextId);
+                            EditorGUILayout.LabelField("Choices", dialog.choices);
+                            EditorGUILayout.LabelField("ChoicesNextIds", dialog.choicesNextId);
+                            EditorGUILayout.LabelField("Trigger", dialog.trigger);
                         }
                     }
                     EditorGUILayout.EndVertical();

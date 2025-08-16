@@ -9,11 +9,11 @@ namespace KJ
     public class DialogDB : ScriptableObject
     {
         [SerializeField]
-        private IDictionary<string, DialogObject> container = new Dictionary<string, DialogObject>();
+        private List<DialogObject> container = new List<DialogObject>();
         private string fileName = "dialogData.csv";
-        private string path = "9. Resources/Resources/Data/";
+        private string path = "Assets/9. Resources/Resources/Data/";
 
-        public IDictionary<string, DialogObject> Container => container;
+        public List<DialogObject> Container => container;
 
         public void LoadCSV()
         {
@@ -38,15 +38,13 @@ namespace KJ
                 dialogObject.id = splitData[0];
                 dialogObject.speaker = splitData[1];
                 dialogObject.dialog = splitData[2];
-                dialogObject.nextId = splitData[3];
-                dialogObject.choices = splitData[4];
-                dialogObject.choicesNextId = splitData[5];
-                dialogObject.trigger = splitData[6];
+                dialogObject.nextId = splitData[3] != "None" ? splitData[3] : null;
+                dialogObject.choices = splitData[4] != "None" ? splitData[4] : null;
+                dialogObject.choicesNextId = splitData[5] != "None" ? splitData[5] : null;
+                dialogObject.trigger = splitData[6] != "None" ? splitData[6] : null;
 
-                container.Add(dialogObject.id, dialogObject);
+                container.Add(dialogObject);
             }
-
-            Debug.Log(container.Count);
         }
     }
 }

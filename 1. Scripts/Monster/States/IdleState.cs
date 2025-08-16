@@ -39,5 +39,4 @@ namespace KJ
             elapsedTime += deltaTime;
         }
     }
-
 }
