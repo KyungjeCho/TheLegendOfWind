@@ -27,9 +27,10 @@ namespace KJ
         private int crouchedBool;
 
         private bool isColliding;
+        private bool isStopped = false;
         private CapsuleCollider capsuleCollider;
         private Transform myTransform;
-
+        
         private void Start()
         {
             myTransform = transform;
@@ -41,10 +42,15 @@ namespace KJ
 
             behaviourController.SubscribeBehaviour(this);
             behaviourController.RegisterBehaviour(this.behaviourCode);
+
+            EventBusSystem.Subscribe(EventBusType.START, () => isStopped = false);
+            EventBusSystem.Subscribe(EventBusType.STOP, () => isStopped = true);
         }
 
         private void Update()
         {
+            if (isStopped) return;
+
             // 점프 클릭
             if (!jump && Input.GetButtonDown(ButtonName.Jump) && behaviourController.IsCurrentBehaviour(behaviourCode) && !behaviourController.IsOverriding())
             {
@@ -58,6 +64,8 @@ namespace KJ
 
         public override void LocalFixedUpdate()
         {
+            if (isStopped) return;
+
             MovementManagement(behaviourController.GetH, behaviourController.GetV);
             JumpManagement();
             CrouchManagement();

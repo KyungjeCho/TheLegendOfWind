@@ -7,8 +7,6 @@ namespace KJ
     [CreateAssetMenu(fileName = "Time Stop Skill", menuName = "ScriptableObjects/Time Stop Skill")]
     public class TimeStopSkill : BaseSkill
     {
-        private Transform targetTransform = null;
-
         private SelectObjectBehaviour selectObjectBehaviour;
 
         public override void SetPlayerTransform(Transform transform)

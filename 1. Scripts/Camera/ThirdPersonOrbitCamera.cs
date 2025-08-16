@@ -44,6 +44,7 @@ namespace KJ
         private float targetMaxVerticleAngle;   // 카메라 수직 최대 각도
         private float recoilAngle = 0.0f;       // 반동값
 
+        private bool isStopped = false;
         #endregion
 
         #region Properties
@@ -61,8 +62,18 @@ namespace KJ
 
             InitCamera();
         }
+        private void Start()
+        {
+            EventBusSystem.Subscribe(EventBusType.START, StartCamera);
+            EventBusSystem.Subscribe(EventBusType.STOP, StopCamera);
+        }
         private void Update()
         {
+            if (isStopped)
+            {
+                return;
+            }
+
             // 입력을 받아 카메라 이동 
             angleH += Mathf.Clamp(Input.GetAxis("Mouse X"), -1f, 1f) * horizontalAimingSpeed;
             angleV += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1f, 1f) * verticalAimingSpeed;
@@ -107,7 +118,6 @@ namespace KJ
             {
                 recoilAngle += recoilAngleBounce * Time.deltaTime;
             }
-
         }
 
         private void InitCamera()
@@ -198,6 +208,15 @@ namespace KJ
         public float GetCurrentPivotMagnitude(Vector3 finalPivotOffset)
         {
             return Mathf.Abs((finalPivotOffset - smoothPivotOffset).magnitude);
+        }
+
+        private void StartCamera()
+        {
+            isStopped = false;
+        }
+        private void StopCamera()
+        {
+            isStopped = true;
         }
     }
 }

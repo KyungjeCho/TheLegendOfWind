@@ -23,6 +23,15 @@ public class ControlInventory : MonoBehaviour
         {
             isOpened = !isOpened;
             InventoryPanel.SetActive(isOpened);
+
+            if (isOpened)
+            {
+                EventBusSystem.Publish(EventBusType.STOP);
+            }
+            else
+            {
+                EventBusSystem.Publish(EventBusType.START);
+            }
         }
     }
 }
