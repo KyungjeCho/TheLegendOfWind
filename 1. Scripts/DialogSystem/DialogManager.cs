@@ -53,8 +53,10 @@ public class DialogManager : SingletonMonoBehaviour<DialogManager>
     }
     public void SetCurrentDialog(string dialogId)
     {
-        Debug.Log(dict[dialogId]);
-        currentDialog = dict.TryGetValue(dialogId, out var value) ? value : null;
+        currentDialog = null;
+        if (!dict.ContainsKey(dialogId))
+            return;
+        currentDialog = dict[dialogId];
     }
     public void SetCurrentDialog(DialogObject dialogObject)
     {
@@ -62,7 +64,12 @@ public class DialogManager : SingletonMonoBehaviour<DialogManager>
     }
     public void StartDialog(string dialogId)
     {
+        if (stateMachine.CurrentState == stateMachine.States[new DialogState().GetType()])
+        {
+            return;
+        }
         SetCurrentDialog(dialogId);
         stateMachine.ChangeState<StartState>();
+        InputManager.Instance.InteractButton.ConsumeButtonPressed();
     }
 }

@@ -37,11 +37,11 @@ namespace KJ
 
         private Dictionary<Type, State<T>> states;
         public State<T> CurrentState => currentState;
+        public Dictionary<Type, State<T>> States => states;
         public float ElapsedTime => elapsedTime;
 
         public StateMachine(T context, State<T> initialState)
         {
-            Debug.Log("33333");
             states = new Dictionary<Type, State<T>>();
             
             this.context = context;
