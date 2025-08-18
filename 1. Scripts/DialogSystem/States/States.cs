@@ -1,3 +1,4 @@
+using KJ.CameraControl;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -93,6 +94,8 @@ namespace KJ.Dialog
             // 이벤트 트리거 발생
 
             // NPC 카메라에서 3인칭 궤도 카메라로 이동
+            CameraController camController = Camera.main.GetComponent<CameraController>();
+            camController.MoveTo3PFromNPC();
         }
         public override void Update(float deltaTime) { }
     }

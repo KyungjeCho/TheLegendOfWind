@@ -54,6 +54,8 @@ namespace KJ
         {
             InputManager.Instance.HorizontalButton.ButtonValue = Input.GetAxis(ButtonName.Horizontal);
             InputManager.Instance.VerticalButton.ButtonValue = Input.GetAxis(ButtonName.Vertical);
+            InputManager.Instance.MouseX.ButtonValue = Input.GetAxis(ButtonName.MouseX);
+            InputManager.Instance.MouseY.ButtonValue = Input.GetAxis(ButtonName.MouseY);
             InputManager.Instance.SprintButton.IsButtonPressed = Input.GetButton(ButtonName.Sprint);
             InputManager.Instance.JumpButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Jump);
             InputManager.Instance.CrouchButton.IsButtonPressed = Input.GetButton(ButtonName.Crouch);
@@ -95,6 +97,8 @@ namespace KJ
     {
         public Button HorizontalButton;
         public Button VerticalButton;
+        public Button MouseX;
+        public Button MouseY;
         public Button AimButton;
         public ConsumeButton SkillQButton;
         public ConsumeButton SkillEButton;
@@ -125,6 +129,8 @@ namespace KJ
         {
             HorizontalButton = new Button();
             VerticalButton = new Button();
+            MouseX = new Button();
+            MouseY = new Button();
             SkillQButton = new ConsumeButton();
             SkillEButton = new ConsumeButton();
             SkillRButton = new ConsumeButton();

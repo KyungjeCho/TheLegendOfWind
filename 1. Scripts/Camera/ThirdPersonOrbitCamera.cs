@@ -1,8 +1,10 @@
+using KJ.CameraControl;
+using KJ.ThirdPersonCamStates;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KJ
+namespace KJ.ThirdPersonCamStates
 {
     /// <summary>
     /// 3인칭 카메라
@@ -11,7 +13,7 @@ namespace KJ
     /// 3. FOV 값 
     /// </summary>
     [RequireComponent(typeof(Camera))]
-    public class ThirdPersonOrbitCamera : MonoBehaviour
+    public class ThirdPersonOrbitCamera : MonoBehaviour, IGetTargetPos, IGetTargetRot
     {
         #region Variables
         public Transform player;
@@ -44,7 +46,12 @@ namespace KJ
         private float targetMaxVerticleAngle;   // 카메라 수직 최대 각도
         private float recoilAngle = 0.0f;       // 반동값
 
-        private bool isStopped = false;
+        private Vector3 previousCamPos;
+        private Quaternion previousCamRot;
+
+        private bool isPlaying = false;
+
+        private StateMachine<ThirdPersonOrbitCamera> stateMachine;
         #endregion
 
         #region Properties
@@ -52,6 +59,16 @@ namespace KJ
         {
             get => angleH;
         }
+        public float TargetMaxVerticleAngle => targetMaxVerticleAngle;
+        public float RecoilAngle { get { return recoilAngle; } set { recoilAngle = value; } }
+        public float TargetFOV => targetFOV;
+        public Vector3 TargetPivotOffset => targetPivotOffset;
+        public Vector3 TargetCamOffset => targetCamOffset;
+        public Vector3 SmoothPivotOffset { get { return smoothPivotOffset; } set { smoothPivotOffset = value; } }
+        public Vector3 SmoothCamOffset { get { return smoothCamOffset; } set { smoothCamOffset = value; } }
+        public Vector3 PreviousCamPos { get { return previousCamPos; } set {  previousCamPos = value; } }
+        public Quaternion PreviousCamRot { get { return previousCamRot; } set { previousCamRot = value; ; } } 
+        public bool IsPlaying { get { return isPlaying; }  set { isPlaying = value; } }
         #endregion
 
         private void Awake()
@@ -64,60 +81,16 @@ namespace KJ
         }
         private void Start()
         {
+            stateMachine = new StateMachine<ThirdPersonOrbitCamera>(this, new PlayState());
+
+            stateMachine.AddState(new StopState());
+
             EventBusSystem.Subscribe(EventBusType.START, StartCamera);
             EventBusSystem.Subscribe(EventBusType.STOP, StopCamera);
         }
         private void Update()
         {
-            if (isStopped)
-            {
-                return;
-            }
-
-            // 입력을 받아 카메라 이동 
-            angleH += Mathf.Clamp(Input.GetAxis("Mouse X"), -1f, 1f) * horizontalAimingSpeed;
-            angleV += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1f, 1f) * verticalAimingSpeed;
-
-            // 카메라 수직 이동 제한.
-            angleV = Mathf.Clamp(angleV, minVerticalAngle, targetMaxVerticleAngle);
-            // 카메라 반동
-            angleV = Mathf.LerpAngle(angleV, angleV + recoilAngle, 10f * Time.deltaTime);
-
-            // 카메라 회전
-            Quaternion camYRotation = Quaternion.Euler(0.0f, angleH, 0.0f);
-            Quaternion aimRotation = Quaternion.Euler(-angleV, angleH, 0.0f);
-            cameraTransform.rotation = aimRotation;
-
-            // Set FOV
-            myCamera.fieldOfView = Mathf.Lerp(myCamera.fieldOfView, targetFOV, Time.deltaTime);
-
-            Vector3 baseTempPosition = player.position + camYRotation * targetPivotOffset; // 기본 위치 값
-            Vector3 noCollisionOffset = targetCamOffset; // 카메라를 만약 이동했을때 무언가 충돌할 경우의 위치값
-
-            for (float zOffset = targetCamOffset.z; zOffset <= 0f; zOffset += 0.5f)
-            {
-                noCollisionOffset.z = zOffset;
-                if (DoubleViewingPosCheck(baseTempPosition + aimRotation * noCollisionOffset, Mathf.Abs(zOffset)) || zOffset == 0f)
-                {
-                    break;
-                }
-            }
-
-            //Reposition Camera
-            smoothPivotOffset = Vector3.Lerp(smoothPivotOffset, targetPivotOffset, smooth * Time.deltaTime);
-            smoothCamOffset = Vector3.Lerp(smoothCamOffset, noCollisionOffset, smooth * Time.deltaTime);
-
-            cameraTransform.position = player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
-
-            // 리코일
-            if (recoilAngle > 0.0f)
-            {
-                recoilAngle -= recoilAngleBounce * Time.deltaTime;
-            }
-            else if (recoilAngle < 0.0f)
-            {
-                recoilAngle += recoilAngleBounce * Time.deltaTime;
-            }
+            stateMachine.Update(Time.deltaTime);
         }
 
         private void InitCamera()
@@ -199,7 +172,7 @@ namespace KJ
             return true;
         }
 
-        bool DoubleViewingPosCheck(Vector3 checkPos, float offset)
+        public bool DoubleViewingPosCheck(Vector3 checkPos, float offset)
         {
             float playerFocusHeight = player.GetComponent<CapsuleCollider>().height * 0.75f;
             return ViewingPosCheck(checkPos, playerFocusHeight) && ReverseViewingPosCheck(checkPos, playerFocusHeight, offset);
@@ -210,13 +183,23 @@ namespace KJ
             return Mathf.Abs((finalPivotOffset - smoothPivotOffset).magnitude);
         }
 
-        private void StartCamera()
+        public void StartCamera()
         {
-            isStopped = false;
+            stateMachine.ChangeState<PlayState>();
         }
-        private void StopCamera()
+        public void StopCamera()
         {
-            isStopped = true;
+            stateMachine.ChangeState<StopState>();
+        }
+
+        public Vector3 GetPos()
+        {
+            return previousCamPos;
+        }
+
+        public Quaternion GetRot()
+        {
+            return previousCamRot;
         }
     }
 }
