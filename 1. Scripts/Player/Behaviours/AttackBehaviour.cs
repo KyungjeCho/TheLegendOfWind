@@ -35,7 +35,7 @@ namespace KJ
 
         private void Update()
         {
-            if (!isSelecting && !isAttacking && Input.GetButtonDown(ButtonName.Attack) && behaviourController.IsGrounded() && behaviourController.GetAnimator.GetInteger(weaponInt) == 1)
+            if (!isSelecting && !isAttacking && InputManager.Instance.AttackButton.IsPressedDown && behaviourController.IsGrounded() && behaviourController.GetAnimator.GetInteger(weaponInt) == 1)
             {
                 behaviourController.GetAnimator.SetInteger(meleeAttackComboInt, 1);
                 behaviourController.GetAnimator.SetTrigger(meleeAttackTrigger);

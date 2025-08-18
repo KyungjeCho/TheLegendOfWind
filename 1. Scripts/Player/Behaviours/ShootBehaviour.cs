@@ -43,11 +43,11 @@ namespace KJ
 
         private void Update()
         {
-            if (isAiming && Input.GetButton(ButtonName.Attack))
+            if (isAiming && InputManager.Instance.AttackButton.IsPressed)
             {
                 behaviourController.GetAnimator.SetBool(rangeAttackBool, true);
             }
-            if (Input.GetButtonUp(ButtonName.Attack))
+            if (InputManager.Instance.AttackButton.IsPressedUp)
             {
                 behaviourController.GetAnimator.SetBool(rangeAttackBool, false);
             }

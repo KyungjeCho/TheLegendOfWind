@@ -9,6 +9,7 @@ namespace KJ
     {
         START,
         STOP,
+        DIALOG,
         GAMEOVER
     }
 

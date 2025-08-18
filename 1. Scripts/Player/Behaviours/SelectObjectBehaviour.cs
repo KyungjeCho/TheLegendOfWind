@@ -36,7 +36,7 @@ namespace KJ
         private void Update()
         {
             CheckCollision();
-            if (isSelecting && Input.GetButtonDown(ButtonName.Attack))
+            if (isSelecting && InputManager.Instance.AttackButton.IsPressedDown)
             {
                 //Event Publish
                 OnTargetObjectSelected?.Invoke(targetTransform);

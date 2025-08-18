@@ -6,6 +6,8 @@ namespace KJ
 {
     public class ButtonName
     {
+        public const string Horizontal      = "Horizontal";
+        public const string Vertical        = "Vertical";
         public const string Sprint          = "Sprint";
         public const string Jump            = "Jump";
         public const string Crouch          = "Crouch";

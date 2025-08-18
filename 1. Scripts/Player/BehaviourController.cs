@@ -70,13 +70,13 @@ namespace KJ
 
         private void Update()
         {
-            h = Input.GetAxis("Horizontal");
-            v = Input.GetAxis("Vertical");
+            h = InputManager.Instance.HorizontalButton.ButtonValue;
+            v = InputManager.Instance.VerticalButton.ButtonValue;
 
             myAnimator.SetFloat(hFloat, h, 0.1f, Time.deltaTime);
             myAnimator.SetFloat(vFloat, v, 0.1f, Time.deltaTime);
 
-            sprint = Input.GetButton(ButtonName.Sprint);
+            sprint = InputManager.Instance.SprintButton.IsButtonPressed;
             if (IsSprinting())
             {
                 changedFOV = true;

@@ -21,13 +21,13 @@ namespace KJ
         }
         private void Update()
         {
-            if (Input.GetButtonDown(ButtonName.Weapon1) && equipmentSO.Slots[(int)EquipmentList.MeleeWeapon].item.id > -1)
+            if (InputManager.Instance.MeleeWeaponButton.IsButtonPressed && equipmentSO.Slots[(int)EquipmentList.MeleeWeapon].item.id > -1)
             {
                 behaviourController.GetAnimator.SetInteger(weaponInt, 1);
                 behaviourController.GetAnimator.SetTrigger(changeWeaponTrigger);
                 //OnWeaponChanged?.Invoke(1);
             }
-            if (Input.GetButtonDown(ButtonName.Weapon2) && equipmentSO.Slots[(int)EquipmentList.RangeWeapon].item.id > -1)
+            if (InputManager.Instance.RangeWeaponButton.IsButtonPressed && equipmentSO.Slots[(int)EquipmentList.RangeWeapon].item.id > -1)
             {
                 behaviourController.GetAnimator.SetInteger(weaponInt, 2);
                 behaviourController.GetAnimator.SetTrigger(changeWeaponTrigger);

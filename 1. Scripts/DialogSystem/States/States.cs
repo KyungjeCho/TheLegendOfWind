@@ -13,6 +13,11 @@ namespace KJ.Dialog
             context.DialogPanelController.gameObject.SetActive(true);
 
             stateMachine.ChangeState<DialogState>();
+            EventBusSystem.Publish(EventBusType.DIALOG);
+
+            //플레이어가 NPC 방향으로 바라본다.
+
+            // 3인칭 궤도 카메라에서 NPC 카메라로 보간 시작
         }
         public override void Update(float deltaTime)
         {
@@ -84,12 +89,11 @@ namespace KJ.Dialog
         {
             base.OnStateEnter();
             context.DialogPanelController.gameObject.SetActive(false);
-
+            EventBusSystem.Publish(EventBusType.START);
             // 이벤트 트리거 발생
+
+            // NPC 카메라에서 3인칭 궤도 카메라로 이동
         }
-        public override void Update(float deltaTime)
-        {
-            
-        }
+        public override void Update(float deltaTime) { }
     }
 }

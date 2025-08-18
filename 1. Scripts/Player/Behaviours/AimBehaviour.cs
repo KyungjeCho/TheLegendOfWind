@@ -36,11 +36,11 @@ namespace KJ
         }
         private void Update()
         {
-            if (Input.GetAxisRaw(ButtonName.Aim) != 0 && !aim)
+            if (InputManager.Instance.AimButton.ButtonValue != 0 && !aim)
             {
                 StartCoroutine(ToggleAimOn());
             }
-            else if (aim && Input.GetAxisRaw(ButtonName.Aim) == 0)
+            else if (aim && InputManager.Instance.AimButton.ButtonValue == 0)
             {
                 StartCoroutine(ToggleAimOff());
             }

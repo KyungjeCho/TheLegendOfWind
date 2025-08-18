@@ -34,15 +34,15 @@ namespace KJ
 
         private void Update()
         {
-            if (Input.GetButtonDown(ButtonName.Skill1))
+            if (InputManager.Instance.SkillQButton.IsButtonPressed)
             {
                 timeStopSkill.UseSkill();
             }
-            if (Input.GetButtonDown(ButtonName.Skill2))
+            if (InputManager.Instance.SkillEButton.IsButtonPressed)
             {
                 shieldSkill.UseSkill();
             }
-            if (Input.GetButtonDown(ButtonName.Skill3))
+            if (InputManager.Instance.SkillRButton.IsButtonPressed)
             {
                 rewindSkill.UseSkill();
             }

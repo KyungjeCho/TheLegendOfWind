@@ -52,11 +52,11 @@ namespace KJ
             if (isStopped) return;
 
             // 점프 클릭
-            if (!jump && Input.GetButtonDown(ButtonName.Jump) && behaviourController.IsCurrentBehaviour(behaviourCode) && !behaviourController.IsOverriding())
+            if (!jump && InputManager.Instance.JumpButton.IsButtonPressed && behaviourController.IsCurrentBehaviour(behaviourCode) && !behaviourController.IsOverriding())
             {
                 jump = true;
             }
-            if (Input.GetButtonDown(ButtonName.Crouch) && behaviourController.IsCurrentBehaviour(behaviourCode) && !behaviourController.IsOverriding() && !jump && !behaviourController.IsSprinting())
+            if (InputManager.Instance.CrouchButton.IsButtonPressed && behaviourController.IsCurrentBehaviour(behaviourCode) && !behaviourController.IsOverriding() && !jump && !behaviourController.IsSprinting())
             {
                 crouched = !crouched;
             }
