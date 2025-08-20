@@ -119,7 +119,7 @@ namespace KJ
             if (damagable != null)
             {
                 Debug.Log("todo : 투사체 공격 데미지 설정 owner에서 stat 받기");
-                damagable.OnDamage(1f);
+                damagable.OnDamage(owner.gameObject, 1f);
             }
             StartCoroutine(DestroyParticle(0.0f));
         }

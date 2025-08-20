@@ -25,6 +25,9 @@ namespace KJ
 
         public SoundClip HitSoundClip => hitSoundClip;
         public SoundClip DieSoundClip => dieSoundClip;
+
+        public MonsterStat MonsterStat => monsterStat;
+
         public virtual float AttackRange
         {
             get
@@ -53,6 +56,7 @@ namespace KJ
         protected virtual void Start()
         {
             // Data
+
             monsterStat = DataManager.MonsterData.GetCopy((int)monsterList);
             currentHP = monsterStat.maxHP;
             maxHP = monsterStat.maxHP;

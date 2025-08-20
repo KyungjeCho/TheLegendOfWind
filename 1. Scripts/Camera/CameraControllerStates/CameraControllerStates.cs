@@ -6,10 +6,7 @@ namespace KJ.CameraControl
 {
     public class IdleState : State<CameraController>
     {
-        public override void Update(float deltaTime)
-        {
-
-        }
+        public override void Update(float deltaTime) { }
     }
     public class MoveWithLerpState : State<CameraController>
     {
@@ -36,7 +33,7 @@ namespace KJ.CameraControl
             myTransform.position = Vector3.Lerp(myTransform.position, targetPos, deltaTime * context.Smooth);
             myTransform.rotation = Quaternion.Slerp(myTransform.rotation, targetRot, deltaTime * context.Smooth);
 
-            if (Vector3.Distance(myTransform.position, targetPos) < Mathf.Epsilon)
+            if (Vector3.Distance(myTransform.position, targetPos) < Mathf.Epsilon + 0.01f)
             {
                 stateMachine.ChangeState<IdleState>();
             }
@@ -45,11 +42,10 @@ namespace KJ.CameraControl
         {
             base.OnStateExit();
 
-            if (context.MoveType == CameraMoveType.ToNPCFrom3P)
+            if (context.MoveType == CameraMoveType.To3PFromNPC)
             {
                 context.ThirdPersonOrbitCam.StartCamera();
             }
-            context.MoveType = CameraMoveType.None;
         }
     }
     public class MoveWithoutLerpState : State<CameraController>

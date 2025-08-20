@@ -6,6 +6,6 @@ namespace KJ
 {
     public interface IInteract
     {
-        void Interact();
+        void Interact(GameObject other);
     }
 }

@@ -15,6 +15,7 @@ namespace KJ
         private ManualCollision manualCollision;
         public LayerMask targetMask;
 
+        private DropSystem dropSystem;
         protected override void Start()
         {
             base.Start();
@@ -31,6 +32,8 @@ namespace KJ
             GetAnimator.SetBool(isAliveBool, true);
 
             manualCollision = GetComponent<ManualCollision>();
+
+            dropSystem = GetComponent<DropSystem>();
         }
 
         protected override void Update()
@@ -50,7 +53,7 @@ namespace KJ
             }
         }
 
-        public void OnDamage(float damage)
+        public void OnDamage(GameObject target, float damage)
         {
             // Can Get hit ?
             if (!IsAlive)
@@ -69,10 +72,11 @@ namespace KJ
 
                 currentHP -= damage;
                 HealthChanged(currentHP / maxHP);
-
+                
                 if (currentHP <= 0f)
                 {
                     GetAnimator.SetBool(isAliveBool, false);
+                    dropSystem?.Drop(target);
                     stateMachine.ChangeState<DeadState>();
                 }
                 else
@@ -93,7 +97,7 @@ namespace KJ
                 if (collider.GetComponent<IDamagable>() != null)
                 {
             
-                    collider.GetComponent<IDamagable>().OnDamage(monsterStat.attack);
+                    collider.GetComponent<IDamagable>().OnDamage(gameObject, monsterStat.attack);
                 }
             }
         }

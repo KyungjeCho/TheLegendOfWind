@@ -14,6 +14,8 @@ namespace KJ
         public GameObject projectilePrefab;
         public Transform projectileCreatePosition;
 
+        private DropSystem dropSystem;
+
         protected override void Start()
         {
             base.Start();
@@ -28,6 +30,7 @@ namespace KJ
 
             GetAnimator.SetBool(isAliveBool, true);
 
+            dropSystem = GetComponent<DropSystem>();
         }
 
         protected override void Update()
@@ -66,7 +69,7 @@ namespace KJ
             }
         }
 
-        public void OnDamage(float damage)
+        public void OnDamage(GameObject target, float damage)
         {
             // Can Get hit ?
             if (!IsAlive)
@@ -89,6 +92,7 @@ namespace KJ
                 if (currentHP <= 0f)
                 {
                     GetAnimator.SetBool(isAliveBool, false);
+                    dropSystem?.Drop(target);
                     stateMachine.ChangeState<DeadState>();
                 }
                 else

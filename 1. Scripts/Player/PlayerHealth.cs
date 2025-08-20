@@ -54,7 +54,7 @@ namespace KJ
 
         }
 
-        public void OnDamage(float damage)
+        public void OnDamage(GameObject target, float damage)
         {
             // OnDamage
 
