@@ -32,7 +32,7 @@ namespace KJ
         public void AddGold(int gold)
         {
             this.gold += gold;
-
+            DropQueue.Instance.AddGold(gold.ToString());
             OnCurrentGoldChanged?.Invoke(gold);
         }
         public bool RemoveGold(int gold)

@@ -16,6 +16,7 @@ namespace KJ
 
             Item item = pickupItem.ItemSO.CreateItem();
             inventory.AddItem(item, 1);
+            DropQueue.Instance.ItemDrop(item.name);
             Destroy(pickupItem.gameObject);
             return true;
         }

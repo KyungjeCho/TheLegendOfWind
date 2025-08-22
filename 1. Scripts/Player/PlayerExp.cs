@@ -46,6 +46,7 @@ namespace KJ
         {
             currentExp += exp;
 
+            DropQueue.Instance.AddExp(exp.ToString());
             if (IsLevelUp && DataManager.PlayerLVData.IsNextLevelExist(currentLevel))
             {
                 // 레벨업을 했을 경우 && 아직 맥스 레벨이 아니면

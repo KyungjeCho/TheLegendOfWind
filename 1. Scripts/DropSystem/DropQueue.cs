@@ -43,19 +43,28 @@ namespace KJ
     }
     public class DropQueue : SingletonMonoBehaviour<DropQueue>
     {
-        private Queue<BaseDrop> queue = new Queue<BaseDrop>();
+        public UIDropPanel panel;
 
-        public Queue<BaseDrop> Queue => queue;
-        // Start is called before the first frame update
-        void Start()
+        private BaseDrop drop;
+
+        public void AddGold(string content)
         {
+            drop = new GoldDrop(content);
 
+            panel.AddSlot(drop.Print());
         }
 
-        // Update is called once per frame
-        void Update()
+        public void AddExp(string content)
         {
+            drop = new ExpDrop(content);
 
+            panel.AddSlot(drop.Print());
+        }
+        public void ItemDrop(string content)
+        {
+            drop = new ItemDrop(content);
+
+            panel.AddSlot(drop.Print());
         }
     }
 }
