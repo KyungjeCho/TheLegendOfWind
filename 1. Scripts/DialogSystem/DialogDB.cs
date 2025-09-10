@@ -10,7 +10,7 @@ namespace KJ
     {
         [SerializeField]
         private List<DialogObject> container = new List<DialogObject>();
-        private string fileName = "dialogData.csv";
+        private string fileName = "dialogData.tsv";
         private string path = "Assets/9. Resources/Resources/Data/";
 
         public List<DialogObject> Container => container;
@@ -32,7 +32,7 @@ namespace KJ
                     break;
                 }
 
-                var splitData = line.Split(',');
+                var splitData = line.Split('\t');
 
                 DialogObject dialogObject = new DialogObject();
                 dialogObject.id = splitData[0];

@@ -17,7 +17,7 @@ namespace KJ
         {
             SoundManager.Instance.PlayEffectSound(context.DieSoundClip, context.transform.position, 1f);
             context.GetAnimator.SetBool(dieBool, true);
-            
+            GameEvent.PublishMonsterKilled(context.monsterList);
             GameObject.Destroy(context.gameObject, 5f);
         }
 

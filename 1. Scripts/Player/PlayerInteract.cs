@@ -38,7 +38,7 @@ namespace KJ
 
                 if (target != null)
                 {
-                    BaseNonPlayerController interactable = target.GetComponent<BaseNonPlayerController>();
+                    InteractComponent interactable = target.GetComponent<InteractComponent>();
                     interactable?.Interact();
                 }
             }

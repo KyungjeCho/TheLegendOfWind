@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,6 @@ namespace KJ
 {
     public class SlimeController : EnemyController, IAttackable, IDamagable, IStopable
     {
-        private Vector3 originalPos;
-        
         private int getHitTrigger;
         private int isAliveBool;
 
@@ -16,6 +15,7 @@ namespace KJ
         public LayerMask targetMask;
 
         private DropSystem dropSystem;
+
         protected override void Start()
         {
             base.Start();
@@ -25,6 +25,7 @@ namespace KJ
             stateMachine.AddState(new AttackState());
             stateMachine.AddState(new DeadState());
             stateMachine.AddState(new StopState());
+            stateMachine.AddState(new ReturnState());
 
             getHitTrigger   = Animator.StringToHash(AnimatorKey.GetHit);
             isAliveBool     = Animator.StringToHash(AnimatorKey.IsAlive);
@@ -34,6 +35,8 @@ namespace KJ
             manualCollision = GetComponent<ManualCollision>();
 
             dropSystem = GetComponent<DropSystem>();
+
+            originalPos = transform.position;
         }
 
         protected override void Update()
@@ -69,7 +72,6 @@ namespace KJ
                 SoundManager.Instance.PlayEffectSound(HitSoundClip, transform.position, 1f);
 
                 // Damage Calc
-
                 currentHP -= damage;
                 HealthChanged(currentHP / maxHP);
                 
@@ -81,6 +83,7 @@ namespace KJ
                 }
                 else
                 {
+                    transform.rotation = Quaternion.LookRotation((target.transform.position - transform.position));
                     // hit animation
                     GetAnimator.SetTrigger(getHitTrigger);
                 }

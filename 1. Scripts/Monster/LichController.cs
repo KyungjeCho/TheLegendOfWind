@@ -6,8 +6,6 @@ namespace KJ
 {
     public class LichController : EnemyController, IAttackable, IDamagable
     {
-        private Vector3 originalPos;
-
         private int getHitTrigger;
         private int isAliveBool;
 

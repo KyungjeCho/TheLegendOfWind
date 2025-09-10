@@ -6,6 +6,12 @@ namespace KJ.CameraControl
 {
     public class IdleState : State<CameraController>
     {
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+
+            Debug.Log("Camera Idle");
+        }
         public override void Update(float deltaTime) { }
     }
     public class MoveWithLerpState : State<CameraController>
@@ -27,6 +33,8 @@ namespace KJ.CameraControl
             // Target ¼³Á¤
             targetPos = context.TargetPos;
             targetRot = context.TargetRot;
+
+            Debug.Log("Move Lerp State: " + context.MoveType);
         }
         public override void Update(float deltaTime)
         {

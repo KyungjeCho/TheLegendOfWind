@@ -21,20 +21,20 @@ namespace KJ
                     //{
                     //    db.SaveData();
                     //}
-                    EditorGUILayout.BeginVertical();
-                    {
-                        foreach (var dialog in db.Container)
-                        {
-                            EditorGUILayout.LabelField("ID", dialog.id);
-                            EditorGUILayout.LabelField("Speaker", dialog.speaker);
-                            EditorGUILayout.LabelField("Dialog", dialog.dialog);
-                            EditorGUILayout.LabelField("NextID", dialog.nextId);
-                            EditorGUILayout.LabelField("Choices", dialog.choices);
-                            EditorGUILayout.LabelField("ChoicesNextIds", dialog.choicesNextId);
-                            EditorGUILayout.LabelField("Trigger", dialog.trigger);
-                        }
-                    }
-                    EditorGUILayout.EndVertical();
+                    //EditorGUILayout.BeginVertical();
+                    //{
+                    //    foreach (var dialog in db.Container)
+                    //    {
+                    //        EditorGUILayout.LabelField("ID", dialog.id);
+                    //        EditorGUILayout.LabelField("Speaker", dialog.speaker);
+                    //        EditorGUILayout.LabelField("Dialog", dialog.dialog);
+                    //        EditorGUILayout.LabelField("NextID", dialog.nextId);
+                    //        EditorGUILayout.LabelField("Choices", dialog.choices);
+                    //        EditorGUILayout.LabelField("ChoicesNextIds", dialog.choicesNextId);
+                    //        EditorGUILayout.LabelField("Trigger", dialog.trigger);
+                    //    }
+                    //}
+                    //EditorGUILayout.EndVertical();
                     if (GUILayout.Button("Load"))
                     {
                         db.LoadCSV();

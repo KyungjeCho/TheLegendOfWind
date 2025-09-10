@@ -1,17 +1,16 @@
 using KJ;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class TestScripts : MonoBehaviour
+public class TestQuest : MonoBehaviour
 {
-    
-
+    public QuestSO questSO;
+    public UIQuestInfo questInfo;
     // Start is called before the first frame update
     void Start()
     {
-       Debug.Log(typeof(TestScripts).ToString());
+        questInfo.OpenUIQuestInfo(questSO);
     }
 
     // Update is called once per frame
@@ -19,5 +18,4 @@ public class TestScripts : MonoBehaviour
     {
         
     }
-
 }

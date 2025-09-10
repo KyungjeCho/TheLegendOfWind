@@ -18,5 +18,6 @@ public enum SoundList
     HeroGetHit1 = 10,
     HeroDeath = 11,
     CrateBreak = 12,
+    Unlock = 13,
 
 }

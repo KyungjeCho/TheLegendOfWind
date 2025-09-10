@@ -17,6 +17,7 @@ namespace KJ
 
         public List<string> boneNames = new List<string>();
 
+        public string itemName;
         [TextArea(15, 20)]
         public string description;
 

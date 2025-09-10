@@ -14,11 +14,13 @@ public class DialogManager : SingletonMonoBehaviour<DialogManager>
     private DialogObject currentDialog;
 
     protected StateMachine<DialogManager> stateMachine;
-    
+
+    public UIQuestInfo uIQuestInfo;
+
     public DialogDB DB => db;
     public UIDialogPanelController DialogPanelController => dialogPanelController;
     public DialogObject CurrentDialog => currentDialog;
-
+    
     protected override void Awake()
     {
         base.Awake();
@@ -71,5 +73,24 @@ public class DialogManager : SingletonMonoBehaviour<DialogManager>
         SetCurrentDialog(dialogId);
         stateMachine.ChangeState<StartState>();
         InputManager.Instance.InteractButton.ConsumeButtonPressed();
+    }
+
+    public bool CanTrigger()
+    {
+        return currentDialog.trigger != null && currentDialog.trigger != string.Empty;
+    }
+
+    public bool DoTrigger()
+    {
+        if (!CanTrigger())
+        {
+            return false;
+        }
+        string[] trigger = currentDialog.trigger.Split('_');
+
+        QuestSO questSO = QuestManager.Instance.GetQuestSO(trigger[1]);
+        uIQuestInfo.OpenUIQuestInfo(questSO);
+
+        return true;
     }
 }

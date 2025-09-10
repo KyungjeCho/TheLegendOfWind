@@ -26,7 +26,7 @@ namespace KJ
                 return Vector3.zero;
             }
 
-            return npcTr.position + camOffset;
+            return npcTr.position + npcTr.TransformDirection(camOffset);
         }
 
         public Quaternion GetRot()
@@ -36,8 +36,10 @@ namespace KJ
                 return Quaternion.identity;
             }
             Vector3 pos = npcTr.position;
-            pos.y = height;
-            Quaternion rot = Quaternion.LookRotation(pos - (npcTr.position + camOffset));
+            pos.y += height;
+
+            Vector3 camPos = npcTr.position + npcTr.TransformDirection(camOffset);
+            Quaternion rot = Quaternion.LookRotation(pos - camPos);
             return rot;
         }
     }

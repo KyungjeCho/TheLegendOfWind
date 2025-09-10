@@ -21,7 +21,7 @@ namespace KJ
 
         public Item(ItemSO itemSO)
         {
-            name = itemSO.name;
+            name = itemSO.itemName;
             id = itemSO.data.id;
 
             buffs = new ItemBuff[itemSO.data.buffs.Length];

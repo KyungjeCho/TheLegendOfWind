@@ -36,7 +36,6 @@ namespace KJ
 
             groundedBool = Animator.StringToHash(AnimatorKey.Grounded);
             speedFloat = Animator.StringToHash(AnimatorKey.Speed);
-
             oldDistance = 0;
             maxDistance = 0;
             speed = 0;
@@ -53,15 +52,15 @@ namespace KJ
             maxDistance = 0;
 
             SoundManager.Instance.PlayOneShotEffect(stepSound, transform.position, 1f);
-            //Debug.Log("FOOT STEP SOUND!");
         }
 
         private void Update()
         {
             grounded = myAnimator.GetBool(groundedBool);
             speed = myAnimator.GetFloat(speedFloat);
+            AttackBehaviour attackBehaviour = GetComponent<AttackBehaviour>();
 
-            if (grounded && speed > 0.9f) // 땅에 있고 이동 중일 경우
+            if (grounded && speed > 0.95f && !attackBehaviour.GetIsAttacking()) // 땅에 있고 이동 중일 경우
             {
                 oldDistance = maxDistance;
 

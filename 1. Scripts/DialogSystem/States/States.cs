@@ -20,10 +20,7 @@ namespace KJ.Dialog
 
             // 3인칭 궤도 카메라에서 NPC 카메라로 보간 시작
         }
-        public override void Update(float deltaTime)
-        {
-            
-        }
+        public override void Update(float deltaTime) { }
     }
 
     public class DialogState : State<DialogManager>
@@ -91,11 +88,17 @@ namespace KJ.Dialog
             base.OnStateEnter();
             context.DialogPanelController.gameObject.SetActive(false);
             EventBusSystem.Publish(EventBusType.START);
-            // 이벤트 트리거 발생
 
+            
             // NPC 카메라에서 3인칭 궤도 카메라로 이동
             CameraController camController = Camera.main.GetComponent<CameraController>();
+            camController.Reset();
             camController.MoveTo3PFromNPC();
+
+            if (context.CanTrigger()) // 대화 엔드 트리거 발동
+            {
+                context.DoTrigger();
+            }
         }
         public override void Update(float deltaTime) { }
     }

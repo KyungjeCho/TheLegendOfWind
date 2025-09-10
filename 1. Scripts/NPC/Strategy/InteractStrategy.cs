@@ -28,6 +28,18 @@ namespace KJ
         }
     }
 
+    public class TriggerInteract : IInteractable
+    {
+        private BaseTrigger trigger;
+
+        public TriggerInteract(BaseTrigger trigger) { this.trigger = trigger; }
+        public void SetTrigger(BaseTrigger trigger) { this.trigger = trigger; }
+        public void Interact()
+        {
+            trigger.OnTrigger();
+        }
+    }
+
     public class StoreInteract : IInteractable
     {
         // todo : 상점 인터렉트 용 UI 설계 후 로직 구현

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace KJ
 {
-    public class DialogNonPlayerController : BaseNonPlayerController
+    public class DialogNonPlayerController : InteractComponent
     {
         [SerializeField]
         private string dialogId;

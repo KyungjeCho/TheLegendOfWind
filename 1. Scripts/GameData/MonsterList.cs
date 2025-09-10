@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public enum MonsterList
 {
 	None = -1,
-	    Slime = 0,
+	    슬라임 = 0,
     Lich = 1,
 
 }

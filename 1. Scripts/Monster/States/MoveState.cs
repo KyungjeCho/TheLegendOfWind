@@ -48,6 +48,10 @@ namespace KJ
             {
                 context.ChangeState<IdleState>();
             }
+            if (Vector3.Distance(context.transform.position, context.originalPos) > context.maxMoveDistance)
+            {
+                context.ChangeState<ReturnState>();
+            }
             if (agent.stoppingDistance > agent.remainingDistance)
             {
                 context.ChangeState<AttackState>();

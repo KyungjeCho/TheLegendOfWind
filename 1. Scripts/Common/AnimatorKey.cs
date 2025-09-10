@@ -22,6 +22,7 @@ namespace KJ
         public const string GetHit              = "GetHit";
         public const string Die                 = "Die";
         public const string IsAlive             = "IsAlive";
+        public const string Open                = "Open";
     }
 }
 

@@ -23,6 +23,9 @@ namespace KJ
         private SoundClip hitSoundClip;
         private SoundClip dieSoundClip;
 
+        public Vector3 originalPos;
+        public float maxMoveDistance = 5f;
+
         public SoundClip HitSoundClip => hitSoundClip;
         public SoundClip DieSoundClip => dieSoundClip;
 

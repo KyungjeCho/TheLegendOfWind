@@ -57,7 +57,6 @@ namespace KJ.CameraControl
         }
         public void MoveToNPCFrom3P(Transform npcTr)
         {
-            Debug.Log("Move To NPC From 3P : " + npcTr.name);
             moveType = CameraMoveType.ToNPCFrom3P;
             npcDialogCam.SetNPCTransform(npcTr);
             targetPos = npcDialogCam.GetPos();
@@ -72,9 +71,13 @@ namespace KJ.CameraControl
             moveType = CameraMoveType.To3PFromNPC;
             targetPos = thirdPersonOrbitCam.GetPos();
             targetRot = thirdPersonOrbitCam.GetRot();
-
+            
             // 보간 이동 시작
             stateMachine.ChangeState<MoveWithLerpState>();
+        }
+        public void Reset()
+        {
+            stateMachine.ChangeState<IdleState>();
         }
     }
 }
