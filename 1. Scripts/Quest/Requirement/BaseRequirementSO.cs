@@ -6,6 +6,6 @@ namespace KJ
 {
     public abstract class BaseRequirementSO : ScriptableObject
     {
-        public abstract Requirement CreateRequirement();
+        public abstract Requirement CreateRequirement(Quest q);
     }
 }

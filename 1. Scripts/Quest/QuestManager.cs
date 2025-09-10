@@ -15,10 +15,12 @@ namespace KJ
         private string completedQuestsJsonName = "completedQuestData.json";
         private string jsonPath = "Assets/9. Resources/Resources/Data";
 
-        private List<Quest> currentQuests = new List<Quest>();
+        private Quest[] currentQuests = new Quest[0];
+        //private List<Quest> currentQuests = new List<Quest>();
         private List<string> completedQuests = new List<string>();
 
-        public List<Quest> CurrentQuests => currentQuests;
+        public Quest[] CurrentQuests => currentQuests;
+        //public List<Quest> CurrentQuests => currentQuests;
         public List<string> CompletedQuests => completedQuests;
 
         private void Start()
@@ -80,37 +82,53 @@ namespace KJ
             if (questSO == null || IsCurrentQuest(questSO) || IsCompletedQuest(questSO))
                 return false;
             Quest newQuest = new Quest(questSO);
-            currentQuests.Add(newQuest);
-
+            currentQuests = ArrayHelper.Add<Quest>(newQuest, currentQuests);
             SaveJson();
             return true;
         }
-
+        
         public bool CompleteQuest(QuestSO questSO)
         {
             if (!IsCurrentQuest(questSO) || IsCompletedQuest(questSO))
                 return false;
-            
-            foreach (Quest quest in currentQuests)
-            {
-                if (quest.QuestSO == questSO)
+
+            for (int i = 0; i < currentQuests.Length; i++)
+            { 
+                if (currentQuests[i].QuestSO == questSO)
                 {
-                    if (quest.IsCompleted)
+                    if (currentQuests[i].IsCompleted)
                     {
-                        completedQuests.Add(quest.QuestSO.questName);
-                        currentQuests.Remove(quest);
+                        completedQuests.Add(currentQuests[i].QuestSO.name);
+                        currentQuests = ArrayHelper.Remove<Quest>(i, currentQuests);
                         SaveJson();
                         return true;
                     }
                 }
             }
+
+            //foreach (Quest quest in currentQuests)
+            //{
+            //    if (quest.QuestSO == questSO)
+            //    {
+            //        if (quest.IsCompleted)
+            //        {
+            //            completedQuests.Add(quest.QuestSO.questName);
+            //            ArrayHelper.Remove<Quest>(quest, currentQuests);
+            //            currentQuests.Remove(quest);
+            //            SaveJson();
+            //            return true;
+            //        }
+            //    }
+            //}
             return false;
         }
 
         public void SaveJson()
         {
+            JsonWrapData<Quest> wrapper = new JsonWrapData<Quest>(currentQuests, new string[0]); 
+
             string path = Path.Combine(jsonPath, currentQuestsJsonName);
-            string json = JsonUtility.ToJson(currentQuests, true);
+            string json = JsonUtility.ToJson(wrapper, true);
             File.WriteAllText(path, json);
 
             path = Path.Combine(jsonPath, completedQuestsJsonName);
@@ -125,7 +143,8 @@ namespace KJ
             try
             {
                 string json = File.ReadAllText(path);
-                currentQuests = JsonUtility.FromJson<List<Quest>>(json);
+                JsonWrapData<Quest> wrapper = JsonUtility.FromJson<JsonWrapData<Quest>>(json);
+                currentQuests = wrapper.data;
             }
             catch  (Exception e1)
             {
@@ -148,7 +167,8 @@ namespace KJ
         public void ResetQuests()
         {
             completedQuests.Clear();
-            currentQuests.Clear();
+            currentQuests = new Quest[0];
+            SaveJson();
         }
     }
 }

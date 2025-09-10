@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace KJ
@@ -8,13 +9,7 @@ namespace KJ
     [Serializable]
     public abstract class Requirement 
     {
-        private Quest quest;
-
-        public Quest Quest
-        { 
-            get { return quest; } 
-            set { quest = value; }
-        }
+        public Quest quest;
 
         public abstract bool IsCompleted();
     }
@@ -28,13 +23,15 @@ namespace KJ
         public int TargetCount => targetCount;
         public MonsterList TargetMonster => targetMonster;
 
-        public HuntingRequirement(HuntingRequirementSO huntingRequirementSO)
+        public HuntingRequirement(HuntingRequirementSO huntingRequirementSO, Quest q)
         {
+            quest = q;
             targetMonster = huntingRequirementSO.targetMonster;
             targetCount = huntingRequirementSO.requireCount;
             currentCount = 0;
 
             GameEvent.OnMonsterKilled += KilledMonster;
+            LoadTargetCount();
         }
         ~HuntingRequirement()
         {
@@ -45,10 +42,11 @@ namespace KJ
             if (targetMonster == this.targetMonster)
             {
                 currentCount++;
+                SaveTargetCount();
             }
             if (IsCompleted())
             {
-                Quest.CompleteRequirement();
+                quest.CompleteRequirement();
                 GameEvent.OnMonsterKilled -= KilledMonster;
             }
         }
@@ -61,6 +59,31 @@ namespace KJ
         {
             return DataManager.MonsterData.names[(int)targetMonster] + ": " + currentCount + " / " + targetCount;
         }
+
+        public void SaveTargetCount()
+        {
+            string filePath = "Assets/9. Resources/Resouces/Data";
+            string fileName = quest.QuestSO.name + targetMonster.ToString();
+
+            string path = Path.Combine(filePath, fileName);
+            File.WriteAllText(path, currentCount.ToString());
+        }
+        public void LoadTargetCount()
+        {
+            string filePath = "Assets/9. Resources/Resouces/Data";
+            string fileName = quest.QuestSO.name + targetMonster.ToString();
+
+            string path = Path.Combine(filePath, fileName);
+            try
+            {
+                string content = File.ReadAllText(path);
+                currentCount = int.Parse(content);
+            }
+            catch (Exception e1)
+            {
+                Debug.Log("Load Error : " + e1.Message);
+            }
+        }
     }
     public class CollectingRequirement : Requirement
     {
@@ -71,8 +94,9 @@ namespace KJ
         public int TargetCount => targetCount;
         public ItemSO TargetItem => targetItem;
         
-        public CollectingRequirement(CollectingRequirementSO collectingRequirementSO)
+        public CollectingRequirement(CollectingRequirementSO collectingRequirementSO, Quest q)
         {
+            quest = q;
             targetItem = collectingRequirementSO.targetItemSO;
             targetCount = collectingRequirementSO.requireCount;
             currentCount = 0;

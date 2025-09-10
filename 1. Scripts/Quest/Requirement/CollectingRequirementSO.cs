@@ -10,9 +10,9 @@ namespace KJ
         public ItemSO targetItemSO;
         public int requireCount;
 
-        public override Requirement CreateRequirement()
+        public override Requirement CreateRequirement(Quest q)
         {
-            return new CollectingRequirement(this);
+            return new CollectingRequirement(this, q);
         }
     }
 }

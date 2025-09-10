@@ -10,9 +10,9 @@ namespace KJ
         public MonsterList targetMonster;
         public int requireCount;
 
-        public override Requirement CreateRequirement()
+        public override Requirement CreateRequirement(Quest q)
         {
-            return new HuntingRequirement(this);
+            return new HuntingRequirement(this, q);
         }
     }
 }

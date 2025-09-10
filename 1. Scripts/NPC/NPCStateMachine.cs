@@ -13,11 +13,14 @@ namespace KJ
         {
             currentState = defaultState;   
             myTransform = tr;
+
+            currentState.OnStartState(tr);
         }
         public void ChangeState(NPCState state)
         {
             currentState.OnEndState(myTransform);
             currentState = state;
+            myTransform.GetComponent<MultiDialogNonPlayerController>().SaveState();
             currentState.OnStartState(myTransform);
         }
     }

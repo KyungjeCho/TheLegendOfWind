@@ -50,7 +50,7 @@ namespace KJ
         public void CreateSlots()
         {
             // Quest Manager ->  Current Quest List 
-            for (int i = 0; i < QuestManager.Instance.CurrentQuests.Count; i++)
+            for (int i = 0; i < QuestManager.Instance.CurrentQuests.Length; i++)
             {
                 GameObject go = Instantiate(slotPrefab, contentTr);
 

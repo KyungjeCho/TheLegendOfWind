@@ -34,8 +34,7 @@ namespace KJ
 
             foreach(var requirement in this.questSO.requirements)
             {
-                Requirement r = requirement.CreateRequirement();
-                r.Quest = this; 
+                Requirement r = requirement.CreateRequirement(this);
                 requirements.Add(r);
             }
         }
@@ -44,8 +43,7 @@ namespace KJ
         {
             completedQuestAmount += 1;
             if (completedQuestAmount >= requireQuestAmount)
-            {
-                Debug.Log("Complete");
+            { 
                 state = QuestState.Completed;
                 GameEvent.PublishQuestCompleted(questSO);
             }
