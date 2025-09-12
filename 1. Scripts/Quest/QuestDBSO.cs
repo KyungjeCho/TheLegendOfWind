@@ -13,7 +13,7 @@ namespace KJ
         {
             foreach(QuestSO item in container)
             {
-                if (item.questName.Equals(questName))
+                if (item.questName == questName)
                 {
                     return item;
                 }

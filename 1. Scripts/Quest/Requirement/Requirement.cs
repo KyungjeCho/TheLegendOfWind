@@ -62,7 +62,7 @@ namespace KJ
 
         public void SaveTargetCount()
         {
-            string filePath = "Assets/9. Resources/Resouces/Data";
+            string filePath = "Assets/9. Resources/Resources/Data";
             string fileName = quest.QuestSO.name + targetMonster.ToString();
 
             string path = Path.Combine(filePath, fileName);
@@ -70,10 +70,15 @@ namespace KJ
         }
         public void LoadTargetCount()
         {
-            string filePath = "Assets/9. Resources/Resouces/Data";
+            string filePath = "Assets/9. Resources/Resources/Data";
             string fileName = quest.QuestSO.name + targetMonster.ToString();
 
             string path = Path.Combine(filePath, fileName);
+
+            if(!File.Exists(path))
+            {
+                return;
+            }
             try
             {
                 string content = File.ReadAllText(path);

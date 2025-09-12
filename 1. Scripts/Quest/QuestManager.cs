@@ -11,11 +11,11 @@ namespace KJ
         [SerializeField]
         private QuestDBSO db;
 
-        private string currentQuestsJsonName = "currentQuestData.json";
-        private string completedQuestsJsonName = "completedQuestData.json";
+        private string currentQuestsJsonName = "currentQuestData.txt";
+        private string completedQuestsJsonName = "completedQuestData.txt";
         private string jsonPath = "Assets/9. Resources/Resources/Data";
 
-        private Quest[] currentQuests = new Quest[0];
+        private Quest[] currentQuests;
         //private List<Quest> currentQuests = new List<Quest>();
         private List<string> completedQuests = new List<string>();
 
@@ -25,7 +25,8 @@ namespace KJ
 
         private void Start()
         {
-            LoadJson();
+            currentQuests = new Quest[0];
+            LoadText();
         }
         private void Update()
         {
@@ -41,10 +42,10 @@ namespace KJ
             //        idx++;
             //}
         }
-        private void OnDestroy()
-        {
-            SaveJson();
-        }
+        //private void OnDestroy()
+        //{
+        //    SaveText();
+        //}
         public QuestSO GetQuestSO(string questName)
         {
             return db.SearchQuestSO(questName);
@@ -83,7 +84,7 @@ namespace KJ
                 return false;
             Quest newQuest = new Quest(questSO);
             currentQuests = ArrayHelper.Add<Quest>(newQuest, currentQuests);
-            SaveJson();
+            SaveText();
             return true;
         }
         
@@ -100,7 +101,7 @@ namespace KJ
                     {
                         completedQuests.Add(currentQuests[i].QuestSO.name);
                         currentQuests = ArrayHelper.Remove<Quest>(i, currentQuests);
-                        SaveJson();
+                        SaveText();
                         return true;
                     }
                 }
@@ -123,28 +124,38 @@ namespace KJ
             return false;
         }
 
-        public void SaveJson()
+        public void SaveText()
         {
-            JsonWrapData<Quest> wrapper = new JsonWrapData<Quest>(currentQuests, new string[0]); 
-
+            string content = "";
             string path = Path.Combine(jsonPath, currentQuestsJsonName);
-            string json = JsonUtility.ToJson(wrapper, true);
-            File.WriteAllText(path, json);
+            foreach (Quest q in currentQuests)
+            {
+                content += q.QuestSO.questName + "\n";
+            }
+            File.WriteAllText(path, content);
 
+            content = "";
             path = Path.Combine(jsonPath, completedQuestsJsonName);
-            json = JsonUtility.ToJson(completedQuests, true);
-            File.WriteAllText(path, json);
+            foreach (string s in completedQuests)
+            {
+                content = s + "\n";
+            }
+            File.WriteAllText(path, content);
         }
 
-        public void LoadJson()
+        public void LoadText()
         {
             string path = Path.Combine(jsonPath, currentQuestsJsonName);
-
             try
             {
-                string json = File.ReadAllText(path);
-                JsonWrapData<Quest> wrapper = JsonUtility.FromJson<JsonWrapData<Quest>>(json);
-                currentQuests = wrapper.data;
+                string content = File.ReadAllText(path);
+                Debug.Log(content);
+                string[] splitContent = content.Split('\n');
+                for (int i = 0; i < splitContent.Length; i++)
+                {
+                    Quest q = new Quest(db.SearchQuestSO(splitContent[i]));
+                    currentQuests = ArrayHelper.Add<Quest>(q, currentQuests);
+                }
             }
             catch  (Exception e1)
             {
@@ -155,8 +166,12 @@ namespace KJ
 
             try
             {
-                string json = File.ReadAllText(path);
-                completedQuests = JsonUtility.FromJson<List<string>>(json);
+                string content = File.ReadAllText(path);
+                string[] splitContent = content.Split('\n');
+                for (int i = 0; i < splitContent.Length; i++)
+                {
+                    completedQuests.Add(splitContent[i]);
+                }
             }
             catch (Exception e1)
             {
@@ -168,7 +183,7 @@ namespace KJ
         {
             completedQuests.Clear();
             currentQuests = new Quest[0];
-            SaveJson();
+            SaveText();
         }
     }
 }
