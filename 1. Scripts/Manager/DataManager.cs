@@ -12,6 +12,7 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
     private static EffectData effectData = null;
     private static PlayerLVData playerLVData = null;
     public ItemDBSO itemDBSO = null;
+    private static UnlockData unlockData = null;
 
     private void Start()
     {
@@ -34,6 +35,11 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
         {
             playerLVData = ScriptableObject.CreateInstance<PlayerLVData>();
             playerLVData.LoadData();
+        }
+        if (unlockData == null)
+        {
+            unlockData = ScriptableObject.CreateInstance<UnlockData>();
+            unlockData.LoadData();
         }
     }
 
@@ -86,4 +92,17 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
         }
     }
     public ItemDBSO ItemDBSO => itemDBSO;
+
+    public static UnlockData UnlockData
+    {
+        get
+        {
+            if (unlockData == null)
+            {
+                unlockData = ScriptableObject.CreateInstance<UnlockData>();
+                unlockData.LoadData();
+            }
+            return unlockData;
+        }
+    }
 }

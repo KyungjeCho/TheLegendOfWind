@@ -43,6 +43,7 @@ namespace KJ
             {
                 slot.AddAmount(amount);
             }
+            SaveData();
             return true;
         }
 
@@ -61,6 +62,7 @@ namespace KJ
                 itemB.UpdateSlot(itemA.item, itemA.amount);
                 itemA.UpdateSlot(temp.item, temp.amount);
             }
+            SaveData();
         }
 
         
@@ -72,7 +74,7 @@ namespace KJ
         }
         public void LoadData()
         {
-            string path = Path.Combine(jsonFileName, jsonFileName);
+            string path = Path.Combine(jsonFileName, name + ".json");
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);

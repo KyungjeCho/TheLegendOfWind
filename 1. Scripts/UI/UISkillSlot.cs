@@ -27,10 +27,16 @@ namespace KJ
         }
         private void Update()
         {
-            if (timer > Mathf.Epsilon)
+            if ((skillSO.SkillName == "TimeStopSkill" && DataManager.UnlockData.data[(int)UnlockList.SkillQUnlock].isUnlocked == true) ||
+                (skillSO.SkillName == "쉴드 스킬" && DataManager.UnlockData.data[(int)UnlockList.SkillEUnlock].isUnlocked == true) ||
+                (skillSO.SkillName == "되돌리기" && DataManager.UnlockData.data[(int)UnlockList.SkillRUnlock].isUnlocked == true)
+                )
             {
-                timer -= Time.deltaTime;
-                UpdateCooldownTime(timer);
+                if (timer > Mathf.Epsilon)
+                {
+                    timer -= Time.deltaTime;
+                    UpdateCooldownTime(timer);
+                }
             }
         }
         // Event 

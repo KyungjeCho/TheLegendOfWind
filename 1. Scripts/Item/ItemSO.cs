@@ -21,6 +21,7 @@ namespace KJ
         [TextArea(15, 20)]
         public string description;
 
+        public int price;
         public void OnValidate()
         {
             boneNames.Clear();

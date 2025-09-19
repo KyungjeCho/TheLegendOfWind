@@ -13,7 +13,6 @@ namespace KJ
         public override void CreateSlots()
         {
             slotUIs = new Dictionary<GameObject, InventorySlot>();
-            Debug.Log(inventorySO.Slots.Length);
             for (int i = 0; i < inventorySO.Slots.Length; i++)
             {
                 GameObject slotGO = staticSlots[i];

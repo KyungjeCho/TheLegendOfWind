@@ -10,8 +10,10 @@ namespace  KJ
 {
     public class DataManagementHelper
     {
+#if UNITY_EDITOR
         public static string GetPath(Object obj)
         {
+
             string path = AssetDatabase.GetAssetPath(obj);
             string[] pathNode = path.Split('/');
             bool findResource = false;
@@ -33,6 +35,7 @@ namespace  KJ
 
             return path;
         }
+#endif
 
         public static void CreateEnumList(string enumName, StringBuilder data)
         {

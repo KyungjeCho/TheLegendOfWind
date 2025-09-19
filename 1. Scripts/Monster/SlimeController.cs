@@ -15,6 +15,10 @@ namespace KJ
         public LayerMask targetMask;
 
         private DropSystem dropSystem;
+        private MaterialPropertyBlock propBlock;
+        private SkinnedMeshRenderer meshRenderer;
+
+        private readonly int intensityId = Shader.PropertyToID("_Highlight_Intensity");
 
         protected override void Start()
         {
@@ -33,8 +37,10 @@ namespace KJ
             GetAnimator.SetBool(isAliveBool, true);
 
             manualCollision = GetComponent<ManualCollision>();
-
             dropSystem = GetComponent<DropSystem>();
+
+            propBlock = new MaterialPropertyBlock();
+            meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
             originalPos = transform.position;
         }
@@ -108,6 +114,27 @@ namespace KJ
         public void StopObject()
         {
             stateMachine.ChangeState<StopState>();
+        }
+
+        public void SetHighlight(bool isEnabled)
+        {
+            meshRenderer.GetPropertyBlock(propBlock);
+
+            propBlock.SetFloat(intensityId, isEnabled ? 1f : 0f);
+
+            meshRenderer.SetPropertyBlock(propBlock);
+        }
+
+        public void TriggerHighlight(float duration)
+        {
+            StartCoroutine(IHighlightRoutine(duration));
+        }
+
+        public IEnumerator IHighlightRoutine(float duration)
+        {
+            SetHighlight(true);
+            yield return new WaitForSeconds(duration);
+            SetHighlight(false);
         }
     }
 }
