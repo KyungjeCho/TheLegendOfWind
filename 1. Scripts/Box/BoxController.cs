@@ -16,6 +16,8 @@ namespace KJ
         private int openInt;
         [SerializeField]
         private bool isOpened;
+        [SerializeField]
+        private bool isLocked = false;
         private string filePath = "Assets/9. Resources/Resources/Data";
 
         protected override void Start()
@@ -27,7 +29,6 @@ namespace KJ
             openInt = Animator.StringToHash(AnimatorKey.Open);
 
             isOpened = false;
-
             interactStrategy = new TriggerInteract(trigger);
 
             LoadText();
@@ -41,7 +42,7 @@ namespace KJ
         }
         public override void Interact()
         {
-            if (isOpened) { return; }
+            if (isOpened || isLocked) { return; }
             myAnimator.SetTrigger(openInt);
             SoundManager.Instance.PlayOneShotEffect(openSound, transform.position, 1.0f);
             isOpened = true;
@@ -81,6 +82,10 @@ namespace KJ
                 return false;
             }
             return true;
+        }
+        public void UnLock()
+        {
+            isLocked = false;
         }
     }
 }

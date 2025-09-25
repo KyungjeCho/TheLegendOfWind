@@ -8,6 +8,7 @@ namespace KJ
     public class PlayerExp : MonoBehaviour
     {
         public PlayerData playerData = null;
+        private PlayerStat playerStat = null;
 
         private float maxExp = 0;
         private float currentExp = 0;
@@ -30,10 +31,10 @@ namespace KJ
                 playerData = ScriptableObject.CreateInstance<PlayerData>();
             }
             playerData.LoadData();
-
-            PlayerStat stat = playerData.GetCopy();
-            currentLevel = stat.level;
-            currentExp = stat.exp;
+            
+            playerStat = playerData.Stat;
+            currentLevel = playerStat.level;
+            currentExp = playerStat.exp;
 
             maxExp = DataManager.PlayerLVData.GetCopyFromLevel(currentLevel).exp;
 
@@ -59,7 +60,7 @@ namespace KJ
             }
             else if (IsLevelUp && !DataManager.PlayerLVData.IsNextLevelExist(currentLevel))
             {
-                //레벨업을 했는데 맥스 레벨이야
+                //레벨업을 했는데 맥스 레벨일 경우
                 currentExp = maxExp;
                 OnCurrentExpChanged?.Invoke(currentExp);
             }
@@ -68,6 +69,16 @@ namespace KJ
                 // 그냥 경험치만 얻음
                 OnCurrentExpChanged?.Invoke(currentExp);
             }
+
+            SaveLevel();
+        }
+
+        public void SaveLevel()
+        {
+            playerData.Stat.exp = currentExp;
+            playerData.Stat.level = currentLevel;
+            Debug.Log(currentLevel + " " + playerData.Stat.level);
+            playerData.SaveData();
         }
     }
 

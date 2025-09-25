@@ -55,6 +55,10 @@ namespace KJ
             {
                 OnPostUpdate.Invoke(this);
             }
+            if (parent != null)
+            {
+                parent.SaveData();
+            }
         }
 
         public bool CanPlaceInSlot(ItemSO itemSO)

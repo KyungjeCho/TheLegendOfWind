@@ -7,6 +7,12 @@ using UnityEngine;
 
 namespace KJ
 {
+    [Serializable]
+    public class WrapInventoryData
+    {
+        public int[] itemId;
+        public int[] amount;
+    }
     [CreateAssetMenu(fileName = "Inventory SO", menuName = "ScriptableObjects/Inventory SO")]
     public class InventorySO : ScriptableObject
     {
@@ -43,7 +49,6 @@ namespace KJ
             {
                 slot.AddAmount(amount);
             }
-            SaveData();
             return true;
         }
 
@@ -62,23 +67,54 @@ namespace KJ
                 itemB.UpdateSlot(itemA.item, itemA.amount);
                 itemA.UpdateSlot(temp.item, temp.amount);
             }
-            SaveData();
+            
         }
+        public WrapInventoryData WrapData()
+        {
+            WrapInventoryData data = new WrapInventoryData();
+            data.itemId = new int[Slots.Length];
+            data.amount = new int[Slots.Length];
+            for(int i = 0; i < Slots.Length; i++)
+            {
+                data.itemId[i] = Slots[i].item.id;
+                data.amount[i] = Slots[i].amount;
+            }
 
-        
+            return data;
+        }
+        public void UnwrapData(WrapInventoryData data)
+        {
+            for (int i = 0; i < Slots.Length; i++)
+            {
+                if (data.itemId[i] <= -1)
+                {
+                    Slots[i].UpdateSlot(new Item(), 0);
+                }
+                else
+                {
+                    ItemSO itemSO = DataManager.Instance.ItemDBSO.itemSOs[data.itemId[i]];
+                    int amount = data.amount[i];
+                    Slots[i].UpdateSlot(itemSO.CreateItem(), amount);
+                }
+            }
+        }
         public void SaveData()
         {
+            WrapInventoryData wrapData = WrapData();
             string path = Path.Combine(jsonFilePath, jsonFileName);
-            string json = JsonUtility.ToJson(inventory, true);
+            string json = JsonUtility.ToJson(wrapData, true);
             File.WriteAllText(path, json);
         }
         public void LoadData()
         {
-            string path = Path.Combine(jsonFileName, name + ".json");
+            Clear();
+            string path = Path.Combine(jsonFilePath, jsonFileName);
+
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                inventory = JsonUtility.FromJson<Inventory>(json);
+                WrapInventoryData wrapData = JsonUtility.FromJson<WrapInventoryData>(json);
+                UnwrapData(wrapData);
             }
         }
         public void Clear()

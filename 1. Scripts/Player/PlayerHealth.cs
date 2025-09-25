@@ -13,12 +13,16 @@ namespace KJ
         public float defense;
         private float maxHp;
         private Animator myAnimator;
+        private PlayerRespawn respawn;
 
         public SoundList hitSound;
         public SoundList dieSound;
         public EffectList hitEffect;
         private int getHitTrigger;
         private int dieTrigger;
+        private int reviveTrigger;
+
+        public GameObject uiGameoverPanel;
 
         public bool IsAlive => hp > 0f;
 
@@ -38,9 +42,11 @@ namespace KJ
             defense = DataManager.PlayerLVData.GetCopyFromLevel(playerData.GetCopy().level).defense;
 
             myAnimator = GetComponent<Animator>();
+            respawn = GetComponent<PlayerRespawn>();
 
-            getHitTrigger = Animator.StringToHash(AnimatorKey.GetHit);
-            dieTrigger = Animator.StringToHash(AnimatorKey.Die);
+            getHitTrigger   = Animator.StringToHash(AnimatorKey.GetHit);
+            dieTrigger      = Animator.StringToHash(AnimatorKey.Die);
+            reviveTrigger   = Animator.StringToHash(AnimatorKey.Revive);
         }
 
         
@@ -51,9 +57,23 @@ namespace KJ
 
         public void Kill()
         {
+            InputManager.Instance.ChangeDialogStrategy();
+            myAnimator.SetTrigger(dieTrigger);
 
+            StartCoroutine(CDelayDie(3f));
         }
-
+        public void Revive()
+        {
+            InputManager.Instance.ChangeNormalStrategy();
+            myAnimator.SetTrigger(reviveTrigger);
+            EventBusSystem.Publish(EventBusType.START);
+            if (uiGameoverPanel != null)
+            {
+                uiGameoverPanel.SetActive(false);
+            }
+            respawn.RevivePlayer();
+            HealFullHealthPoint();
+        }
         public void OnDamage(GameObject target, float damage)
         {
             // OnDamage
@@ -64,7 +84,7 @@ namespace KJ
             {
                 totalDamage = handler.ProcessDamage(totalDamage);
             }
-            if (totalDamage > Mathf.Epsilon)
+            if (totalDamage > Mathf.Epsilon && IsAlive)
             {
                 hp -= totalDamage;
 
@@ -101,6 +121,28 @@ namespace KJ
             }
         }
         #endregion
+
+        public void HealFullHealthPoint()
+        {
+            hp = maxHp;
+            OnHealthChanged?.Invoke(hp / maxHp);
+        }
+        public void HealHealthPoint(float health)
+        {
+            hp = hp + health > maxHp ? maxHp : hp + health;
+
+            OnHealthChanged?.Invoke(hp / maxHp);
+        }
+
+        private IEnumerator CDelayDie(float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            EventBusSystem.Publish(EventBusType.STOP);
+            if (uiGameoverPanel != null)
+            {
+                uiGameoverPanel.SetActive(true);
+            }
+        }
     }
 
 }

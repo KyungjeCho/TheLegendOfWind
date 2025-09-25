@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum NPCList
+public enum RespawnList
 {
 	None = -1,
-	    NPC_001 = 0,
-    촌장 = 1,
-    길드장 = 2,
+	    InGameScene = 0,
+    DungeonScene = 1,
+    BossScene = 2,
 
 }

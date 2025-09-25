@@ -154,11 +154,11 @@ namespace KJ
             inputStrategy = strategy;
         }
 
-        private void ChangeNormalStrategy()
+        public void ChangeNormalStrategy()
         {
             ChangeStrategy(new NormalInput());
         }
-        private void ChangeDialogStrategy()
+        public void ChangeDialogStrategy()
         {
             ChangeStrategy(new DialogInput());
         }

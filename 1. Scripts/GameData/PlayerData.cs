@@ -32,6 +32,22 @@ namespace KJ
         [HideInInspector]
         public string jsonFileName = "playerStat.json";
         
+        public PlayerStat Stat
+        {
+            get
+            {
+                if (stat == null)
+                {
+                    LoadData();
+                }
+                return stat;
+            }
+            set
+            {
+                stat = value;
+                SaveData();
+            }
+        }
         public void SaveData()
         {
             string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
