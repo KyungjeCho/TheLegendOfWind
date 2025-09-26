@@ -13,7 +13,6 @@ namespace KJ
 
         public override void Act(NPCStateMachine stateMachine)
         {
-            Debug.Log(this.GetType().Name);
             DialogManager.Instance.StartDialog(dialogId);
 
             nextTransition.Transit(stateMachine);

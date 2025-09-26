@@ -25,10 +25,10 @@ namespace KJ
 
         protected override void Start()
         {
-            LoadState();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             HideQuestionMark();
-            stateMachine = new NPCStateMachine(defaultState, transform);            
+            stateMachine = new NPCStateMachine(defaultState, transform);
+            LoadState();
         }
         public override void Interact()
         {
@@ -67,6 +67,7 @@ namespace KJ
             {
                 string content = File.ReadAllText(path);
                 defaultState = db.GetNPCState(content);
+                stateMachine.ChangeState(defaultState);
             } 
             catch (Exception e1)
             {

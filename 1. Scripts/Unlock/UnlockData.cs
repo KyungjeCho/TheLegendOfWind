@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ namespace KJ
 {
     public class UnlockData : BaseData<Unlock>
     {
+        public event Action<UnlockList, bool> OnUnlock;
+
         public override int AddData(string name)
         {
             if (names == null)
@@ -43,6 +46,17 @@ namespace KJ
             Unlock original = data[index];
             copy.isUnlocked = original.isUnlocked;
             return copy;
+        }
+
+        public bool GetIsUnlocked(UnlockList unlockList)
+        {
+            return data[(int)unlockList].isUnlocked;
+        }
+        public void SetIsUnlocked(UnlockList unlockList, bool isUnlocked)
+        {
+            data[(int)unlockList].isUnlocked = isUnlocked;
+            OnUnlock?.Invoke(unlockList, isUnlocked);
+            SaveData();
         }
     }
 }

@@ -9,8 +9,6 @@ namespace KJ.CameraControl
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-
-            Debug.Log("Camera Idle");
         }
         public override void Update(float deltaTime) { }
     }
@@ -32,9 +30,7 @@ namespace KJ.CameraControl
 
             // Target ¼³Á¤
             targetPos = context.TargetPos;
-            targetRot = context.TargetRot;
-
-            Debug.Log("Move Lerp State: " + context.MoveType);
+            targetRot = context.TargetRot;           
         }
         public override void Update(float deltaTime)
         {

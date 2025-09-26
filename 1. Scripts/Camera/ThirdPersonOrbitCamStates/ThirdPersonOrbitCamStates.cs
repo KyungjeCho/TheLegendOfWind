@@ -80,14 +80,11 @@ namespace KJ.ThirdPersonCamStates
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-
+            Debug.Log("3P Stop State");
             context.PreviousCamPos = cameraTr.position;
             context.PreviousCamRot = cameraTr.rotation;
             context.IsPlaying = false;
         }
-        public override void Update(float deltaTime)
-        {
-            
-        }
+        public override void Update(float deltaTime) { }
     }
 }

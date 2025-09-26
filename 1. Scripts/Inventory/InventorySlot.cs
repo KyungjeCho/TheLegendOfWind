@@ -53,6 +53,7 @@ namespace KJ
             this.amount = amount;
             if (OnPostUpdate != null)
             {
+                GameEvent.PublishItemChanged(ItemSO, amount);
                 OnPostUpdate.Invoke(this);
             }
             if (parent != null)

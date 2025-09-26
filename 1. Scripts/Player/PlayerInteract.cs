@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace KJ
@@ -55,7 +56,9 @@ namespace KJ
             foreach (Collider collider in colliders)
             {
                 Transform targetTr = collider.transform;
-                Vector3 dirToTarget = (targetTr.position - transform.position ).normalized;
+                Vector3 targetPos = new Vector3(targetTr.position.x, transform.position.y, targetTr.position.z);
+
+                Vector3 dirToTarget = (targetPos - transform.position ).normalized;
 
                 Vector3 camDir = mainCam.transform.forward;
                 camDir.y = 0f;

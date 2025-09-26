@@ -10,7 +10,7 @@ namespace KJ.Dialog
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-            Debug.Log("Start Dialog");
+
             context.DialogPanelController.gameObject.SetActive(true);
 
             stateMachine.ChangeState<DialogState>();

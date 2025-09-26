@@ -20,5 +20,9 @@ namespace KJ
         {
             OnQuestCompleted?.Invoke(questSO);
         }
+        public static void PublishItemChanged(ItemSO itemSO, int amount)
+        {
+            OnItemChanged?.Invoke(itemSO, amount);
+        }
     }
 }

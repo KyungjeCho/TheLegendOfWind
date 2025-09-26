@@ -85,8 +85,8 @@ namespace KJ.ThirdPersonCamStates
 
             stateMachine.AddState(new StopState());
 
-            EventBusSystem.Subscribe(EventBusType.START, StartCamera);
-            EventBusSystem.Subscribe(EventBusType.STOP, StopCamera);
+            //EventBusSystem.Subscribe(EventBusType.START, StartCamera);
+            //EventBusSystem.Subscribe(EventBusType.STOP, StopCamera);
         }
         private void Update()
         {

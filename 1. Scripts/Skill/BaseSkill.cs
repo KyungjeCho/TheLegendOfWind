@@ -7,6 +7,7 @@ namespace KJ
 {
     public abstract class BaseSkill : ScriptableObject
     {
+        public UnlockList unlockList;
         [SerializeField] private string skillName;
         [SerializeField] private string skillDescription;
         [SerializeField] protected Transform playerTranform;
@@ -23,6 +24,7 @@ namespace KJ
         private void OnValidate()
         {
             timer = cooldownTime;
+            DataManager.UnlockData.OnUnlock += UpdateSkill;
         }
         public virtual void SetPlayerTransform(Transform transform)
         {
@@ -38,6 +40,22 @@ namespace KJ
         {
             timer = cooldownTime;
             OnSkillExecuted?.Invoke();
+        }
+        public void UpdateSkill(UnlockList unlockList, bool isUnlocked)
+        {
+            if (this.unlockList != unlockList)
+            {
+                return;
+            }
+
+            if (isUnlocked)
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 }

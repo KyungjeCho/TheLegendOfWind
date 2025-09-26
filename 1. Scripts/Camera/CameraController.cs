@@ -74,6 +74,7 @@ namespace KJ.CameraControl
             
             // 보간 이동 시작
             stateMachine.ChangeState<MoveWithLerpState>();
+            //thirdPersonOrbitCam.StartCamera();
         }
         public void Reset()
         {

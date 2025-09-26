@@ -115,6 +115,10 @@ namespace KJ
 
         public void OnItemChanged(ItemSO itemSO, int amount)
         {
+            if (itemSO == null)
+            {
+                return;
+            }
             if (itemSO.itemName == targetItem.itemName)
             {
                 currentCount = amount;
@@ -122,6 +126,7 @@ namespace KJ
 
             if (IsCompleted())
             {
+                quest.CompleteRequirement();
                 GameEvent.OnItemChanged -= OnItemChanged;
             }
         }
@@ -132,7 +137,7 @@ namespace KJ
 
         public override string ToString()
         {
-            return targetItem.name + ": " + currentCount + " / " + targetCount;
+            return targetItem.itemName + ": " + currentCount + " / " + targetCount;
         }
     }
 }

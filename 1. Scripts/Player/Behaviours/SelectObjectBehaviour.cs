@@ -15,6 +15,7 @@ namespace KJ
         private LayerMask targetLayerMask;
 
         private Transform myTransform;
+        [SerializeField]
         private Transform targetTransform;
 
         public Transform TargetTransform => targetTransform;
@@ -57,9 +58,13 @@ namespace KJ
                     targetTransform = hit.collider.transform;
                 }
                 else
-                {
+                { 
                     targetTransform = null;
                 }
+            }
+            else
+            {
+                targetTransform = null;
             }
         }
         private void SelectManament()
