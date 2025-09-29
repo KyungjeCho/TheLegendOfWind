@@ -107,7 +107,7 @@ namespace KJ
         }
         public void LoadData()
         {
-            Clear();
+            //Clear();
             string path = Path.Combine(jsonFilePath, jsonFileName);
 
             if (File.Exists(path))
