@@ -86,6 +86,16 @@ namespace KJ
             InputManager.Instance.DenyButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Deny);
         }
     }
+    public class QuestInput : InputStrategy
+    {
+        public void OnInput()
+        {
+            InputManager.Instance.HorizontalButton.ButtonValue = 0f;
+            InputManager.Instance.VerticalButton.ButtonValue = 0f;
+
+            InputManager.Instance.QuestButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Quest);
+        }
+    }
     public class StopInput : InputStrategy
     {
         public void OnInput()

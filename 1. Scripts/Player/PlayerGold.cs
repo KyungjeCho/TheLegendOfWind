@@ -26,6 +26,7 @@ namespace KJ
             PlayerStat stat = playerData.GetCopy();
             gold = stat.gold;
 
+            OnCurrentGoldChanged += SaveGold;
             OnCurrentGoldChanged?.Invoke(gold);
         }
 
@@ -33,7 +34,7 @@ namespace KJ
         {
             this.gold += gold;
             DropQueue.Instance.AddGold(gold.ToString());
-            OnCurrentGoldChanged?.Invoke(gold);
+            OnCurrentGoldChanged?.Invoke(this.gold);
         }
         public bool RemoveGold(int gold)
         {
@@ -43,8 +44,17 @@ namespace KJ
             }
 
             this.gold -= gold;
-            OnCurrentGoldChanged?.Invoke(gold);
+            OnCurrentGoldChanged?.Invoke(this.gold);
             return true;
+        }
+        public void PublishGold()
+        {
+            OnCurrentGoldChanged?.Invoke(gold);
+        }
+        public void SaveGold(int gold)
+        {
+            playerData.Stat.gold = gold;
+            playerData.SaveData();
         }
     }
 }

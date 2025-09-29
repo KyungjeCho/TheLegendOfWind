@@ -26,10 +26,12 @@ namespace KJ
 
                 if (isOpened)
                 {
+                    InputManager.Instance.ChangeStrategy(new QuestInput());
                     EventBusSystem.Publish(EventBusType.STOP);
                 }
                 else
                 {
+                    InputManager.Instance.ChangeNormalStrategy();
                     EventBusSystem.Publish(EventBusType.START);
                 }
             }

@@ -19,12 +19,25 @@ namespace KJ
         {
             myTr = tr;
             MultiDialogNonPlayerController controller = tr.GetComponent<MultiDialogNonPlayerController>();
-            controller?.ShowQuestionMark1();
+            if (QuestManager.Instance.IsCompletedQuest(questSO.requireQuest))
+            {
+                controller?.ShowQuestionMark1();
+            }
+            else
+            {
+                QuestManager.Instance.OnCompletedQuests += UpdateRequireQuest;
+                controller?.HideQuestionMark();
+            }
 
             GameEvent.OnQuestCompleted += OnCompleted;
         }
         public override void Act(NPCStateMachine stateMachine)
         {
+            if (!QuestManager.Instance.IsCompletedQuest(questSO.requireQuest))
+            {
+                DialogManager.Instance.StartDialog(inProgressDialog);
+                return;
+            }
             if (!QuestManager.Instance.IsCurrentQuest(questSO) && !QuestManager.Instance.IsCompletedQuest(questSO))
             {
                 DialogManager.Instance.StartDialog(preAcceptDialog);
@@ -56,6 +69,19 @@ namespace KJ
             }
             MultiDialogNonPlayerController controller = myTr.GetComponent<MultiDialogNonPlayerController>();
             controller?.ShowQuestionMark2();
+        }
+
+        public void UpdateRequireQuest(QuestSO questSO)
+        {
+            if (questSO == null)
+            {
+                return;
+            }
+            if (questSO == this.questSO.requireQuest)
+            {
+                MultiDialogNonPlayerController controller = myTr.GetComponent<MultiDialogNonPlayerController>();
+                controller?.ShowQuestionMark1();
+            }
         }
     }
 

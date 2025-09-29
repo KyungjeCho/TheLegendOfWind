@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KJ
 {
@@ -11,6 +12,8 @@ namespace KJ
 
         public GameObject projectilePrefab;
         public Transform projectileCreatePosition;
+
+        public UnityEvent onMonsterDied;
 
         private DropSystem dropSystem;
 
@@ -91,6 +94,7 @@ namespace KJ
                 {
                     GetAnimator.SetBool(isAliveBool, false);
                     dropSystem?.Drop(target);
+                    onMonsterDied?.Invoke();
                     stateMachine.ChangeState<DeadState>();
                 }
                 else

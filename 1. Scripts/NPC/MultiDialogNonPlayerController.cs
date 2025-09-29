@@ -27,6 +27,7 @@ namespace KJ
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             HideQuestionMark();
+            
             stateMachine = new NPCStateMachine(defaultState, transform);
             LoadState();
         }

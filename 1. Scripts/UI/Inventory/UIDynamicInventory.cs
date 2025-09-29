@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace KJ
 {
@@ -18,6 +20,11 @@ namespace KJ
 
         [SerializeField]
         protected Vector2 space;
+
+        [SerializeField]
+        private PlayerGold playerGold;
+        [SerializeField]
+        private TMPro.TextMeshProUGUI goldTxt;
 
         [Min(1), SerializeField]
         protected int numberOfColumn = 4;
@@ -42,6 +49,9 @@ namespace KJ
                 slotUIs.Add(go, inventorySO.Slots[i]);
                 go.name += ": " + i;
             }
+
+            playerGold.OnCurrentGoldChanged += UpdateGold;
+            playerGold.PublishGold();
         }
         public Vector3 CalculatePosition(int i)
         {
@@ -53,6 +63,11 @@ namespace KJ
         protected override void OnRightClick(InventorySlot slot)
         {
             inventorySO.UseItem(slot);
+        }
+
+        public void UpdateGold(int gold)
+        {
+            goldTxt.text = gold.ToString();
         }
     }
 

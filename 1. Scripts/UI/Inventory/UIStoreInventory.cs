@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,11 +39,13 @@ namespace KJ
         [SerializeField]
         private InputField countInputField;
 
-        private PlayerGold playerGold;
+        [SerializeField]
+        private Text goldText;
+
+        public PlayerGold playerGold;
 
         public override void CreateSlots()
         {
-            playerGold = GetComponent<PlayerGold>();
             slotUIs = new Dictionary<GameObject, InventorySlot>();
 
             for (int i = 0; i < inventorySO.Slots.Length; i++)
@@ -69,6 +72,8 @@ namespace KJ
             }
 
             UpdateSellPanel();
+            playerGold.OnCurrentGoldChanged += UpdateGold;
+            playerGold.PublishGold();
         }
         public Vector3 CalculatePosition(int i)
         {
@@ -149,6 +154,11 @@ namespace KJ
                 playerGold.RemoveGold(totalPrice);
                 inventory.AddItem(selectionItemSO.CreateItem(), int.Parse(countInputField.text));
             }
+        }
+
+        public void UpdateGold(int gold)
+        {
+            goldText.text = gold.ToString();
         }
     }
 }

@@ -10,6 +10,12 @@ namespace KJ
     {
         [SerializeField]
         private QuestDBSO db;
+        [SerializeField]
+        private PlayerGold playerGold;
+        [SerializeField]
+        private PlayerExp playerExp;
+        [SerializeField]
+        private InventorySO inventory;
 
         private string currentQuestsJsonName = "currentQuestData.txt";
         private string completedQuestsJsonName = "completedQuestData.txt";
@@ -17,15 +23,20 @@ namespace KJ
 
         private Quest[] currentQuests;
         //private List<Quest> currentQuests = new List<Quest>();
-        private List<string> completedQuests = new List<string>();
+        private List<string> completedQuests;
 
         public Quest[] CurrentQuests => currentQuests;
         //public List<Quest> CurrentQuests => currentQuests;
         public List<string> CompletedQuests => completedQuests;
 
-        private void Start()
+        public event Action<QuestSO> OnCompletedQuests;
+
+        protected override void Awake()
         {
+            base.Awake();
+
             currentQuests = new Quest[0];
+            completedQuests = new List<string>();
             LoadText();
         }
         private void Update()
@@ -71,6 +82,10 @@ namespace KJ
         }
         public bool IsCompletedQuest(QuestSO questSO)
         {
+            if (questSO == null)
+            {
+                return true;
+            }
             foreach(string quest in completedQuests)
             {
                 if (quest == questSO.questName) return true;
@@ -99,7 +114,14 @@ namespace KJ
                 {
                     if (currentQuests[i].IsCompleted)
                     {
-                        completedQuests.Add(currentQuests[i].QuestSO.name);
+                        playerGold.AddGold(questSO.rewards.gold);
+                        playerExp.AddExp(questSO.rewards.exp);
+                        foreach(ItemReward itemReward in questSO.rewards.items)
+                        {
+                            inventory.AddItem(itemReward.itemSO.CreateItem(), itemReward.amount);
+                        }
+                        OnCompletedQuests?.Invoke(questSO);
+                        completedQuests.Add(questSO.questName);
                         currentQuests = ArrayHelper.Remove<Quest>(i, currentQuests);
                         SaveText();
                         return true;

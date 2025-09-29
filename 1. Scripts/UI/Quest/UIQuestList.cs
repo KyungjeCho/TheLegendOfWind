@@ -37,6 +37,8 @@ namespace KJ
                 questSlot.OnPostUpdate += OnPostUpdate;
                 questSlot.UpdateSlot(questSlot.quest);
             }
+            questNameText.text = "퀘스트 선택해주세요.";
+            questContentText.text = string.Empty;
         }
 
         private void OnDisable()
