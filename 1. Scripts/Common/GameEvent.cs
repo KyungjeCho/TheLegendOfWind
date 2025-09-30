@@ -11,6 +11,7 @@ namespace KJ
         public static event Action<ItemSO, int> OnItemChanged;
         public static event Action<string> OnDialogExit;
         public static event Action<QuestSO> OnQuestCompleted;
+        public static event Action<UnlockList> OnUnlocked;
 
         public static void PublishMonsterKilled(MonsterList monsterList)
         {
@@ -23,6 +24,10 @@ namespace KJ
         public static void PublishItemChanged(ItemSO itemSO, int amount)
         {
             OnItemChanged?.Invoke(itemSO, amount);
+        }
+        public static void PublishUnlocked(UnlockList unlockedList)
+        {
+            OnUnlocked?.Invoke(unlockedList);
         }
     }
 }

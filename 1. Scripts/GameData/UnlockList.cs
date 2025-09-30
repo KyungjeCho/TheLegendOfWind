@@ -10,5 +10,6 @@ public enum UnlockList
     SkillRUnlock = 2,
     KillFirstMonster = 3,
     ClearFirstQuest = 4,
+    ClearDungeon = 5,
 
 }

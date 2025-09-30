@@ -140,4 +140,38 @@ namespace KJ
             return targetItem.itemName + ": " + currentCount + " / " + targetCount;
         }
     }
+    public class ClearRequirement : Requirement
+    {
+        public bool isClear = false;
+        private UnlockList unlockList;
+
+        public ClearRequirement(ClearRequirementSO clearRequirementSO, Quest q)
+        {
+            quest = q;
+            unlockList = clearRequirementSO.unlockList;
+
+            isClear = false;
+
+            GameEvent.OnUnlocked += OnClear;
+        }
+        ~ClearRequirement()
+        {
+            GameEvent.OnUnlocked -= OnClear;
+        }
+
+        public void OnClear(UnlockList unlockList)
+        {
+            if (this.unlockList == unlockList)
+            {
+                isClear = true;
+                quest.CompleteRequirement();
+                GameEvent.OnUnlocked -= OnClear;
+            }
+        }
+
+        public override bool IsCompleted()
+        {
+            return isClear;
+        }
+    }
 }

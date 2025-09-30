@@ -29,6 +29,14 @@ namespace KJ
             AsyncOperation asyncOp = SceneManager.LoadSceneAsync((int)sceneList, LoadSceneMode.Single);
             asyncOp.completed += OnSceneLoaded;
         }
+        public void LoadAsync(int sceneIdx)
+        {
+            UISceneLoading.SetActive(true);
+            InputManager.Instance.ChangeStrategy(new StopInput());
+
+            AsyncOperation asyncOp = SceneManager.LoadSceneAsync(sceneIdx, LoadSceneMode.Single);
+            asyncOp.completed += OnSceneLoaded;
+        }
         public void OnSceneLoaded(AsyncOperation op)
         {
             InputManager.Instance.ChangeNormalStrategy();

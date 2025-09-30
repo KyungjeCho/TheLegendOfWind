@@ -18,6 +18,7 @@ namespace KJ
         public event Action OnSkillExecuted;
 
         public string SkillName => skillName;
+        public string SkillDescription => skillDescription;
         public float CooldownTime => cooldownTime;
         public float Timer => timer;
 

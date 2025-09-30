@@ -52,7 +52,14 @@ namespace KJ
             canTakeMeleeWeapon = true;
             canTakeRangeWeapon = true;
         }
-
+        private void OnDestroy()
+        {
+            for (int i = 0; i < equipmentSO.Slots.Length; i++)
+            {
+                equipmentSO.Slots[i].OnPreUpdate -= OnRemoveItem;
+                equipmentSO.Slots[i].OnPostUpdate -= OnEquipItem;
+            }
+        }
         private void OnEquipItem(InventorySlot slot)
         {
             ItemSO itemSO = slot.ItemSO;

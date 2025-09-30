@@ -9,9 +9,8 @@ public class InventoryLoader : MonoBehaviour
     public InventorySO equipment;
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        Debug.Log(SceneManager.GetActiveScene().name);
         inventory.LoadData();
         equipment.LoadData();
     }
