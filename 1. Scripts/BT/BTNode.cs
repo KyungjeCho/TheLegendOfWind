@@ -18,6 +18,6 @@ namespace KJ
 
         public BTNodeState State => state;
 
-        public abstract BTNodeState Evaluate();
+        public abstract BTNodeState Evaluate(float deltaTime);
     }
 }

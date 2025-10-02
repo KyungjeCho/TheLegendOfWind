@@ -24,11 +24,11 @@ namespace KJ
             this.condition = condition;
         }
 
-        public override BTNodeState Evaluate()
+        public override BTNodeState Evaluate(float deltaTime)
         {
             if  (condition())
             {
-                return child.Evaluate();
+                return child.Evaluate(deltaTime);
             }
 
             state = BTNodeState.Failure;

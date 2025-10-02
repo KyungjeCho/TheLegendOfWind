@@ -7,5 +7,6 @@ public enum MonsterList
 	None = -1,
 	    슬라임 = 0,
     Lich = 1,
+    드래곤 = 2,
 
 }

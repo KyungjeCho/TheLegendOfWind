@@ -10,5 +10,6 @@ public enum EffectList
     MagicShieldBlueStart = 2,
     MagicShieldBlueLoop = 3,
     MagicShieldBlueStop = 4,
+    RockCrushingEffect = 5,
 
 }

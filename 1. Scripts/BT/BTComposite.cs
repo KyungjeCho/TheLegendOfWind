@@ -22,11 +22,11 @@ namespace KJ
     {
         public BTSelector(List<BTNode> children) : base(children) { }
 
-        public override BTNodeState Evaluate()
+        public override BTNodeState Evaluate(float deltaTime)
         {
             foreach (BTNode child in children)
             {
-                switch (child.Evaluate())
+                switch (child.Evaluate(deltaTime))
                 {
                     case BTNodeState.Success:
                         state = BTNodeState.Success;
@@ -49,13 +49,13 @@ namespace KJ
     {
         public BTSequence(List<BTNode> children) : base(children) { }
 
-        public override BTNodeState Evaluate()
+        public override BTNodeState Evaluate(float deltaTime)
         {
             bool anyChildRunning = false;
 
             foreach (BTNode child in children)
             {
-                BTNodeState result = child.Evaluate();
+                BTNodeState result = child.Evaluate(deltaTime);
                 if (result == BTNodeState.Failure)
                 {
                     state = BTNodeState.Failure;

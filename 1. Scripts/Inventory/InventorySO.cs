@@ -84,6 +84,10 @@ namespace KJ
         }
         public void UnwrapData(WrapInventoryData data)
         {
+            if (data == null)
+            {
+                return;
+            }
             for (int i = 0; i < Slots.Length; i++)
             {
                 if (data.itemId[i] <= -1)
