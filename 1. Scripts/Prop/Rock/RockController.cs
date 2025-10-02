@@ -19,6 +19,7 @@ namespace KJ
         {
             crushingEffectClip = DataManager.EffectData.GetCopy((int)crushingEffect);
             crushingEffectClip.PreLoad();
+            isGround = false;
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -32,12 +33,13 @@ namespace KJ
                     damagable.OnDamage(gameObject, 40f);
                 }
             }
-            else
+            else if (collision.gameObject.CompareTag(TagAndLayer.Ground))
             {
                 SoundManager.Instance.PlayOneShotEffect(collisionSound, transform.position, 1f);
                 isGround = true;
             }
         }
+
         public void CrushRock()
         {
             SoundManager.Instance.PlayOneShotEffect(crushingSound, transform.position, 1f);
