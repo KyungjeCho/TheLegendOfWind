@@ -135,29 +135,92 @@ namespace KJ
     {
         private Animator myAnimator;
         private NavMeshAgent myAgent;
+        private int speedFloat;
 
         public BTReturnToCenterOfMap(DragonController context) : base(context)
         {
             myAgent = context.GetAgent;
             myAnimator = context.GetAnimator;
+
+            speedFloat = Animator.StringToHash(AnimatorKey.Speed);
         }
 
         public override BTNodeState Evaluate(float deltaTime)
         {
             myAgent.SetDestination(context.centerOfMap);
+            myAnimator.SetFloat(speedFloat, 1.0f);
             myAgent.stoppingDistance = 0.1f;
-
-
-            if (myAgent.stoppingDistance > myAgent.remainingDistance)
+            myAgent.speed = 10f;
+            
+            if (!myAgent.pathPending && myAgent.stoppingDistance > myAgent.remainingDistance)
             {
                 state = BTNodeState.Success;
-                return state;
             }
             else
             {
                 state = BTNodeState.Running;
+            }
+            Debug.Log(state);
+            return state;
+        }
+    }
+    public class BTScreamForGimmick : BTAction<DragonController>
+    {
+        public SoundList screamSound = SoundList.CrateBreak;
+
+        private Animator myAnimator;
+        private int speedFloat;
+        private int screamTrigger;
+
+        private bool isScreamed = false;
+
+        public BTScreamForGimmick(DragonController context) : base(context)
+        {
+            myAnimator = context.GetAnimator;
+            speedFloat = Animator.StringToHash(AnimatorKey.Speed);
+            screamTrigger = Animator.StringToHash(AnimatorKey.Scream);
+            myAnimator.SetFloat(speedFloat, 0f);
+            
+        }
+
+        public override BTNodeState Evaluate(float deltaTime)
+        {
+            myAnimator.SetFloat(speedFloat, 0f);
+            
+            if (isScreamed)
+            {
+                state = BTNodeState.Success;
                 return state;
             }
+
+            myAnimator.SetTrigger(screamTrigger);
+            state = BTNodeState.Success;
+            context.RockSlide.OnStartGimmick();
+
+            isScreamed = true;
+            return state;
+        }
+    }
+    public class BTAoEReady : BTAction<DragonController>
+    {
+        public BTAoEReady(DragonController context) : base(context)
+        {
+        }
+
+        public override BTNodeState Evaluate(float deltaTime)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class BTAoEAttack : BTAction<DragonController>
+    {
+        public BTAoEAttack(DragonController context) : base(context)
+        {
+        }
+
+        public override BTNodeState Evaluate(float deltaTime)
+        {
+            throw new NotImplementedException();
         }
     }
     #endregion

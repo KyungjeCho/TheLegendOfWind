@@ -12,6 +12,10 @@ namespace KJ
         private BTMoveToTargetAction    moveAction;
         private BTMeleeAttackAction     meleeAttackAction;
 
+        private BTSequence              halfHPGimmickSequencer;
+        private BTReturnToCenterOfMap   returnToCenterOfMapAction;
+        private BTScreamForGimmick      screamForGimmickAction;
+
         private BTConditional notCombatConditional;
         private BTConditional underHalfHPConditional;
         private BTConditional underQuarterHPConditional;
@@ -26,9 +30,12 @@ namespace KJ
 
         public Vector3 centerOfMap = Vector3.zero;
 
+        private RockSlide rockSlide;
+
         public bool IsUnderHalfHP => CurrentHP < MaxHP * 0.5f;
         public bool IsUnderQuarterHP => CurrentHP < MaxHP * 0.25f;
         public bool IsAlive => CurrentHP > 0f ? true : false;
+        public RockSlide RockSlide => rockSlide;
 
         public void OnDamage(GameObject target, float damage)
         {
@@ -69,24 +76,41 @@ namespace KJ
         {
             base.Start();
 
+            rockSlide = GetComponent<RockSlide>();
+
             onCombatStart += StartCombat;
 
-            idleAction = new BTIdleAction(this);
-            moveAction = new BTMoveToTargetAction(this);
-            meleeAttackAction = new BTMeleeAttackAction(this);
+            idleAction              = new BTIdleAction(this);
+            notCombatConditional    = new BTConditional(idleAction, () => isCombatting == false);
 
-            notCombatConditional = new BTConditional(idleAction, () => isCombatting == false);
-            
-            meleeAttackSequencer = new BTSequence(new List<BTNode>()
+            moveAction              = new BTMoveToTargetAction(this);
+            meleeAttackAction       = new BTMeleeAttackAction(this);
+
+            meleeAttackSequencer    = new BTSequence(new List<BTNode>()
             {
                 moveAction, meleeAttackAction
             });
 
-            root = new BTSelector(new List<BTNode>()
+            #region Half HP Gimmick BT
+            returnToCenterOfMapAction   = new BTReturnToCenterOfMap(this);
+            screamForGimmickAction      = new BTScreamForGimmick(this);
+
+            halfHPGimmickSequencer      = new BTSequence(new List<BTNode>() { 
+                returnToCenterOfMapAction, screamForGimmickAction
+            });
+
+            underHalfHPConditional = new BTConditional(halfHPGimmickSequencer, () => IsUnderHalfHP && isFirstHalfHPGimmick);
+            #endregion
+
+            root = new BTMemorySelector(new List<BTNode>()
             {
                 notCombatConditional,
+                underHalfHPConditional,
                 meleeAttackSequencer
             }) ;
+
+            
+            currentHP = maxHP * 0.5f - 1f;
         }
         protected override void Update()
         {

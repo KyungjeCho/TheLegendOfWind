@@ -42,6 +42,40 @@ namespace KJ
     }
 
     /// <summary>
+    /// Memory Selector
+    /// Running이 나오면 그 child만 호출하는 셀렉터
+    /// </summary>
+    public class BTMemorySelector : BTComposite
+    {
+        private int currentChild = -1;
+        public BTMemorySelector(List<BTNode> children) : base(children)
+        {
+        }
+
+        public override BTNodeState Evaluate(float deltaTime)
+        {
+            if (currentChild != -1)
+            {
+                var status = children[currentChild].Evaluate(deltaTime);
+                if (status == BTNodeState.Running)
+                    return BTNodeState.Running;
+                currentChild = -1; // 종료 시 초기화
+            }
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                var status = children[i].Evaluate(deltaTime);
+                if (status != BTNodeState.Failure)
+                {
+                    currentChild = i;
+                    return status;
+                }
+            }
+
+            return BTNodeState.Failure;
+        }
+    }
+    /// <summary>
     /// Sequence 
     /// 모든 자식 노드가 Success 일 경우
     /// </summary>
@@ -65,6 +99,8 @@ namespace KJ
                 if (result == BTNodeState.Running)
                 {
                     anyChildRunning = true;
+                    state = BTNodeState.Running;
+                    return state;
                 }
             }
 

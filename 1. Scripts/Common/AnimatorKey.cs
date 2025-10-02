@@ -24,6 +24,7 @@ namespace KJ
         public const string IsAlive             = "IsAlive";
         public const string Open                = "Open";
         public const string Revive              = "Revive";
+        public const string Scream              = "Scream";
     }
 }
 
