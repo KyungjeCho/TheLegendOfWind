@@ -160,7 +160,6 @@ namespace KJ
             {
                 state = BTNodeState.Running;
             }
-            Debug.Log(state);
             return state;
         }
     }
@@ -201,26 +200,123 @@ namespace KJ
             return state;
         }
     }
-    public class BTAoEReady : BTAction<DragonController>
+    public class BTAoECharging: BTAction<DragonController>
     {
-        public BTAoEReady(DragonController context) : base(context)
+        private bool isNodeStarted = false;
+        private bool isNodeEnd = false;
+        private float delayTime = 5f;
+        private float elapsedTime = 0f;
+
+        // Charging Anim
+        private Animator myAnimator;
+        private int readyBool;
+        // Charging Effect
+        private GlobalAoEAttack globalAoEAttack;
+
+        // Warning Decal Projector
+        private WarningDecalProjectorController warningDecalProjectorController;
+        private ParticleSystem imposionVFX;
+
+        // 만약 경고 범위가 전부 실행 된 이후 경우 -> return Sueccess
+        public BTAoECharging(DragonController context) : base(context)
         {
+            myAnimator = context.GetAnimator;
+            readyBool = Animator.StringToHash(AnimatorKey.Ready);
+            globalAoEAttack = context.GetGlobalAoEAttack;
+            warningDecalProjectorController = globalAoEAttack.aoeWarningDecalProjectorController;
+
+            imposionVFX = context.imposionVFX;
+        }
+        public void OnNodeStart(float deltaTime)
+        {
+            if (elapsedTime < delayTime)
+            {
+                elapsedTime += deltaTime;
+                return;
+            }
+            if (isNodeStarted)
+            {
+                return;
+            }
+            // Anim Change
+            myAnimator.SetBool(readyBool, true);
+
+            // Global AoE Decal Start
+            globalAoEAttack.OnAoEWarningStart();
+            if (imposionVFX != null)
+            {
+                imposionVFX.Play();
+            }
+           
+            // Decal End Event Callback 
+            warningDecalProjectorController.onDecalProjectorEnd += OnWarningEnd;
+
+            isNodeStarted = true;
         }
 
+        public void OnWarningEnd()
+        {
+            myAnimator.SetBool(readyBool, false);
+
+            isNodeEnd = true;
+        }
         public override BTNodeState Evaluate(float deltaTime)
         {
-            throw new NotImplementedException();
+            if (isNodeEnd)
+            {
+                state = BTNodeState.Success;
+                return state;
+            }
+            OnNodeStart(deltaTime);
+
+            state = BTNodeState.Running;
+            return state;
         }
     }
     public class BTAoEAttack : BTAction<DragonController>
     {
+        private bool isNodeStarted = false;
+        private Animator myAnimator;
+        private int screamTrigger;
+
+        private SoundList shockwaveSound = SoundList.None;
+        private ParticleSystem shockwaveVFX;
+
+        private GlobalAoEAttack globalAoEAttack;
+        // 스크림 한번더
+        // shock wave vfx play
+
+        // 전체 sphere -> Player 있는지 확인 
+        // 플레이어와 드래곤 사이에 돌이 있는지 확인
+        // 돌이 없다면 999 데미지  
+        // 돌이 있다면 0 데미지
+        // 그냥 전체 돌 3개~4개 전부 파괴 (돌을 리스트나 배열로 저장하자)
+        // 만약 어택이 끝나면 context의 isFirst... 변수 false 변경
+
         public BTAoEAttack(DragonController context) : base(context)
         {
+            myAnimator = context.GetAnimator;
+            screamTrigger = Animator.StringToHash(AnimatorKey.Scream);
+
+            shockwaveVFX = context.shockwaveVFX;
+            globalAoEAttack = context.GetGlobalAoEAttack;
         }
 
         public override BTNodeState Evaluate(float deltaTime)
         {
-            throw new NotImplementedException();
+            if (isNodeStarted)
+            {
+                state = BTNodeState.Success;
+                return state;
+            }
+
+            myAnimator.SetTrigger(screamTrigger);
+            shockwaveVFX.Play();
+            globalAoEAttack.OnAoEAttackStart();
+            context.isFirstHalfHPGimmick = false;
+            isNodeStarted = true;
+            state = BTNodeState.Success;
+            return state;
         }
     }
     #endregion

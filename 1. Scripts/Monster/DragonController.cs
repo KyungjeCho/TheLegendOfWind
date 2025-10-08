@@ -15,6 +15,8 @@ namespace KJ
         private BTSequence              halfHPGimmickSequencer;
         private BTReturnToCenterOfMap   returnToCenterOfMapAction;
         private BTScreamForGimmick      screamForGimmickAction;
+        private BTAoECharging           aoeChargingAction;
+        private BTAoEAttack             aoeAttackAction;
 
         private BTConditional notCombatConditional;
         private BTConditional underHalfHPConditional;
@@ -29,13 +31,17 @@ namespace KJ
         public bool isFirstHalfHPGimmick = true;
 
         public Vector3 centerOfMap = Vector3.zero;
+        public ParticleSystem imposionVFX;
+        public ParticleSystem shockwaveVFX;
 
         private RockSlide rockSlide;
+        private GlobalAoEAttack globalAoEAttack;
 
         public bool IsUnderHalfHP => CurrentHP < MaxHP * 0.5f;
         public bool IsUnderQuarterHP => CurrentHP < MaxHP * 0.25f;
         public bool IsAlive => CurrentHP > 0f ? true : false;
         public RockSlide RockSlide => rockSlide;
+        public GlobalAoEAttack GetGlobalAoEAttack => globalAoEAttack;
 
         public void OnDamage(GameObject target, float damage)
         {
@@ -77,6 +83,7 @@ namespace KJ
             base.Start();
 
             rockSlide = GetComponent<RockSlide>();
+            globalAoEAttack = GetComponent<GlobalAoEAttack>();
 
             onCombatStart += StartCombat;
 
@@ -94,9 +101,11 @@ namespace KJ
             #region Half HP Gimmick BT
             returnToCenterOfMapAction   = new BTReturnToCenterOfMap(this);
             screamForGimmickAction      = new BTScreamForGimmick(this);
+            aoeChargingAction           = new BTAoECharging(this);
+            aoeAttackAction             = new BTAoEAttack(this);
 
             halfHPGimmickSequencer      = new BTSequence(new List<BTNode>() { 
-                returnToCenterOfMapAction, screamForGimmickAction
+                returnToCenterOfMapAction, screamForGimmickAction, aoeChargingAction, aoeAttackAction
             });
 
             underHalfHPConditional = new BTConditional(halfHPGimmickSequencer, () => IsUnderHalfHP && isFirstHalfHPGimmick);

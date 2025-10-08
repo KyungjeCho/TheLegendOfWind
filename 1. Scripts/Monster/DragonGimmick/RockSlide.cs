@@ -15,7 +15,7 @@ namespace KJ
         public float maxSpawnRadius = 10f;
 
         public WarningDecalProjectorController warningDecalProjectorPrefab;
-
+        
         public void OnStartGimmick()
         {
             Vector3[] rockPosArray = new Vector3[rockCount];
