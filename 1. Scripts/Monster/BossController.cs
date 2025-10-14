@@ -53,6 +53,7 @@ namespace KJ
 
         protected BTNode root;
 
+        public DamagePipeline damagePipeline;
         private FieldOfView fieldOfView;
 
         public Transform Target => fieldOfView.NearestTarget;
@@ -88,6 +89,8 @@ namespace KJ
             flameSoundClip.PreLoad();
 
             root = new BTSelector(new List<BTNode>());
+
+            damagePipeline = new DamagePipeline();
         }
 
         protected virtual void Update()

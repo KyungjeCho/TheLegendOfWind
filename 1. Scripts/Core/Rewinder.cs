@@ -4,7 +4,15 @@ using UnityEngine;
 
 namespace KJ
 {
-    public class Rewinder : MonoBehaviour
+    public interface IRewind
+    {
+        public void Record();
+        public void Rewind();
+        public void StartRewind();
+        public void StopRewind();
+    }
+
+    public class Rewinder : MonoBehaviour, IRewind
     {
         private List<TransformData> transformHistory = new List<TransformData> ();
         private bool isRewinding = false;
@@ -24,7 +32,7 @@ namespace KJ
             }
         }
 
-        private void Record()
+        public void Record()
         {
             if (transformHistory.Count > Mathf.Round(recordTime / Time.deltaTime))
             {
@@ -33,7 +41,7 @@ namespace KJ
             transformHistory.Insert(0, new TransformData(transform));
         }
 
-        private void Rewind()
+        public void Rewind()
         {
             if (transformHistory.Count > 0)
             {

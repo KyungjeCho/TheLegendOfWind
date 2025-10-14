@@ -310,7 +310,7 @@ namespace KJ
                 if (collider.GetComponent<IDamagable>() != null)
                 {
                     Debug.Log("todo : 플레이어 데미지 설정");
-                    collider.GetComponent<IDamagable>().OnDamage(gameObject, 1f);
+                    collider.GetComponent<IDamagable>().OnDamage(gameObject, 10f);
                 }
             }
 

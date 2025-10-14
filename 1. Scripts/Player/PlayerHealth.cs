@@ -79,7 +79,7 @@ namespace KJ
             // OnDamage
 
             // DamageCalc
-            float totalDamage = (defense - damage) > 0f ? defense - damage : 1f;
+            float totalDamage = (damage - defense) > 0f ? damage - defense : 1f;
             foreach (IDamageHandler handler in damageHandlers.Values)
             {
                 totalDamage = handler.ProcessDamage(totalDamage);

@@ -37,7 +37,7 @@ namespace KJ
             if (targetTransform == null)
                 return;
 
-            Rewinder rewinder = targetTransform.GetComponent<Rewinder>();
+            IRewind rewinder = targetTransform.GetComponent<IRewind>();
 
             if (rewinder != null)
             {

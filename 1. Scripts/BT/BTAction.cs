@@ -320,4 +320,89 @@ namespace KJ
         }
     }
     #endregion
+
+    #region Dragon HP 25% under gimmick
+    public class BTInvincible : BTAction<DragonController>
+    {
+        private BossInvincible bossInvincible;
+        private bool isInvincible = false;
+        private float elapsedTime = 0f;
+        private float durationTime = 5f;
+
+        public BTInvincible(DragonController context) : base(context)
+        {
+            bossInvincible = context.GetBossInvincible;
+            context.onInvincibleBreak += OnInvicibleBreak;
+        }
+
+        public void OnInvicibleBreak()
+        {
+            isInvincible = false;
+            context.SetHighlight(false);
+            bossInvincible.RemoveInvincibleModifier();
+        }
+        public override BTNodeState Evaluate(float deltaTime)
+        {
+            if (!isInvincible)
+            {
+                elapsedTime += deltaTime;
+            }
+            if (elapsedTime > durationTime)
+            {
+                elapsedTime = 0f;
+                isInvincible = true;
+                context.SetHighlight(true);
+                bossInvincible.AddInvincibleModifier();
+
+                state = BTNodeState.Success;
+                return state;
+            }
+            
+            if (isInvincible)
+            {
+                state = BTNodeState.Success;
+                return state;
+            }
+            else
+            {
+                state = BTNodeState.Failure;
+                return state;
+            }
+        }
+    }
+
+    public class BTRockAttack : BTAction<DragonController>
+    {
+        private Animator myAnimator;
+
+        private int rangeAttackTrigger;
+
+        private bool isAttacking = false;
+        // Dragon Craw Animation ->
+        public BTRockAttack(DragonController context) : base(context)
+        {
+            myAnimator = context.GetAnimator;
+
+            rangeAttackTrigger = Animator.StringToHash(AnimatorKey.RangeAttack);
+
+            context.onRockAttackExit += OnRockAttackExit;
+        }
+        public void OnRockAttackExit()
+        {
+            isAttacking = false;
+        }
+        public override BTNodeState Evaluate(float deltaTime)
+        {
+            if (!isAttacking)
+            {
+                myAnimator.SetTrigger(rangeAttackTrigger);
+                isAttacking=true;
+            }
+
+            state = BTNodeState.Success;
+            return state;
+        }
+    }
+
+    #endregion
 }
