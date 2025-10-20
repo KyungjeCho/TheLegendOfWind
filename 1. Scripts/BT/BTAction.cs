@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,6 +24,7 @@ namespace KJ
         private Animator myAnimator;
         private int speedFloat;
 
+        private bool isCombatStart = false;
         public BTIdleAction(DragonController context) : base(context)
         {
             myAnimator = context.GetAnimator;
@@ -34,12 +36,32 @@ namespace KJ
         {
             myAnimator.SetFloat(speedFloat, 0f);
 
-            if (context.Target != null)
+            if (context.Target != null && !isCombatStart)
             {
-                context.onCombatStart?.Invoke();
+                context.OnScreamStart();
+                isCombatStart = true;
             }
             state = BTNodeState.Success;
             return state;
+        }
+    }
+
+    public class BTScreamAction : BTAction<DragonController>
+    {
+        private Animator myAnimator;
+
+        private int screamTrigger;
+
+        public BTScreamAction(DragonController context) : base(context)
+        {
+            myAnimator = context.GetAnimator;
+
+            screamTrigger = Animator.StringToHash(AnimatorKey.Scream);
+        }
+
+        public override BTNodeState Evaluate(float deltaTime)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -48,6 +70,7 @@ namespace KJ
         private Animator myAnimator;
         private NavMeshAgent myAgent;
         private int speedFloat;
+        private int meleeAttackBool;
 
         private Transform targetTr;
 
@@ -57,6 +80,7 @@ namespace KJ
             myAgent = context.GetAgent;
 
             speedFloat = Animator.StringToHash(AnimatorKey.Speed);
+            meleeAttackBool = Animator.StringToHash(AnimatorKey.MeleeAttack);
             myAgent.speed = 2f;
         }
 
@@ -77,11 +101,13 @@ namespace KJ
 
             if (myAgent.stoppingDistance > myAgent.remainingDistance)
             {
+                myAnimator.SetFloat(speedFloat, 0.0f);
                 state = BTNodeState.Success;
                 return state;
             }
             else
             {
+                myAnimator.SetBool(meleeAttackBool, false);
                 state = BTNodeState.Running;
                 return state;
             }
@@ -93,6 +119,7 @@ namespace KJ
         private Animator myAnimator;
         private NavMeshAgent myAgent;
 
+        private int speedFloat;
         private int meleeAttackBool;
 
         private Transform targetTr;
@@ -102,20 +129,21 @@ namespace KJ
             myAgent = context.GetAgent;
             myAnimator = context.GetAnimator;
 
+            speedFloat = Animator.StringToHash(AnimatorKey.Speed);
             meleeAttackBool = Animator.StringToHash(AnimatorKey.MeleeAttack);
         }
 
         public override BTNodeState Evaluate(float deltaTime)
         {
-            //targetTr = context.Target.transform;
-            //if (targetTr == null)
-            //{
-            //    state = BTNodeState.Failure;
-            //    return state;
-            //}
-
+            targetTr = context.Target.transform;
+            if (targetTr == null)
+            {
+                state = BTNodeState.Failure;
+                return state;
+            }
             if (myAgent.stoppingDistance > myAgent.remainingDistance)
             {
+                myAnimator.SetFloat(speedFloat, 0f);
                 myAnimator.SetBool(meleeAttackBool, true);
                 state = BTNodeState.Success;
                 return state;
@@ -324,15 +352,26 @@ namespace KJ
     #region Dragon HP 25% under gimmick
     public class BTInvincible : BTAction<DragonController>
     {
+        private Animator myAnimator;
+
+        private int screamTrigger;
+        private int speedFloat;
+
         private BossInvincible bossInvincible;
         private bool isInvincible = false;
         private float elapsedTime = 0f;
         private float durationTime = 5f;
 
+        private SoundList screamSound = SoundList.lizard_attack;
+
         public BTInvincible(DragonController context) : base(context)
         {
+            myAnimator = context.GetAnimator;
             bossInvincible = context.GetBossInvincible;
             context.onInvincibleBreak += OnInvicibleBreak;
+
+            screamTrigger = Animator.StringToHash(AnimatorKey.Scream);
+            speedFloat = Animator.StringToHash(AnimatorKey.Speed);
         }
 
         public void OnInvicibleBreak()
@@ -343,7 +382,7 @@ namespace KJ
         }
         public override BTNodeState Evaluate(float deltaTime)
         {
-            if (!isInvincible)
+            if (!isInvincible && !context.isGroggy)
             {
                 elapsedTime += deltaTime;
             }
@@ -353,6 +392,10 @@ namespace KJ
                 isInvincible = true;
                 context.SetHighlight(true);
                 bossInvincible.AddInvincibleModifier();
+                myAnimator.SetTrigger(screamTrigger);
+                myAnimator.SetFloat(speedFloat, 0f);
+                SoundManager.Instance.PlayOneShotEffect(screamSound, context.transform.position, 1f);
+                context.GetShakeCam.StartShake();
 
                 state = BTNodeState.Success;
                 return state;
@@ -378,6 +421,10 @@ namespace KJ
         private int rangeAttackTrigger;
 
         private bool isAttacking = false;
+
+        public float cooldownTime = 10f;
+        private float elapsedTime = 0f;
+
         // Dragon Craw Animation ->
         public BTRockAttack(DragonController context) : base(context)
         {
@@ -393,16 +440,44 @@ namespace KJ
         }
         public override BTNodeState Evaluate(float deltaTime)
         {
-            if (!isAttacking)
+            elapsedTime += deltaTime;
+
+            if (!isAttacking && elapsedTime > cooldownTime)
             {
                 myAnimator.SetTrigger(rangeAttackTrigger);
                 isAttacking=true;
+                elapsedTime = 0f;
             }
 
             state = BTNodeState.Success;
             return state;
         }
     }
-
     #endregion
+
+    public class BTGroggyAction : BTAction<DragonController>
+    {
+        private Animator myAnimator;
+
+        private int speedFloat;
+        private int meleeAttackBool;
+
+        public BTGroggyAction(DragonController context) : base(context)
+        {
+            myAnimator = context.GetAnimator;
+
+            speedFloat = Animator.StringToHash(AnimatorKey.Speed);
+            meleeAttackBool = Animator.StringToHash(AnimatorKey.MeleeAttack);
+        }
+
+        public override BTNodeState Evaluate(float deltaTime)
+        {
+            myAnimator.SetFloat(speedFloat, 0f);
+            myAnimator.SetBool(meleeAttackBool, false);
+
+            state = BTNodeState.Success;
+            return state;
+        }
+    }
+
 }

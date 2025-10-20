@@ -73,7 +73,7 @@ namespace KJ
                                     data.data[selection].PreLoad();
                                     npcSource = Resources.Load(data.data[selection].clipPath + data.data[selection].clipName) as GameObject;
                                 }
-                                npcSource = (GameObject)EditorGUILayout.ObjectField("Effect Clip", npcSource, typeof(GameObject), false, GUILayout.Width(450));
+                                npcSource = (GameObject)EditorGUILayout.ObjectField("NPC Clip", npcSource, typeof(GameObject), false, GUILayout.Width(450));
 
                                 if (npcSource != null)
                                 {

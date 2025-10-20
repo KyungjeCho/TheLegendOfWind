@@ -28,7 +28,7 @@ namespace KJ
 
             for (int i = 0; i < buffs.Length; i++)
             {
-                buffs[i] = new ItemBuff(itemSO.data.buffs[i].Value) { stat = itemSO.data.buffs[i].stat };
+                buffs[i] = new ItemBuff(itemSO.data.buffs[i].value) { stat = itemSO.data.buffs[i].stat };
             }
         }
     }

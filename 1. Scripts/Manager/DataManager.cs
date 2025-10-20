@@ -48,7 +48,7 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
             respawnData.LoadData();
         }
     }
-
+    
     public static SoundData SoundData
     {
         get

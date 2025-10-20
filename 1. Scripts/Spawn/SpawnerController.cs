@@ -6,6 +6,11 @@ namespace KJ
 {
     public class SpawnerController : MonoBehaviour
     {
+        public bool isRandomSpawn = false;
+        [Range(0.1f, 20f)]
+        public float minSpawnTime = 0.1f;
+        [Range(0.1f, 20f)]
+        public float maxSpawnTime = 1.0f;
         public float spawnDelayTime = 5f;
 
         public GameObject monsterPrefab;
@@ -13,6 +18,13 @@ namespace KJ
         private float elapsedTime = 0f;
         private GameObject monsterGameObject;
 
+        private void Start()
+        {
+            if (isRandomSpawn)
+            {
+                spawnDelayTime = Random.Range(minSpawnTime, maxSpawnTime);
+            }
+        }
         // Update is called once per frame
         void Update()
         {

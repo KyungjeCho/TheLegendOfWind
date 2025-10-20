@@ -13,6 +13,7 @@ namespace KJ
         private GameObject effectSource;
 
         private static EffectTool window;
+
         [MenuItem("Tools/Effect Tool")]
         private static void Init()
         {
@@ -80,9 +81,6 @@ namespace KJ
                                 {
                                     data.effectClips[selection].clipPath = DataManagementHelper.GetPath(effectSource);
                                     data.effectClips[selection].clipName = effectSource.name;
-
-                                    Debug.Log(data.effectClips[selection].clipPath);
-                                    Debug.Log(data.effectClips[selection].clipName);
                                 }
                             }
                         }
@@ -127,7 +125,6 @@ namespace KJ
             {
                 if (GUILayout.Button("Save"))
                 {
-                    Debug.Log(data.effectClips);
                     data.SaveData();
                     DataManagementHelper.CreateEnumStructure("EffectList", data);
                     AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);

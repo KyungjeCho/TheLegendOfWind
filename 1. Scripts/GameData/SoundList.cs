@@ -19,5 +19,16 @@ public enum SoundList
     HeroDeath = 11,
     CrateBreak = 12,
     Unlock = 13,
+    barrel_break = 14,
+    parry = 15,
+    lizard_attack = 16,
+    lizard_die = 17,
+    HealingSynthetic_08 = 18,
+    lizard_footstep2 = 19,
+    lizard_footstep3 = 20,
+    carnosaur_attack_01 = 21,
+    carnosaur_attack_02 = 22,
+    lockpickBreak = 23,
+    MenuButtonSound = 24,
 
 }

@@ -18,9 +18,8 @@ namespace KJ
     public class ItemBuff : IModifier
     {
         public PlayerAttribute stat;
-        private float value;
+        public float value;
 
-        public float Value => value;
         public ItemBuff(float value)
         {
             this.value = value;

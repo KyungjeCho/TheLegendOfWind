@@ -43,6 +43,10 @@ namespace KJ
 
         private void PlayFootStep()
         {
+            AnimatorStateInfo stateInfo = myAnimator.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsName("Locomotion"))
+                return;
+
             if (oldDistance < maxDistance)
             {
                 return;

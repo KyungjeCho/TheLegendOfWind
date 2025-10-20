@@ -21,6 +21,7 @@ namespace KJ
         public SoundList dieSound;
         public SoundList screamSound;
         public SoundList flameSound;
+        public SoundList[] attackSounds;
 
         private SoundClip hitSoundClip;
         private SoundClip dieSoundClip;
@@ -50,6 +51,8 @@ namespace KJ
 
         protected NavMeshAgent myAgent;
         protected Animator myAnimator;
+
+        public Action onDragonDie;
 
         protected BTNode root;
 

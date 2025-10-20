@@ -96,7 +96,8 @@ namespace KJ
                 }
                 else
                 {
-                    ItemSO itemSO = DataManager.Instance.ItemDBSO.itemSOs[data.itemId[i]];
+                    DataManager manager = DataManager.GetOrCreateInstance();
+                    ItemSO itemSO = manager.ItemDBSO.itemSOs[data.itemId[i]];
                     int amount = data.amount[i];
                     Slots[i].UpdateSlot(itemSO.CreateItem(), amount);
                 }

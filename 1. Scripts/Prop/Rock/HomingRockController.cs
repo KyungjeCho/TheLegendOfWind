@@ -16,6 +16,7 @@ namespace KJ
         private Rigidbody myRigidbody;
         private Transform myTransform;
         private Collider myCollider;
+        private bool isHit = false;
 
         public Transform ownerTr;
         public Transform targetTr;
@@ -33,6 +34,7 @@ namespace KJ
             this.ownerTr = ownerTr;
             this.targetTr = targetTr;
         }
+
         private void FixedUpdate()
         {
             if (speed > Mathf.Epsilon && myRigidbody != null)
@@ -50,17 +52,18 @@ namespace KJ
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.transform == targetTr)
+            if (collision.transform == targetTr && !isHit)
             {
                 IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
 
-                damagable.OnDamage(this.gameObject, 20f);
-
+                damagable.OnDamage(gameObject, 10f);
+                isHit = true;
                 EffectClip hitEffectClip = DataManager.EffectData.effectClips[(int)hitEffect];
                 hitEffectClip.PreLoad();
                 EffectManager.Instance.PlayEffect(hitEffectClip, transform.position);
 
                 SoundManager.Instance.PlayOneShotEffect(hitSound, transform.position, 1f);
+
                 gameObject.SetActive(false);
                 Destroy(gameObject);
             }

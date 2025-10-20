@@ -27,6 +27,7 @@ namespace KJ
         public bool IsAlive => hp > 0f;
 
         public event Action<float> OnHealthChanged;
+        public event Action OnPlayereDie;
 
         // Start is called before the first frame update
         void Start()
@@ -61,6 +62,7 @@ namespace KJ
             myAnimator.SetTrigger(dieTrigger);
 
             StartCoroutine(CDelayDie(3f));
+            OnPlayereDie?.Invoke();
         }
         public void Revive()
         {
@@ -76,9 +78,6 @@ namespace KJ
         }
         public void OnDamage(GameObject target, float damage)
         {
-            // OnDamage
-
-            // DamageCalc
             float totalDamage = (damage - defense) > 0f ? damage - defense : 1f;
             foreach (IDamageHandler handler in damageHandlers.Values)
             {

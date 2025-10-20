@@ -25,17 +25,12 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : Component
 
     protected virtual void Awake()
     {
-        instance = this as T;
-        if (Application.isPlaying == true)
+        if (instance != null && instance != this)
         {
-            if (transform.parent != null && transform.root != null)
-            {
-                DontDestroyOnLoad(transform.root.gameObject);
-            }
-            else
-            {
-                DontDestroyOnLoad(gameObject);
-            }
+            Destroy(gameObject);
+            return;
         }
+
+        instance = this as T;
     }
 }

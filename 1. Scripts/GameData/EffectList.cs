@@ -10,6 +10,10 @@ public enum EffectList
     MagicShieldBlueStart = 2,
     MagicShieldBlueLoop = 3,
     MagicShieldBlueStop = 4,
-    RockCrushingEffect = 5,
+    HealEffect = 5,
+    BarrelCrusingEffect = 6,
+    RockCrushingEffect = 7,
+    ImpactEffect = 8,
+    StonesHit = 9,
 
 }
