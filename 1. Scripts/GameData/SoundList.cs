@@ -30,5 +30,7 @@ public enum SoundList
     carnosaur_attack_02 = 22,
     lockpickBreak = 23,
     MenuButtonSound = 24,
+    ShimmeryReward5 = 25,
+    Moonspire = 26,
 
 }

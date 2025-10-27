@@ -72,6 +72,7 @@ namespace KJ
             } 
             catch (Exception e1)
             {
+                Debug.Log("Load Dialog State : " + e1.Message);
                 SaveState();
             }
         }

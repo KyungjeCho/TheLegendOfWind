@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,11 @@ namespace KJ
     public class ControlDescriptionPanel : SingletonMonoBehaviour<ControlDescriptionPanel>
     {
         public UIDescriptionPanel descriptionPanel;
+        public SoundList openSound;
         private bool isOpened = false;
         private ItemSO itemSO = null;
+
+        public Action<ItemSO> OnPanelClose;
 
         void Update()
         {
@@ -25,6 +29,8 @@ namespace KJ
             descriptionPanel.gameObject.SetActive(isOpened);
             descriptionPanel.UpdatePanel(itemSO);
             InputManager.Instance.InteractButton.ConsumeButtonPressed();
+            InputManager.Instance.ChangeDialogStrategy();
+            SoundManager.Instance.PlayOneShotEffect(openSound, Camera.main.transform.position + Camera.main.transform.forward, 0.7f);
         }
         public void ClosePanel()
         {
@@ -34,7 +40,9 @@ namespace KJ
             descriptionPanel.gameObject.SetActive(isOpened);
             if (itemSO == null) { return; }
             DropQueue.Instance.ItemDrop(itemSO.itemName);
+            OnPanelClose?.Invoke(itemSO);
             itemSO = null;
+            InputManager.Instance.ChangeNormalStrategy();
         }
     }
 }

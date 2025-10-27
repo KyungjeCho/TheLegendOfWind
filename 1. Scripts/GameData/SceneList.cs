@@ -9,5 +9,6 @@ public enum SceneList
     TitleScene = 1,
     DungeonScene = 2,
     BossScene = 3,
+    EndingScene = 4,
 
 }

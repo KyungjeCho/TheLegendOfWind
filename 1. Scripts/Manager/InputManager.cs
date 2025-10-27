@@ -81,7 +81,8 @@ namespace KJ
         {
             InputManager.Instance.HorizontalButton.ButtonValue = 0f;
             InputManager.Instance.VerticalButton.ButtonValue = 0f;
-
+            InputManager.Instance.MouseX.ButtonValue = 0f;
+            InputManager.Instance.MouseY.ButtonValue = 0f;
             InputManager.Instance.InteractButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Interact);
             InputManager.Instance.DenyButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Deny);
         }

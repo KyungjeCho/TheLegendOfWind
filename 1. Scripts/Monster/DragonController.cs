@@ -266,7 +266,16 @@ namespace KJ
 
             deadTimeline.Play();
             shakeCam.StartShake();
-
+            StartCoroutine(FallingItemRoutine());
+        }
+        private IEnumerator FallingItemRoutine()
+        {
+            yield return new WaitForSeconds(6f);
+            SpawnDragonHeartItem spawnItem = GetComponent<SpawnDragonHeartItem>();
+            if (spawnItem != null)
+            {
+                spawnItem.Spawn();
+            }
         }
         #region Test
         public void TestQuarterHPGimmick()

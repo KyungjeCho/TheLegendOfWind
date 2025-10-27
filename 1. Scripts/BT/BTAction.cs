@@ -307,6 +307,7 @@ namespace KJ
         private Animator myAnimator;
         private int screamTrigger;
 
+        //todo : Add Shockwave Sound 
         private SoundList shockwaveSound = SoundList.None;
         private ParticleSystem shockwaveVFX;
 
@@ -338,6 +339,7 @@ namespace KJ
                 return state;
             }
 
+            SoundManager.Instance.PlayOneShotEffect(shockwaveSound, context.transform.position, 1f);
             myAnimator.SetTrigger(screamTrigger);
             shockwaveVFX.Play();
             globalAoEAttack.OnAoEAttackStart();
@@ -395,8 +397,7 @@ namespace KJ
                 myAnimator.SetTrigger(screamTrigger);
                 myAnimator.SetFloat(speedFloat, 0f);
                 SoundManager.Instance.PlayOneShotEffect(screamSound, context.transform.position, 1f);
-                context.GetShakeCam.StartShake();
-
+                
                 state = BTNodeState.Success;
                 return state;
             }

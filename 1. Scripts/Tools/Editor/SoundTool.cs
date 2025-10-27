@@ -15,6 +15,7 @@ namespace KJ
         private AudioClip audioSource;
 
         private static SoundTool window;
+
         [MenuItem("Tools/Sound Tool")]
         public static void Init()
         {
@@ -73,8 +74,13 @@ namespace KJ
                                 EditorGUILayout.LabelField("ID", selection.ToString(), GUILayout.Width(450));
                                 data.names[selection] = EditorGUILayout.TextField("Name", data.names[selection], GUILayout.Width(450));
                                 data.soundClips[selection].playType = (SoundPlayType)EditorGUILayout.EnumPopup("Play Type", data.soundClips[selection].playType, GUILayout.Width(450));
+                                data.soundClips[selection].maxVolume = EditorGUILayout.FloatField("Max Volume", data.soundClips[selection].maxVolume, GUILayout.Width(450));
+                                data.soundClips[selection].isLoop = EditorGUILayout.Toggle("Loop Clip", data.soundClips[selection].isLoop, GUILayout.Width(450));
+                                EditorGUILayout.Separator();
                                 if (audioSource == null && data.soundClips[selection].clipName != string.Empty)
+                                {
                                     audioSource = Resources.Load(data.soundClips[selection].clipPath + data.soundClips[selection].clipName) as AudioClip;
+                                }
                                 audioSource = (AudioClip)EditorGUILayout.ObjectField("Audio Clip", audioSource, typeof(AudioClip), false, GUILayout.Width(450));
                                 
                                 if (audioSource != null)
@@ -82,10 +88,12 @@ namespace KJ
                                     data.soundClips[selection].clipPath = DataManagementHelper.GetPath(audioSource); ;
                                     data.soundClips[selection].clipName = audioSource.name;
 
-                                    data.soundClips[selection].isLoop = EditorGUILayout.Toggle("Loop", data.soundClips[selection].isLoop, GUILayout.Width(450));
+                                    data.soundClips[selection].pitch = EditorGUILayout.Slider("Pitch", data.soundClips[selection].pitch, -3.0f, 3.0f, GUILayout.Width(450));
+                                    data.soundClips[selection].dopplerLevel = EditorGUILayout.Slider("Doppler", data.soundClips[selection].dopplerLevel, 0.0f, 5.0f, GUILayout.Width(450));
+                                    data.soundClips[selection].rolloffMode = (AudioRolloffMode)EditorGUILayout.EnumPopup("Volume Rolloff", data.soundClips[selection].rolloffMode, GUILayout.Width(450));
                                     data.soundClips[selection].minDistance = EditorGUILayout.FloatField("Min Distance", data.soundClips[selection].minDistance, GUILayout.Width(450));
                                     data.soundClips[selection].maxDistance = EditorGUILayout.FloatField("Max Distance", data.soundClips[selection].maxDistance, GUILayout.Width(450));
-
+                                    data.soundClips[selection].spartialBlend = EditorGUILayout.Slider("PanLevel", data.soundClips[selection].spartialBlend, 0.0f, 1.0f, GUILayout.Width(450));
                                 }
                             }
                         }
