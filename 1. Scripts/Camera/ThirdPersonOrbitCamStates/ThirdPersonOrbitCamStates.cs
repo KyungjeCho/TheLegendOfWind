@@ -26,8 +26,8 @@ namespace KJ.ThirdPersonCamStates
 
         public override void Update(float deltaTime)
         {
-            context.angleH += Mathf.Clamp(InputManager.Instance.MouseX.ButtonValue, -1f, 1f) * context.horizontalAimingSpeed;
-            context.angleV += Mathf.Clamp(InputManager.Instance.MouseY.ButtonValue, -1f, 1f) * context.verticalAimingSpeed;
+            context.angleH += Mathf.Clamp(InputManager.Instance.MouseX.ButtonValue, -1f, 1f) * context.sensitivity;
+            context.angleV += Mathf.Clamp(InputManager.Instance.MouseY.ButtonValue, -1f, 1f) * context.sensitivity;
 
             context.angleV = Mathf.Clamp(context.angleV, context.minVerticalAngle, context.TargetMaxVerticleAngle);
             context.angleV = Mathf.LerpAngle(context.angleV, context.angleV + context.RecoilAngle, 10f * deltaTime);
@@ -80,7 +80,6 @@ namespace KJ.ThirdPersonCamStates
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-            Debug.Log("3P Stop State");
             context.PreviousCamPos = cameraTr.position;
             context.PreviousCamRot = cameraTr.rotation;
             context.IsPlaying = false;

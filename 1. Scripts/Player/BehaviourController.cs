@@ -25,10 +25,13 @@ namespace KJ
         private Animator myAnimator;
         private Rigidbody myRigidbody;
         private ThirdPersonOrbitCamera camScript;
+        private PlayerData playerData;
+        private PlayerBuff playerBuff;
 
         private float h; // h Axis
         private float v; // v Axis
-        
+        private float attack;
+
         private float turnSmoothing = 0.06f; // 카메라가 보는 방향으로 움직일때 속도
         private bool changedFOV;
         [SerializeField]
@@ -65,8 +68,15 @@ namespace KJ
             myRigidbody = GetComponent<Rigidbody>();
 
             colExtents = GetComponent<Collider>().bounds.extents;
-            
 
+            playerBuff = GetComponent<PlayerBuff>();
+
+            playerData = ScriptableObject.CreateInstance<PlayerData>();
+            playerData.LoadData();
+
+            attack = DataManager.PlayerLVData.GetCopyFromLevel(playerData.GetCopy().level).attack;
+
+            playerBuff.OnValueChanged += AddAttack;
         }
 
         private void Update()
@@ -139,6 +149,10 @@ namespace KJ
                     behaviour.LocalLateUpdate();
                 }
             }
+        }
+        void OnDestroy()
+        {
+            playerBuff.OnValueChanged -= AddAttack;
         }
 
         public void Repositioning()
@@ -310,10 +324,18 @@ namespace KJ
                 if (collider.GetComponent<IDamagable>() != null)
                 {
                     //Debug.Log("todo : 플레이어 데미지 설정");
-                    collider.GetComponent<IDamagable>().OnDamage(gameObject, 10f);
+                    collider.GetComponent<IDamagable>().OnDamage(gameObject, attack);
                 }
             }
 
+        }
+
+        public void AddAttack(PlayerAttribute attribute, float attack)
+        {
+            if (attribute == PlayerAttribute.ATTACK)
+            {
+                this.attack = DataManager.PlayerLVData.GetCopyFromLevel(playerData.GetCopy().level).attack + attack;
+            }
         }
     }
 

@@ -7,6 +7,8 @@ namespace KJ
 {
     public class SelectObjectBehaviour : BaseBehaviour
     {
+        public Texture2D crossHair;
+
         private bool isSelecting = false;
 
         private Camera myCam;
@@ -17,8 +19,11 @@ namespace KJ
         private Transform myTransform;
         [SerializeField]
         private Transform targetTransform;
+        private AttackBehaviour attackBehaviour;
 
         public Transform TargetTransform => targetTransform;
+
+        private List<ObjectSelector> selectedGameObjects = new List<ObjectSelector>();
 
         public event Action<bool> OnSelect;
         public event Action<Transform> OnTargetObjectSelected;
@@ -32,7 +37,7 @@ namespace KJ
             myCam = Camera.main;
 
             behaviourController.SubscribeBehaviour(this);
-
+            attackBehaviour = GetComponent<AttackBehaviour>();
         }
         private void Update()
         {
@@ -40,13 +45,66 @@ namespace KJ
             if (isSelecting && InputManager.Instance.AttackButton.IsPressedDown)
             {
                 //Event Publish
+                foreach(ObjectSelector os in selectedGameObjects)
+                {
+                    os.SetRimLight(false);
+                }
+
                 OnTargetObjectSelected?.Invoke(targetTransform);
+                
+                StartCoroutine(IDelaySelecting());
                 SetIsSelecting(false);
             }
-            //SelectManament();
+            else if (isSelecting)
+            {
+                behaviourController.LockTempBehaviour(behaviourCode);
+                FindCanSelectObject();
+            }
         }
+        public IEnumerator IDelaySelecting()
+        {
+            yield return new WaitForSeconds(0.05f);
+            behaviourController.UnLockTempBehaviour(behaviourCode);
+            yield return null;
+        }
+        private void OnGUI()
+        {
+            if (crossHair != null)
+            {
+                if (isSelecting)
+                {
+                    GUI.DrawTexture(new Rect(Screen.width * 0.5f - (crossHair.width * 0.5f),
+                        Screen.height * 0.5f - (crossHair.height * 0.5f),
+                        crossHair.width, crossHair.height), crossHair);
+                }
+            }
+        }
+        private void FindCanSelectObject()
+        {
+            float distance = 20f;
+
+            Collider[] colliders = Physics.OverlapSphere(myTransform.position, distance, targetLayerMask);
+
+            selectedGameObjects.Clear();
+
+            foreach(Collider collider in colliders)
+            {
+                ObjectSelector os = collider.gameObject.GetComponent<ObjectSelector>();
+                if (os != null)
+                {
+                    selectedGameObjects.Add(os);
+                    os.SetRimLight(true, RimType.SELECT);
+                }
+            }
+
+        }
+
         private void CheckCollision()
         {
+            if (!isSelecting)
+            {
+                return;
+            }
             Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
             Ray ray = myCam.ScreenPointToRay(screenCenter);
             RaycastHit hit;
@@ -56,26 +114,37 @@ namespace KJ
                 if (hit.collider != null)
                 {
                     targetTransform = hit.collider.transform;
+
+                    ObjectSelector os = targetTransform.GetComponent<ObjectSelector>();
+                    if (os != null)
+                    {
+                        os.SetRimLight(true, RimType.SELECTED);
+                    }
                 }
                 else
                 { 
+                    if (targetTransform != null)
+                    {
+                        ObjectSelector os = targetTransform.GetComponent<ObjectSelector>();
+                        if (os != null)
+                        {
+                            os.SetRimLight(true, RimType.SELECT);
+                        }
+                    }
                     targetTransform = null;
                 }
             }
             else
             {
+                if (targetTransform != null)
+                {
+                    ObjectSelector os = targetTransform.GetComponent<ObjectSelector>();
+                    if (os != null)
+                    {
+                        os.SetRimLight(true, RimType.SELECT);
+                    }
+                }
                 targetTransform = null;
-            }
-        }
-        private void SelectManament()
-        {
-            if (isSelecting)
-            {
-                behaviourController.OverrideWithBehaviour(this);
-            }
-            else
-            {
-                behaviourController.RevokeOverridingBehaviour(this);
             }
         }
     }

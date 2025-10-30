@@ -27,11 +27,11 @@ namespace KJ
 
         private string jsonFilePath = "";
         private string jsonFileName = "soundData.json";
-
+        private string dataPath = "Data/soundData";
 
         public void SaveData()
         {
-            string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
+            string path = Path.Combine(dataDirectory, jsonFileName);
             JsonSoundData jsonSoundData = new JsonSoundData(soundClips, names);
             string json = JsonUtility.ToJson(jsonSoundData, true);
             File.WriteAllText(path, json);
@@ -39,21 +39,32 @@ namespace KJ
 
         public void LoadData()
         {
-            string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
-
-            try
+            jsonFilePath = Application.dataPath + dataDirectory;
+            TextAsset asset = (TextAsset) Resources.Load(dataPath, typeof(TextAsset));
+            if (asset == null || asset.text == null)
             {
-                string jsonData = File.ReadAllText(path);
-
-                JsonSoundData jsonSoundData = JsonUtility.FromJson<JsonSoundData>(jsonData);
-
-                soundClips = jsonSoundData.clips;
-                names = jsonSoundData.names;
+                this.AddData("NewSound");
+                return;
             }
-            catch (Exception e1)
-            {
-                Debug.Log("Error reading the file: " + e1.Message);
-            }
+            JsonSoundData jsonSounData = JsonUtility.FromJson<JsonSoundData>(asset.text);
+            soundClips = jsonSounData.clips;
+            names = jsonSounData.names;
+
+            //string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
+
+            //try
+            //{
+            //    string jsonData = File.ReadAllText(path);
+
+            //    JsonSoundData jsonSoundData = JsonUtility.FromJson<JsonSoundData>(jsonData);
+
+            //    soundClips = jsonSoundData.clips;
+            //    names = jsonSoundData.names;
+            //}
+            //catch (Exception e1)
+            //{
+            //    Debug.Log("Error reading the file: " + e1.Message);
+            //}
         }
 
         public override int AddData(string name)

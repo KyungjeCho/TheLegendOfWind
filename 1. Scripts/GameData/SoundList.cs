@@ -32,5 +32,8 @@ public enum SoundList
     MenuButtonSound = 24,
     ShimmeryReward5 = 25,
     Moonspire = 26,
+    DarkwoodPath = 27,
+    Discovery1 = 28,
+    MagicScore9 = 29,
 
 }

@@ -15,6 +15,9 @@ namespace KJ
         public LayerMask targetMask;
 
         private DropSystem dropSystem;
+
+        private ObjectSelector objectSelector;
+
         private MaterialPropertyBlock propBlock;
         private SkinnedMeshRenderer meshRenderer;
 
@@ -43,6 +46,8 @@ namespace KJ
             meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
             originalPos = transform.position;
+
+            objectSelector = GetComponentInChildren<ObjectSelector>();
         }
 
         protected override void Update()

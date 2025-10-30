@@ -35,11 +35,13 @@ namespace KJ
         {
             if (!QuestManager.Instance.IsCompletedQuest(questSO.requireQuest))
             {
+                Debug.Log("Quest In Progress");
                 DialogManager.Instance.StartDialog(inProgressDialog);
                 return;
             }
             if (!QuestManager.Instance.IsCurrentQuest(questSO) && !QuestManager.Instance.IsCompletedQuest(questSO))
             {
+                Debug.Log("Quest Dialog Start");
                 DialogManager.Instance.StartDialog(preAcceptDialog);
                 return;
             }
@@ -47,11 +49,12 @@ namespace KJ
             {
                 if (QuestManager.Instance.CompleteQuest(questSO))
                 {
+                    Debug.Log("Quest Complete");
                     DialogManager.Instance.StartDialog(completeDialog);
                     nextTransition.Transit(stateMachine);
                     return;
                 }
-
+                Debug.Log("Quest In Progress");
                 DialogManager.Instance.StartDialog(inProgressDialog);
                 return;
             }

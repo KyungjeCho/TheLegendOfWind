@@ -55,7 +55,7 @@ namespace KJ
             oldDistance = 0;
             maxDistance = 0;
 
-            SoundManager.Instance.PlayOneShotEffect(stepSound, transform.position, 1f);
+            SoundManager.GetOrCreateInstance().PlayOneShotEffect(stepSound, transform.position, 1f);
         }
 
         private void Update()

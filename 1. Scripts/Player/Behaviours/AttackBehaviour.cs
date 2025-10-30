@@ -35,6 +35,10 @@ namespace KJ
 
         private void Update()
         {
+            if (behaviourController.GetTempLockStatus(behaviourCode))
+            {
+                return;
+            }
             if (!isSelecting && !isAttacking && InputManager.Instance.AttackButton.IsPressedDown && behaviourController.IsGrounded() && behaviourController.GetAnimator.GetInteger(weaponInt) == 1)
             {
                 behaviourController.GetAnimator.SetInteger(meleeAttackComboInt, 1);
@@ -61,6 +65,21 @@ namespace KJ
                 behaviourController.RevokeOverridingBehaviour(this);
                 //behaviourController.UnLockTempBehaviour(behaviourCode);
             }
+        }
+
+        private IEnumerator IAttackRoutine()
+        {
+            if (behaviourController.GetTempLockStatus(behaviourCode))
+            {
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(0.05f);
+
+            behaviourController.GetAnimator.SetInteger(meleeAttackComboInt, 1);
+            behaviourController.GetAnimator.SetTrigger(meleeAttackTrigger);
+
+            yield return null;
         }
     }
 

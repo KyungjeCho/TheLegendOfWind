@@ -14,6 +14,7 @@ namespace KJ
         private float maxHp;
         private Animator myAnimator;
         private PlayerRespawn respawn;
+        private PlayerBuff playerBuff;
 
         public SoundList hitSound;
         public SoundList dieSound;
@@ -38,22 +39,29 @@ namespace KJ
             }
             playerData.LoadData();
 
-            maxHp = playerData.GetCopy().hp;
+            maxHp = DataManager.PlayerLVData.GetCopyFromLevel(playerData.GetCopy().level).maxHp;
             hp = playerData.GetCopy().hp;
             defense = DataManager.PlayerLVData.GetCopyFromLevel(playerData.GetCopy().level).defense;
 
             myAnimator = GetComponent<Animator>();
             respawn = GetComponent<PlayerRespawn>();
+            playerBuff = GetComponent<PlayerBuff>();
 
             getHitTrigger   = Animator.StringToHash(AnimatorKey.GetHit);
             dieTrigger      = Animator.StringToHash(AnimatorKey.Die);
             reviveTrigger   = Animator.StringToHash(AnimatorKey.Revive);
+
+            playerBuff.OnValueChanged += AddMaxHP;
+            playerBuff.OnValueChanged += AddDefense;
+
+            OnHealthChanged?.Invoke(hp / maxHp);
         }
 
         
-        private void OnDisable()
+        private void OnDestroy()
         {
-            
+            playerBuff.OnValueChanged -= AddMaxHP;
+            playerBuff.OnValueChanged -= AddDefense;
         }
 
         public void Kill()
@@ -64,6 +72,7 @@ namespace KJ
             StartCoroutine(CDelayDie(3f));
             OnPlayereDie?.Invoke();
         }
+
         public void Revive()
         {
             InputManager.Instance.ChangeNormalStrategy();
@@ -132,7 +141,24 @@ namespace KJ
 
             OnHealthChanged?.Invoke(hp / maxHp);
         }
+        public void AddMaxHP(PlayerAttribute attribute, float health)
+        {
+            if (attribute == PlayerAttribute.HP)
+            {
+                maxHp = DataManager.PlayerLVData.GetCopyFromLevel(playerData.GetCopy().level).maxHp + health;
+                hp = hp > maxHp ? maxHp : hp;
 
+                OnHealthChanged?.Invoke(hp / maxHp);
+            }
+        }
+        public void AddDefense(PlayerAttribute attribute, float defense)
+        {
+            if (attribute == PlayerAttribute.DEFENSE)
+            {
+                maxHp = DataManager.PlayerLVData.GetCopyFromLevel(playerData.GetCopy().level).defense + defense;
+            }
+
+        }
         private IEnumerator CDelayDie(float duration)
         {
             yield return new WaitForSeconds(duration);

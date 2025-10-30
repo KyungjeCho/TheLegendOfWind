@@ -8,6 +8,8 @@ namespace KJ
     [CreateAssetMenu(fileName = "Rewind Skill", menuName = "ScriptableObjects/Rewind Skill")]
     public class RewindSkill : BaseSkill
     {
+        public SoundList failueSound;
+        public SoundList successSound;
         private SelectObjectBehaviour selectObjectBehaviour;
 
         public override void SetPlayerTransform(Transform transform)
@@ -27,6 +29,7 @@ namespace KJ
             {
                 return;
             }
+            SoundManager.Instance.PlayOneShotEffect(useSound, playerTranform.position, 1f);
             selectObjectBehaviour.SetIsSelecting(true);
             selectObjectBehaviour.OnTargetObjectSelected += SelectTargetObject;
             StartSkill();
@@ -35,13 +38,26 @@ namespace KJ
         public void SelectTargetObject(Transform targetTransform)
         {
             if (targetTransform == null)
+            {
+                SoundManager.Instance.PlayOneShotEffect(failueSound, playerTranform.position, 1f);
                 return;
+            }
 
             IRewind rewinder = targetTransform.GetComponent<IRewind>();
 
             if (rewinder != null)
             {
+                ObjectSelector os = targetTransform.GetComponent<ObjectSelector>();
+                if (os != null)
+                {
+                    os.TriggerRimLight(5f);
+                }
+                SoundManager.Instance.PlayOneShotEffect(successSound, playerTranform.position, 1f);
                 rewinder.StartRewind();
+            }
+            else
+            {
+                SoundManager.Instance.PlayOneShotEffect(failueSound, playerTranform.position, 1f);
             }
         }
     }

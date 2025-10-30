@@ -16,7 +16,7 @@ namespace KJ
 
         public void PlayTitleSound()
         {
-            SoundManager.GetOrCreateInstance().PlayBGM((int)titleSound);
+            SoundManager.GetOrCreateInstance().FadeIn((int)titleSound, 1f, Interpolate.EaseType.Linear);
         }
     }
 }

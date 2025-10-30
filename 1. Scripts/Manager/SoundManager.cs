@@ -56,6 +56,7 @@ namespace KJ
             {
                 GameObject bgmA = new GameObject("BGM_A", typeof(AudioSource));
                 bgmA.transform.SetParent(audioRoot);
+                bgmA.transform.localPosition = Vector3.zero;
                 bgmPlayerA = bgmA.GetComponent<AudioSource>();
                 bgmPlayerA.playOnAwake = false;
             }
@@ -64,6 +65,7 @@ namespace KJ
             {
                 GameObject bgmB = new GameObject("BGM_B", typeof(AudioSource));
                 bgmB.transform.SetParent(audioRoot);
+                bgmB.transform.localPosition = Vector3.zero;
                 bgmPlayerB = bgmB.GetComponent<AudioSource>();
                 bgmPlayerB.playOnAwake = false;
             }
@@ -83,6 +85,7 @@ namespace KJ
             {
                 GameObject ui = new GameObject("UI", typeof(AudioSource));
                 ui.transform.SetParent(audioRoot);
+                ui.transform.localPosition = Vector3.zero;
                 uiPlayer = ui.GetComponent<AudioSource>();
                 uiPlayer.playOnAwake = false;
             }
@@ -111,7 +114,10 @@ namespace KJ
             PlayerPrefs.SetFloat("Master", volume);
         }
 
-        // ratio 로 반환
+        /// <summary>
+        /// ratio 로 반환
+        /// </summary>
+        /// <returns></returns>
         public float GetMasterVolume()
         {
             if (PlayerPrefs.HasKey("Master"))
@@ -120,7 +126,7 @@ namespace KJ
             }
             else
             {
-                return 0f;
+                return 1f;
             }
         }
 
@@ -132,7 +138,10 @@ namespace KJ
             PlayerPrefs.SetFloat("BGM", volume);
         }
 
-        // ratio 로 반환
+        /// <summary>
+        /// ratio 로 반환
+        /// </summary>
+        /// <returns></returns>
         public float GetBGMVolume()
         {
             if (PlayerPrefs.HasKey("BGM"))
@@ -141,7 +150,7 @@ namespace KJ
             }
             else
             {
-                return 0f;
+                return 1f;
             }
         }
 
@@ -153,7 +162,10 @@ namespace KJ
             PlayerPrefs.SetFloat("SFX", volume);
         }
 
-        // ratio 로 반환
+        /// <summary>
+        /// ratio 로 반환
+        /// </summary>
+        /// <returns></returns>
         public float GetSFXVolume()
         {
             if (PlayerPrefs.HasKey("SFX"))
@@ -162,7 +174,7 @@ namespace KJ
             }
             else
             {
-                return 0f;
+                return 1f;
             }
         }
 

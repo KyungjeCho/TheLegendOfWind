@@ -7,6 +7,7 @@ namespace KJ
 {
     public abstract class BaseSkill : ScriptableObject
     {
+        public SoundList useSound;
         public UnlockList unlockList;
         [SerializeField] private string skillName;
         [SerializeField] private string skillDescription;

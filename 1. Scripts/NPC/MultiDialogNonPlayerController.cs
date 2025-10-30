@@ -61,6 +61,7 @@ namespace KJ
 
             File.WriteAllText(path, content);
         }
+
         public void LoadState()
         {
             string path = Path.Combine(jsonFilePath, gameObject.name + ".txt");

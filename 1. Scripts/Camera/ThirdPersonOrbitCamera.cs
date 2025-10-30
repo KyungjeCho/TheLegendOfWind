@@ -1,5 +1,6 @@
 using KJ.CameraControl;
 using KJ.ThirdPersonCamStates;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,13 +24,15 @@ namespace KJ.ThirdPersonCamStates
         public float smooth = 10f;            // 카메라 반응 속도
         public float recoilAngleBounce = 5.0f;           // 사격 반동
 
-        public float horizontalAimingSpeed = 6.0f;     // 수평 회전 속도
-        public float verticalAimingSpeed = 6.0f;     // 수직 회전 속도
+        //public float horizontalAimingSpeed = 6.0f;     // 수평 회전 속도
+        //public float verticalAimingSpeed = 6.0f;     // 수직 회전 속도
         public float maxVerticalAngle = 30.0f;    // 최대 카메라 엥글 제한
         public float minVerticalAngle = -60.0f;   // 최소 카메라 앵글 제한
 
         public float angleH = 0.0f; // 마우스 이동에 따른 카메라 수평이동
         public float angleV = 0.0f; // 마우스 이동에 따른 카메라 수직이동
+
+        public ConfigModel configModel;
 
         private Transform cameraTransform; // 카메라 Transform [캐싱]
         private Camera myCamera;
@@ -48,6 +51,8 @@ namespace KJ.ThirdPersonCamStates
 
         private Vector3 previousCamPos;
         private Quaternion previousCamRot;
+
+        public float sensitivity = 6.0f;
 
         private bool isPlaying = false;
 
@@ -87,12 +92,22 @@ namespace KJ.ThirdPersonCamStates
 
             //EventBusSystem.Subscribe(EventBusType.START, StartCamera);
             //EventBusSystem.Subscribe(EventBusType.STOP, StopCamera);
+            if (configModel == null)
+            {
+                configModel = ScriptableObject.CreateInstance<ConfigModel>();
+            }
+            sensitivity = configModel.mouseSensitivity;
+            configModel.OnMouseSensitivityChanged += SetSensitivity;
         }
         private void Update()
         {
             stateMachine.Update(Time.deltaTime);
         }
 
+        void OnDestroy()
+        {
+            configModel.OnMouseSensitivityChanged -= SetSensitivity;
+        }
         private void InitCamera()
         {
             // 카메라 기본 위치 세팅
@@ -200,6 +215,11 @@ namespace KJ.ThirdPersonCamStates
         public Quaternion GetRot()
         {
             return previousCamRot;
+        }
+
+        public void SetSensitivity(float sensitivity)
+        {
+            this.sensitivity = sensitivity;
         }
     }
 }

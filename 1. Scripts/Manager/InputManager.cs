@@ -73,6 +73,7 @@ namespace KJ
             InputManager.Instance.QuestButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Quest);
             InputManager.Instance.InteractButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Interact);
             InputManager.Instance.DenyButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Deny);
+            InputManager.Instance.EscapeButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Escape);
         }
     }
     public class DialogInput : InputStrategy
@@ -85,6 +86,7 @@ namespace KJ
             InputManager.Instance.MouseY.ButtonValue = 0f;
             InputManager.Instance.InteractButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Interact);
             InputManager.Instance.DenyButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Deny);
+            InputManager.Instance.EscapeButton.IsButtonPressed = Input.GetButtonDown(ButtonName.Escape);
         }
     }
     public class QuestInput : InputStrategy
@@ -124,6 +126,7 @@ namespace KJ
         public ConsumeButton DenyButton;
         public ConsumeButton InteractButton;
         public ConsumeButton InventoryButton;
+        public ConsumeButton EscapeButton;
 
         private InputStrategy inputStrategy;
 
@@ -156,6 +159,8 @@ namespace KJ
             DenyButton = new ConsumeButton();
             InteractButton = new ConsumeButton();
             InventoryButton = new ConsumeButton();
+            EscapeButton = new ConsumeButton();
+
             inputStrategy = new NormalInput();
             EventBusSystem.Subscribe(EventBusType.START, ChangeNormalStrategy);
             EventBusSystem.Subscribe(EventBusType.DIALOG, ChangeDialogStrategy);

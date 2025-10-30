@@ -27,10 +27,12 @@ public class ControlInventory : MonoBehaviour
             if (isOpened)
             {
                 EventBusSystem.Publish(EventBusType.STOP);
+                InputManager.Instance.ChangeDialogStrategy();
             }
             else
             {
                 EventBusSystem.Publish(EventBusType.START);
+                InputManager.Instance.ChangeNormalStrategy();
             }
         }
     }

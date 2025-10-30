@@ -25,6 +25,7 @@ namespace KJ
         public const string Quest           = "Quest";
         public const string Interact        = "Interact";
         public const string Deny            = "Deny";
+        public const string Escape          = "Escape";
     }
 
 }

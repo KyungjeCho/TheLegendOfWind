@@ -14,6 +14,7 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
     public ItemDBSO itemDBSO = null;
     private static UnlockData unlockData = null;
     private static RespawnData respawnData = null;
+    private static TutorialData tutorialData = null;
 
     private void Start()
     {
@@ -46,6 +47,11 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
         {
             respawnData = ScriptableObject.CreateInstance<RespawnData>();
             respawnData.LoadData();
+        }
+        if (tutorialData == null)
+        {
+            tutorialData = ScriptableObject.CreateInstance<TutorialData>();
+            tutorialData.LoadData();
         }
     }
     
@@ -122,6 +128,19 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
                 respawnData.LoadData();
             }
             return respawnData;
+        }
+    }
+
+    public static TutorialData TutorialData
+    {
+        get
+        {
+            if (tutorialData == null)
+            {
+                tutorialData = ScriptableObject.CreateInstance<TutorialData>();
+                tutorialData.LoadData();
+            }
+            return tutorialData;
         }
     }
 }

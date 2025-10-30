@@ -24,6 +24,8 @@ namespace KJ
         [SerializeField]
         private Transform defaultRangeWeaponSlot;
 
+        private PlayerBuff playerBuff;
+
         private WeaponChangeBehaviour weaponChangeBehaviour;
 
         private bool canTakeMeleeWeapon;
@@ -32,6 +34,8 @@ namespace KJ
         {
             combiner = new EquipmentCombiner(gameObject);
             
+            playerBuff = GetComponent<PlayerBuff>();
+
             for (int i = 0; i < equipmentSO.Slots.Length; i++)
             {
                 equipmentSO.Slots[i].OnPreUpdate += OnRemoveItem;
@@ -71,6 +75,8 @@ namespace KJ
 
             int index = (int)slot.AllowedItems[0];
 
+            playerBuff.Add(itemSO);
+
             switch(slot.AllowedItems[0])
             {
                 case ItemType.Helmet:
@@ -92,6 +98,7 @@ namespace KJ
                 itemInstances[index].name = slot.AllowedItems[0].ToString();
             }
         }
+
 
         private ItemInstances EquipSkinnedItem(ItemSO itemSO)
         {
@@ -214,6 +221,7 @@ namespace KJ
                 RemoveItemBy(slot.AllowedItems[0]);
                 return;
             }
+            playerBuff.Remove(itemSO);
 
             if (slot.ItemSO.modelPrefab != null)
             {

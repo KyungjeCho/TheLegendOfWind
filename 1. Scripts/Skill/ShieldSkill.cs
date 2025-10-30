@@ -43,6 +43,8 @@ namespace KJ
             }
             oneTimeInvincibleShieldHandler.IsUsing = false;
 
+            SoundManager.Instance.PlayOneShotEffect(useSound, playerTranform.position, 1f);
+
             shieldEffectLoopGO = EffectManager.Instance.PlayEffect(shieldEffectLoopList, playerTranform.position, playerTranform);
             shieldEffectLoopGO.GetComponent<ParticleSystem>().Play();
 
