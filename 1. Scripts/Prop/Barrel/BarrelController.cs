@@ -12,7 +12,7 @@ namespace KJ
 
         public bool IsAlive => throw new System.NotImplementedException();
 
-        public void BreakBarrel()
+        public void BreakBarrel(Transform targetTr = null)
         {
             EffectManager.Instance.PlayEffect(brokenEffect, transform.position + transform.up * 1.0f);
             SoundManager.Instance.PlayOneShotEffect(brokenSound, transform.position, 1f);
@@ -25,7 +25,7 @@ namespace KJ
 
         public void OnDamage(GameObject target, float damage)
         {
-            BreakBarrel();
+            BreakBarrel(target.transform);
         }
     }
 }

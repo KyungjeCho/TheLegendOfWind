@@ -6,17 +6,21 @@ namespace KJ
 {
     public class EffectManager : SingletonMonoBehaviour<EffectManager>
     {
-        public GameObject PlayEffect(EffectClip clip, Vector3 position)
+        public GameObject PlayEffect(EffectClip clip, Vector3 position, bool isObjectPool = true)
         {
             clip.PreLoad();
-
-            return Instantiate(clip.effectPrefab, position, Quaternion.identity) as GameObject;
+            if (isObjectPool)
+                return PoolManager.GetOrCreateInstance().Get(clip.effectPrefab, position, Quaternion.identity);
+            else
+                return Instantiate(clip.effectPrefab, position, Quaternion.identity) as GameObject;
         }
-        public GameObject PlayEffect(EffectClip clip, Vector3 position, Transform parent)
+        public GameObject PlayEffect(EffectClip clip, Vector3 position, Transform parent, bool isObjectPool = true)
         {
             clip.PreLoad();
-
-            return Instantiate(clip.effectPrefab, position, Quaternion.identity, parent) as GameObject;
+            if (isObjectPool)
+                return PoolManager.GetOrCreateInstance().Get(clip.effectPrefab, position, Quaternion.identity, parent);
+            else
+                return Instantiate(clip.effectPrefab, position, Quaternion.identity, parent) as GameObject;
         }
 
         public GameObject PlayEffect(EffectList effect, Vector3 position)
