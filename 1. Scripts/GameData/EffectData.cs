@@ -13,7 +13,7 @@ namespace KJ
 
         public string jsonFilePath = "";
         public string jsonFileName = "effectData.json";
-
+        public string dataPath = "Data/effectData";
         public void SaveData()
         {
             string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
@@ -24,21 +24,30 @@ namespace KJ
 
         public void LoadData()
         {
-            string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
-
-            try
+            TextAsset asset = (TextAsset) Resources.Load(dataPath, typeof(TextAsset));
+            if (asset == null || asset.text == null)
             {
-                string jsonData = File.ReadAllText(path);
-
-                JsonWrapData<EffectClip> jsonSoundData = JsonUtility.FromJson<JsonWrapData<EffectClip>>(jsonData);
-
-                effectClips = jsonSoundData.data;
-                names = jsonSoundData.names;
+                this.AddData("NewEffect");
+                return;
             }
-            catch (Exception e1)
-            {
-                Debug.Log("Error reading the file: " + e1.Message);
-            }
+            JsonWrapData<EffectClip> jsonEffectData = JsonUtility.FromJson<JsonWrapData<EffectClip>>(asset.text);
+            effectClips = jsonEffectData.data;
+            names = jsonEffectData.names;
+            //string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
+
+            //try
+            //{
+            //    string jsonData = File.ReadAllText(path);
+
+            //    JsonWrapData<EffectClip> jsonSoundData = JsonUtility.FromJson<JsonWrapData<EffectClip>>(jsonData);
+
+            //    effectClips = jsonSoundData.data;
+            //    names = jsonSoundData.names;
+            //}
+            //catch (Exception e1)
+            //{
+            //    Debug.Log("Error reading the file: " + e1.Message);
+            //}
         }
         public override int AddData(string name)
         {

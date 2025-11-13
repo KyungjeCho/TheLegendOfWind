@@ -16,7 +16,7 @@ namespace KJ
 
         public float maxIntensity = 10f;
 
-        public SkinnedMeshRenderer meshRenderer;
+        public MeshRenderer meshRenderer;
         private MaterialPropertyBlock propBlock;
 
         private readonly int intensityId = Shader.PropertyToID("_Intensity");

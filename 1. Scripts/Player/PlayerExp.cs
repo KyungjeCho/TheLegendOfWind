@@ -57,6 +57,8 @@ namespace KJ
                 OnMaxExpChanged?.Invoke(maxExp);
                 OnCurrentExpChanged?.Invoke(currentLevel);
                 OnLevelChanged?.Invoke(currentLevel);
+                SoundManager.GetOrCreateInstance().PlayUISound((int)levelUpSound);
+                EffectManager.GetOrCreateInstance().PlayEffect(levelUpEffect, transform.position, transform);
             }
             else if (IsLevelUp && !DataManager.PlayerLVData.IsNextLevelExist(currentLevel))
             {
@@ -77,7 +79,6 @@ namespace KJ
         {
             playerData.Stat.exp = currentExp;
             playerData.Stat.level = currentLevel;
-            Debug.Log(currentLevel + " " + playerData.Stat.level);
             playerData.SaveData();
         }
     }

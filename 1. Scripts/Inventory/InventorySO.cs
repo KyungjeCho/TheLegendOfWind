@@ -106,6 +106,7 @@ namespace KJ
         public void SaveData()
         {
             WrapInventoryData wrapData = WrapData();
+            jsonFilePath = Application.persistentDataPath;
             string path = Path.Combine(jsonFilePath, jsonFileName);
             string json = JsonUtility.ToJson(wrapData, true);
             File.WriteAllText(path, json);
@@ -113,6 +114,7 @@ namespace KJ
         public void LoadData()
         {
             //Clear();
+            jsonFilePath = Application.persistentDataPath;
             string path = Path.Combine(jsonFilePath, jsonFileName);
 
             if (File.Exists(path))
@@ -136,7 +138,7 @@ namespace KJ
             ItemSO itemSO = slotToUse.ItemSO;
             slotToUse.UpdateSlot(slotToUse.item, slotToUse.amount - 1);
 
-            OnUseItem.Invoke(itemSO);
+            OnUseItem?.Invoke(itemSO);
         }
     }
 

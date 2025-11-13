@@ -7,6 +7,7 @@ namespace KJ
 {
     public abstract class BaseSkill : ScriptableObject
     {
+        public Sprite iconSprite;
         public SoundList useSound;
         public UnlockList unlockList;
         [SerializeField] private string skillName;
@@ -27,6 +28,15 @@ namespace KJ
         {
             timer = cooldownTime;
             DataManager.UnlockData.OnUnlock += UpdateSkill;
+        }
+        private void OnEnable()
+        {
+            timer = cooldownTime;
+            DataManager.UnlockData.OnUnlock += UpdateSkill;
+        }
+        private void OnDisable()
+        {
+            DataManager.UnlockData.OnUnlock -= UpdateSkill;
         }
         public virtual void SetPlayerTransform(Transform transform)
         {

@@ -23,6 +23,9 @@ namespace KJ
         protected override void Start()
         {
             base.Start();
+
+            filePath = Application.persistentDataPath;
+
             trigger = GetComponent<BaseTrigger>();
             myAnimator = GetComponent<Animator>();
 

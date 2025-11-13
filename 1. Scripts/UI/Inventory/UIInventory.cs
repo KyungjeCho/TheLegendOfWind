@@ -15,6 +15,7 @@ namespace KJ
 
         public Dictionary<GameObject, InventorySlot> slotUIs = new Dictionary<GameObject, InventorySlot>();
 
+        public UIItemInfo itemInfo;
 
         private void Awake()
         {
@@ -34,7 +35,13 @@ namespace KJ
                 inventorySO.Slots[i].UpdateSlot(inventorySO.Slots[i].item, inventorySO.Slots[i].amount);
             }
         }
-
+        private void OnDestroy()
+        {
+            for (int i = 0; i < inventorySO.Slots.Length; i++)
+            {
+                inventorySO.Slots[i].OnPostUpdate -= OnPostUpdate;
+            }
+        }
         public abstract void CreateSlots();
 
         public void OnPostUpdate(InventorySlot slot)
@@ -69,10 +76,21 @@ namespace KJ
         {
             MouseData.slotHoveredOver = go;
             MouseData.interfaceMouseIsOver = go.GetComponentInParent<UIInventory>();
+
+            if (itemInfo != null && slotUIs[go].ItemSO != null)
+            {
+                itemInfo.SetPanelContext(slotUIs[go].ItemSO);
+                itemInfo.OpenPanel();
+            }
         }
         public void OnExit(GameObject go)
         {
             MouseData.slotHoveredOver = null;
+
+            if (itemInfo != null)
+            {
+                itemInfo.ClosePanel();
+            }
         }
         public void OnStartDrag(GameObject go)
         {
@@ -104,6 +122,12 @@ namespace KJ
             }
 
             MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Input.mousePosition;
+
+            if (itemInfo != null && slotUIs[go].ItemSO != null)
+            {
+                itemInfo.SetPanelContext(slotUIs[go].ItemSO);
+                itemInfo.OpenPanel();
+            }
         }
         public void OnEndDrag(GameObject go)
         {

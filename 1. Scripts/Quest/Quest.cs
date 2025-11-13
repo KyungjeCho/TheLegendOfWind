@@ -43,7 +43,7 @@ namespace KJ
         {
             completedQuestAmount += 1;
             if (completedQuestAmount >= requireQuestAmount)
-            { 
+            {
                 state = QuestState.Completed;
                 GameEvent.PublishQuestCompleted(questSO);
             }

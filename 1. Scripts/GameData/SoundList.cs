@@ -35,5 +35,10 @@ public enum SoundList
     DarkwoodPath = 27,
     Discovery1 = 28,
     MagicScore9 = 29,
+    SorrowsEdge = 30,
+    Frostbound = 31,
+    CoinBagReward = 32,
+    Harp = 33,
+    Explosion1 = 34,
 
 }

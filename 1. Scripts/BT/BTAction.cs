@@ -308,7 +308,7 @@ namespace KJ
         private int screamTrigger;
 
         //todo : Add Shockwave Sound 
-        private SoundList shockwaveSound = SoundList.None;
+        private SoundList shockwaveSound = SoundList.Explosion1;
         private ParticleSystem shockwaveVFX;
 
         private GlobalAoEAttack globalAoEAttack;
@@ -339,7 +339,7 @@ namespace KJ
                 return state;
             }
 
-            SoundManager.Instance.PlayOneShotEffect(shockwaveSound, context.transform.position, 1f);
+            SoundManager.GetOrCreateInstance().PlayOneShotEffect(shockwaveSound, context.transform.position, 1f);
             myAnimator.SetTrigger(screamTrigger);
             shockwaveVFX.Play();
             globalAoEAttack.OnAoEAttackStart();
@@ -396,7 +396,7 @@ namespace KJ
                 bossInvincible.AddInvincibleModifier();
                 myAnimator.SetTrigger(screamTrigger);
                 myAnimator.SetFloat(speedFloat, 0f);
-                SoundManager.Instance.PlayOneShotEffect(screamSound, context.transform.position, 1f);
+                SoundManager.GetOrCreateInstance().PlayOneShotEffect(screamSound, context.transform.position, 1f);
                 
                 state = BTNodeState.Success;
                 return state;

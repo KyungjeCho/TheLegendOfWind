@@ -15,5 +15,6 @@ public enum EffectList
     RockCrushingEffect = 7,
     ImpactEffect = 8,
     StonesHit = 9,
+    Buff = 10,
 
 }

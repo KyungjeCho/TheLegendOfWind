@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace KJ
@@ -85,6 +87,32 @@ namespace KJ
             }
 
             return SetData(index, copy);
+        }
+
+        public override void LoadData()
+        {
+            string path = Path.Combine(Application.persistentDataPath, jsonFilePath, jsonFileName);
+
+            try
+            {
+                string jsonData = File.ReadAllText(path);
+
+                JsonWrapData<RespawnClip> jsonWrapData = JsonUtility.FromJson<JsonWrapData<RespawnClip>>(jsonData);
+
+                data = jsonWrapData.data;
+                names = jsonWrapData.names;
+            }
+            catch (Exception e1)
+            {
+                Debug.Log("Error reading the file: " + e1.Message);
+            }
+        }
+        public override void SaveData()
+        {
+            string path = Path.Combine(Application.persistentDataPath, jsonFilePath, jsonFileName);
+            JsonWrapData<RespawnClip> jsonWrapData = new JsonWrapData<RespawnClip>(data, names);
+            string json = JsonUtility.ToJson(jsonWrapData, true);
+            File.WriteAllText(path, json);
         }
     }
 }

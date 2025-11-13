@@ -131,7 +131,7 @@ namespace KJ
         {
             bgmVolume = volume;
 
-            SoundManager.GetOrCreateInstance().SetMasterVolume(bgmVolume);
+            SoundManager.GetOrCreateInstance().SetBGMVolume(bgmVolume);
         }
         public void SetSFXVolume(float volume)
         {

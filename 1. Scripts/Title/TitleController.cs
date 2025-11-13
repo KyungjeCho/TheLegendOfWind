@@ -6,11 +6,10 @@ namespace KJ
 {
     public class TitleController : MonoBehaviour
     {
-        public GameObject[] buttons = null;
-
-        private void Awake()
+        private void Start()
         {
-            
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }

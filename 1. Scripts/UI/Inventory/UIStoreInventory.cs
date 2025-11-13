@@ -26,6 +26,7 @@ namespace KJ
         [Min(1), SerializeField]
         protected int numberOfColumn = 4;
 
+        public SoundList buySound = SoundList.CoinBagReward;
 
         [SerializeField]
         private GameObject buyItemSlotPrefab;
@@ -151,6 +152,7 @@ namespace KJ
             }
             else
             {
+                SoundManager.GetOrCreateInstance().PlayUISound((int)buySound);
                 playerGold.RemoveGold(totalPrice);
                 inventory.AddItem(selectionItemSO.CreateItem(), int.Parse(countInputField.text));
             }

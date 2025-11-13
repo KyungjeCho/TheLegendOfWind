@@ -17,9 +17,12 @@ namespace KJ
         [SerializeField]
         private InventorySO inventory;
 
+        public SoundList completedSound;
+
         private string currentQuestsJsonName = "currentQuestData.txt";
         private string completedQuestsJsonName = "completedQuestData.txt";
         private string jsonPath = "Assets/9. Resources/Resources/Data";
+        //private string jsonPath = Application.persistentDataPath;
 
         private Quest[] currentQuests;
         //private List<Quest> currentQuests = new List<Quest>();
@@ -35,6 +38,7 @@ namespace KJ
         {
             base.Awake();
 
+            jsonPath = Application.persistentDataPath;
             currentQuests = new Quest[0];
             completedQuests = new List<string>();
             LoadText();
@@ -123,6 +127,7 @@ namespace KJ
                         OnCompletedQuests?.Invoke(questSO);
                         completedQuests.Add(questSO.questName);
                         currentQuests = ArrayHelper.Remove<Quest>(i, currentQuests);
+                        SoundManager.GetOrCreateInstance().PlayUISound((int)completedSound);
                         SaveText();
                         return true;
                     }
@@ -160,7 +165,7 @@ namespace KJ
             path = Path.Combine(jsonPath, completedQuestsJsonName);
             foreach (string s in completedQuests)
             {
-                content = s + "\n";
+                content += s + "\n";
             }
             File.WriteAllText(path, content);
         }

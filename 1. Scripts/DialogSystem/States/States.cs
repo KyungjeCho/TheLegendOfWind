@@ -10,7 +10,6 @@ namespace KJ.Dialog
         public override void OnStateEnter()
         {
             base.OnStateEnter();
-
             context.DialogPanelController.gameObject.SetActive(true);
 
             stateMachine.ChangeState<DialogState>();
@@ -68,6 +67,7 @@ namespace KJ.Dialog
                 if (InputManager.Instance.InteractButton.ConsumeButtonPressed())
                 {
                     DialogObject nextDialog = context.GetDialogObject(context.CurrentDialog.nextId);
+                    Debug.Log(nextDialog);
                     if (nextDialog != null)
                     {
                         context.SetCurrentDialog(nextDialog);

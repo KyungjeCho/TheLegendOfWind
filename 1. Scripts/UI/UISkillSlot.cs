@@ -9,6 +9,7 @@ namespace KJ
     public class UISkillSlot : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI cooldownText;
+        [SerializeField] private Image iconImg;
         [SerializeField] private Image cooldownImage;
         [SerializeField] private BaseSkill skillSO;
 
@@ -27,6 +28,13 @@ namespace KJ
             DataManager.UnlockData.OnUnlock += UpdateSkillActive;
 
             SetActive(DataManager.UnlockData.GetIsUnlocked(skillSO.unlockList));
+
+            iconImg.sprite = skillSO.iconSprite;
+        }
+        private void OnDestroy()
+        {
+            skillSO.OnSkillExecuted -= UpdateTimer;
+            DataManager.UnlockData.OnUnlock -= UpdateSkillActive;
         }
         private void Update()
         {

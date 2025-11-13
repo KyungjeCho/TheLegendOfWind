@@ -23,7 +23,7 @@ namespace KJ
     [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/PlayerData", order = 1)]
     public class PlayerData : ScriptableObject
     {
-        public const string dataDirectory = "Assets/9. Resources/Resources/Data";
+        public string dataDirectory = "Assets/9. Resources/Resources/Data";
 
         private PlayerStat stat;
 
@@ -50,12 +50,16 @@ namespace KJ
         }
         public void SaveData()
         {
+            dataDirectory = Application.persistentDataPath;
+
             string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
             string json = JsonUtility.ToJson(stat, true);
             File.WriteAllText(path, json);
         }
         public void LoadData()
         {
+            dataDirectory = Application.persistentDataPath;
+
             string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
             try
             {
@@ -65,6 +69,7 @@ namespace KJ
             }
             catch (Exception e1)
             {
+                stat = new PlayerStat();
                 stat.level = 1;
                 PlayerLVStat levelStat = DataManager.PlayerLVData.GetCopyFromLevel(stat.level);
                 stat.hp = levelStat.maxHp;

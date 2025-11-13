@@ -7,6 +7,7 @@ namespace KJ
     [CreateAssetMenu(fileName = "Time Stop Skill", menuName = "ScriptableObjects/Time Stop Skill")]
     public class TimeStopSkill : BaseSkill
     {
+        
         public SoundList failueSound;
         public SoundList successSound;
         private SelectObjectBehaviour selectObjectBehaviour;

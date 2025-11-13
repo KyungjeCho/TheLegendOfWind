@@ -53,6 +53,8 @@ namespace KJ
             playerGold.OnCurrentGoldChanged += UpdateGold;
             playerGold.PublishGold();
         }
+
+        
         public Vector3 CalculatePosition(int i)
         {
             float x = start.x + ((space.x + size.x) * (i % numberOfColumn));

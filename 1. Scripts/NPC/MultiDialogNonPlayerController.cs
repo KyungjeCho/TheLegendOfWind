@@ -25,6 +25,7 @@ namespace KJ
 
         protected override void Start()
         {
+            jsonFilePath = Application.persistentDataPath;
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             HideQuestionMark();
             

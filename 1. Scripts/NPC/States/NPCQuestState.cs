@@ -62,6 +62,8 @@ namespace KJ
         public override void OnEndState(Transform tr)
         {
             MultiDialogNonPlayerController controller = tr.GetComponent<MultiDialogNonPlayerController>();
+
+            GameEvent.OnQuestCompleted -= OnCompleted;
             controller?.HideQuestionMark();
         }
         public void OnCompleted(QuestSO questSO)
@@ -70,8 +72,11 @@ namespace KJ
             { 
                 return; 
             }
-            MultiDialogNonPlayerController controller = myTr.GetComponent<MultiDialogNonPlayerController>();
-            controller?.ShowQuestionMark2();
+            if (myTr != null)
+            {
+                MultiDialogNonPlayerController controller = myTr.GetComponent<MultiDialogNonPlayerController>();
+                controller?.ShowQuestionMark2();  
+            }
         }
 
         public void UpdateRequireQuest(QuestSO questSO)

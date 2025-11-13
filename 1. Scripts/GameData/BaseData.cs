@@ -14,6 +14,7 @@ namespace KJ
     public class BaseData : ScriptableObject
     {
         public const string dataDirectory = "Assets/9. Resources/Resources/Data";
+        //public const string dataDirectory = Application.dataPath;
         public string[] names = null;
 
         public int GetDataCount() => names != null ? names.Length : 0;
@@ -42,6 +43,7 @@ namespace KJ
 
         public string jsonFilePath = "";
         public string jsonFileName = typeof(T).ToString() + ".json";
+        public string dataPath = "Data/" + typeof(T).ToString();
         public int GetDataCount() => names != null ? names.Length : 0;
 
         public string[] GetNameList(bool indexing)
@@ -87,21 +89,32 @@ namespace KJ
 
         public virtual void LoadData()
         {
-            string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
-
-            try
+            TextAsset asset = (TextAsset)Resources.Load(dataPath, typeof(TextAsset));
+            if (asset == null || asset.text == null)
             {
-                string jsonData = File.ReadAllText(path);
-
-                JsonWrapData<T> jsonWrapData = JsonUtility.FromJson<JsonWrapData<T>>(jsonData);
-
-                data = jsonWrapData.data;
-                names = jsonWrapData.names;
+                AddData("NewData");
+                return;
             }
-            catch (Exception e1)
-            {
-                Debug.Log("Error reading the file: " + e1.Message);
-            }
+            JsonWrapData<T> jsonWrapData = JsonUtility.FromJson<JsonWrapData<T>>(asset.text);
+
+            data = jsonWrapData.data;
+            names = jsonWrapData.names;
+
+            //string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
+
+            //try
+            //{
+            //    string jsonData = File.ReadAllText(path);
+
+            //    JsonWrapData<T> jsonWrapData = JsonUtility.FromJson<JsonWrapData<T>>(jsonData);
+
+            //    data = jsonWrapData.data;
+            //    names = jsonWrapData.names;
+            //}
+            //catch (Exception e1)
+            //{
+            //    Debug.Log("Error reading the file: " + e1.Message);
+            //}
         }
     }
 }

@@ -62,7 +62,8 @@ namespace KJ
 
         public void SaveTargetCount()
         {
-            string filePath = "Assets/9. Resources/Resources/Data";
+            //string filePath = "Assets/9. Resources/Resources/Data";
+            string filePath = Application.persistentDataPath;
             string fileName = quest.QuestSO.name + targetMonster.ToString();
 
             string path = Path.Combine(filePath, fileName);
@@ -70,7 +71,8 @@ namespace KJ
         }
         public void LoadTargetCount()
         {
-            string filePath = "Assets/9. Resources/Resources/Data";
+            //string filePath = "Assets/9. Resources/Resources/Data";
+            string filePath = Application.persistentDataPath;
             string fileName = quest.QuestSO.name + targetMonster.ToString();
 
             string path = Path.Combine(filePath, fileName);
@@ -152,6 +154,11 @@ namespace KJ
 
             isClear = false;
 
+            isClear = DataManager.UnlockData.GetIsUnlocked(unlockList);
+            if (isClear)
+            {
+                quest.CompleteRequirement();
+            }
             GameEvent.OnUnlocked += OnClear;
         }
         ~ClearRequirement()
@@ -172,6 +179,11 @@ namespace KJ
         public override bool IsCompleted()
         {
             return isClear;
+        }
+
+        public override string ToString()
+        {
+            return isClear ? "클리어 : O" : "클리어 : X";
         }
     }
 }

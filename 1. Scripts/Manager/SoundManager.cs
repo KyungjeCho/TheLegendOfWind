@@ -35,7 +35,7 @@ namespace KJ
         private bool isTicking = false;
         private SoundClip currentSound = null;
         private SoundClip lastSound = null;
-        private const float minVolume   = -80.0f;
+        private const float minVolume   = -40.0f;
         private const float maxVolume   = 20.0f;
         
 

@@ -12,6 +12,7 @@ namespace KJ
 
         public string jsonFilePath = "";
         public string jsonFileName = "monsterData.json";
+        public string dataPath = "Data/monsterData";
 
         public void SaveData()
         {
@@ -23,21 +24,32 @@ namespace KJ
 
         public void LoadData()
         {
-            string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
-
-            try
+            TextAsset asset = (TextAsset) Resources.Load(dataPath, typeof(TextAsset));
+            if (asset == null || asset.text == null)
             {
-                string jsonData = File.ReadAllText(path);
-
-                JsonWrapData<MonsterStat> jsonWrapData = JsonUtility.FromJson<JsonWrapData<MonsterStat>>(jsonData);
-
-                monsterStats = jsonWrapData.data;
-                names = jsonWrapData.names;
+                AddData("NewMonster");
+                return;
             }
-            catch (Exception e1)
-            {
-                Debug.Log("Error reading the file: " + e1.Message);
-            }
+
+            JsonWrapData<MonsterStat> jsonWrapData = JsonUtility.FromJson<JsonWrapData<MonsterStat>>(asset.text);
+            monsterStats = jsonWrapData.data;
+            names = jsonWrapData.names;
+
+            //string path = Path.Combine(dataDirectory, jsonFilePath, jsonFileName);
+
+            //try
+            //{
+            //    string jsonData = File.ReadAllText(path);
+
+            //    JsonWrapData<MonsterStat> jsonWrapData = JsonUtility.FromJson<JsonWrapData<MonsterStat>>(jsonData);
+
+            //    monsterStats = jsonWrapData.data;
+            //    names = jsonWrapData.names;
+            //}
+            //catch (Exception e1)
+            //{
+            //    Debug.Log("Error reading the file: " + e1.Message);
+            //}
         }
 
         public override int AddData(string name)

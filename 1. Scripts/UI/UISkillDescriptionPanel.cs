@@ -37,6 +37,7 @@ namespace KJ
                 return;
             }
             this.skill = skill;
+            iconImg.sprite = skill.iconSprite;
             titleText.text = skill.SkillName;
             descriptionText.text = skill.SkillDescription;
             this.onClosed = onClosed;

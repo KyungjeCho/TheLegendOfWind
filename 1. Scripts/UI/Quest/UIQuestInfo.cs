@@ -20,7 +20,8 @@ namespace KJ
         {
             questInfoPanel.SetActive(true);
             SetQuestSO(questSO);
-            Debug.Log(questSO);
+            InputManager.Instance.ChangeDialogStrategy();
+            EventBusSystem.Publish(EventBusType.STOP);
             questInfoPanel.transform.GetChild(0).GetComponent<Text>().text = questSO.questName;
             questInfoPanel.transform.GetChild(1).GetComponent<Text>().text = questSO.questDescription;
             questInfoPanel.transform.GetChild(2).GetComponent<Text>().text = questSO.rewards.ToString();
@@ -32,12 +33,16 @@ namespace KJ
             questInfoPanel.SetActive(false);
 
             questSO = null;
+            InputManager.Instance.ChangeNormalStrategy();
+            EventBusSystem.Publish(EventBusType.START);
         }
 
         public void DenyQuest()
         {
             questSO = null;
             questInfoPanel.SetActive(false);
+            InputManager.Instance.ChangeNormalStrategy();
+            EventBusSystem.Publish(EventBusType.START);
         }
     }
 }

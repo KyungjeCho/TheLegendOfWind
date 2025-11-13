@@ -28,6 +28,8 @@ public class StoreNonPlayerController : InteractComponent
         {
             isOpened = true;
             storeUI.SetActive(isOpened);
+            InputManager.Instance.ChangeDialogStrategy();
+            EventBusSystem.Publish(EventBusType.STOP);
         }
     }
 
@@ -39,6 +41,8 @@ public class StoreNonPlayerController : InteractComponent
         {
             isOpened = false;
             storeUI.SetActive(isOpened);
+            InputManager.Instance.ChangeNormalStrategy();
+            EventBusSystem.Publish(EventBusType.START);
         }
     }
 }

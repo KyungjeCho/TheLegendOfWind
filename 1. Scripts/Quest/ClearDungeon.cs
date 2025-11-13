@@ -9,7 +9,7 @@ namespace KJ
         public void Clear()
         {
             GameEvent.PublishUnlocked(UnlockList.ClearDungeon);
-            DataManager.UnlockData.data[(int)UnlockList.ClearDungeon].isUnlocked = true;
+            DataManager.UnlockData.SetIsUnlocked(UnlockList.ClearDungeon, true);
         }
     }
 
